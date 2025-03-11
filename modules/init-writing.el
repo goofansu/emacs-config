@@ -38,7 +38,15 @@
       :no-save nil
       :immediate-finish nil
       :kill-buffer t
-      :jump-to-captured t)))
+      :jump-to-captured t)
+     ("i" "Interstitial journaling" plain
+      (file denote-journal-capture-entry-today)
+      "%<%H:%M> - %^{Thought}"
+      :no-save t
+      :immediate-finish t
+      :kill-buffer t
+      :jump-to-captured nil
+      )))
 
   ;; Code block
   (org-edit-src-content-indentation 0)
@@ -235,7 +243,37 @@ This function is ideal for managing referenced files in note-taking workflows."
                       (final-path (expand-file-name renamed-name attachments-dir)))
             (rename-file renamed-file final-path t)
             (with-current-buffer orig-buffer
-              (insert (format "[[file:attachments/%s]]" renamed-name)))))))))
+              (insert (format "[[file:attachments/%s]]" renamed-name))))))))
+
+  ;; denote 3.2.0
+  (defun denote-journal-extras-path-to-new-or-existing-entry (&optional date)
+    "Return path to existing or new journal file.
+With optional DATE, do it for that date, else do it for today.  DATE is
+a string and has the same format as that covered in the documentation of
+the `denote' function.  It is internally processed by
+`denote-valid-date-p'.
+
+If there are multiple journal entries for the date, prompt for one among
+them using minibuffer completion.  If there is only one, return it.  If
+there is no journal entry, create it."
+    (let* ((internal-date (or (denote-valid-date-p date) (current-time)))
+           (files (denote-journal-extras--entry-today internal-date)))
+      (cond
+       ((length> files 1)
+        (completing-read "Select journal entry: " files nil t))
+       (files
+        (car files))
+       (t
+        (save-window-excursion
+          (denote-journal-extras-new-entry date)
+          (save-buffer)
+          (buffer-file-name))))))
+
+  (defun denote-journal-capture-entry-today ()
+    "Capture to Denote Journal entry for today."
+    (let ((date (format-time-string "%Y-%m-%d %H:%M:%S")))
+      (setq denote-journal-capture-date date)
+      (denote-journal-extras-path-to-new-or-existing-entry date))))
 
 (use-package consult-denote
   :init
