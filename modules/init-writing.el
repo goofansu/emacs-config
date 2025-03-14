@@ -102,13 +102,14 @@
     "Search Hugo-compatible files in `denote-directory' and visit the result."
     (interactive)
     (let* ((default-directory (denote-directory))
-           (prompt (format "Select FILE in %s: "  default-directory))
            (selected-file (consult--read
                            (my/org-hugo-denote-files)
-                           :state (consult--file-preview)
-                           :history 'denote-file-history
+                           :prompt (format "Select FILE in %s: "  default-directory)
+                           :sort nil
                            :require-match t
-                           :prompt prompt)))
+                           :category 'file
+                           :state (consult--file-preview)
+                           :history 'denote-file-history)))
       (find-file selected-file)))
 
   (defun my/org-hugo-export-all-denote-files ()
