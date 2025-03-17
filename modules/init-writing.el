@@ -23,7 +23,7 @@
 
   ;; Capture
   (org-capture-templates
-   `(("c" "Fleeting note" entry
+   `(("f" "Fleeting note" entry
       (file "notes.org")
       ,(concat "* %?\n"
                ":PROPERTIES:\n"
@@ -39,9 +39,12 @@
       :immediate-finish nil
       :kill-buffer t
       :jump-to-captured t)
-     ("i" "Interstitial journaling" plain
+     ("c" "Interstitial journaling" entry
       (file denote-journal-capture-entry-today)
-      "%<%H:%M> - %^{Thought}"
+      ,(concat "* %^{Thought} %^g\n"
+               ":PROPERTIES:\n"
+               ":CAPTURED: %U\n"
+               ":END:")
       :no-save t
       :immediate-finish t
       :kill-buffer t
