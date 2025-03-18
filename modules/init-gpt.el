@@ -62,7 +62,7 @@
              `((display-buffer-in-side-window)
                (side . bottom)
                (window-height . ,#'fit-window-to-buffer))))
-          (markdown-view-mode)))))
+          (special-mode)))))
 
   (defun my/gptel-translate (text)
     "Translate TEXT into English using LLM.
