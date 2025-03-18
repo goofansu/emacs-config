@@ -180,10 +180,6 @@
    ("C-c n R" . denote-rename-file-using-front-matter)
    ("M-g l" . denote-find-link)
    ("M-g L" . denote-find-backlink)
-   :map org-mode-map
-   ("C-c n a" . my/denote-org-extras-insert-attachment)
-   ("C-c n d l" . denote-org-extras-dblock-insert-links)
-   ("C-c n d b" . denote-org-extras-dblock-insert-backlinks)
    :map dired-mode-map
    ("C-c C-d C-i" . denote-link-dired-marked-notes)
    ("C-c C-d C-r" . denote-dired-rename-marked-files)
@@ -192,10 +188,7 @@
   :custom
   (denote-save-buffers t)
   (denote-known-keywords nil)
-  (denote-org-capture-specifiers "%i\n%?")
   :config
-  (require 'denote-journal-extras)
-  (require 'denote-org-extras)
   (denote-rename-buffer-mode 1)
   (advice-add 'denote-link-ol-export :around
               (lambda (orig-fun link description format)
@@ -216,9 +209,17 @@
                       (format "[%s]({{< relref \"%s\" >}})"
                               description
                               export-file-name))
-                  (funcall orig-fun link description format))))
+                  (funcall orig-fun link description format)))))
 
-  (defun my/denote-org-extras-insert-attachment (file)
+(use-package denote-org
+  :after denote
+  :custom
+  (denote-org-capture-specifiers "%i\n%?")
+  :config
+  (keymap-set org-mode-map "C-c n a" 'my/denote-org-insert-attachment)
+  (keymap-set org-mode-map "C-c n d l" 'denote-org-dblock-insert-links)
+  (keymap-set org-mode-map "C-c n d b" 'denote-org-dblock-insert-backlinks)
+  (defun my/denote-org-insert-attachment (file)
     "Process FILE to use as an attachment in the current buffer.
 
 If FILE is already in the attachments directory, simply insert a link to it.
@@ -247,37 +248,15 @@ This function is ideal for managing referenced files in note-taking workflows."
                       (final-path (expand-file-name renamed-name attachments-dir)))
             (rename-file renamed-file final-path t)
             (with-current-buffer orig-buffer
-              (insert (format "[[file:attachments/%s]]" renamed-name))))))))
+              (insert (format "[[file:attachments/%s]]" renamed-name)))))))))
 
-  ;; denote 3.2.0
-  (defun denote-journal-extras-path-to-new-or-existing-entry (&optional date)
-    "Return path to existing or new journal file.
-With optional DATE, do it for that date, else do it for today.  DATE is
-a string and has the same format as that covered in the documentation of
-the `denote' function.  It is internally processed by
-`denote-valid-date-p'.
-
-If there are multiple journal entries for the date, prompt for one among
-them using minibuffer completion.  If there is only one, return it.  If
-there is no journal entry, create it."
-    (let* ((internal-date (or (denote-valid-date-p date) (current-time)))
-           (files (denote-journal-extras--entry-today internal-date)))
-      (cond
-       ((length> files 1)
-        (completing-read "Select journal entry: " files nil t))
-       (files
-        (car files))
-       (t
-        (save-window-excursion
-          (denote-journal-extras-new-entry date)
-          (save-buffer)
-          (buffer-file-name))))))
-
+(use-package denote-journal
+  :after denote
+  :config
   (defun denote-journal-capture-entry-today ()
     "Capture to Denote Journal entry for today."
     (let ((date (format-time-string "%Y-%m-%d %H:%M:%S")))
-      (setq denote-journal-capture-date date)
-      (denote-journal-extras-path-to-new-or-existing-entry date))))
+      (denote-journal-path-to-new-or-existing-entry date))))
 
 (use-package consult-denote
   :init
