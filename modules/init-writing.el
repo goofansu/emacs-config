@@ -23,12 +23,19 @@
 
   ;; Capture
   (org-capture-templates
-   `(("f" "Fleeting note" entry
-      (file "notes.org")
-      ,(concat "* %?\n"
+   `(("t" "Task" entry
+      (file "tasks.org")
+      ,(concat "* TODO %?\n"
                ":PROPERTIES:\n"
                ":CAPTURED: %U\n"
                ":END:"))
+     ("f" "Fleeting note" plain
+      (file denote-last-path)
+      #'denote-org-capture
+      :no-save nil
+      :immediate-finish nil
+      :kill-buffer t
+      :jump-to-captured t)
      ("r" "Reference note" plain
       (file denote-last-path)
       (function
@@ -48,8 +55,8 @@
       :no-save t
       :immediate-finish t
       :kill-buffer t
-      :jump-to-captured nil
-      )))
+      :jump-to-captured nil)
+     ))
 
   ;; Code block
   (org-edit-src-content-indentation 0)
