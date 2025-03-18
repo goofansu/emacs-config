@@ -1,7 +1,7 @@
 # emacs-config
 
 ## Requirement
-- Emacs 29+
+- Emacs 30+
 
 ## Installation
 
