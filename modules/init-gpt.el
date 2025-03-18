@@ -36,7 +36,7 @@
 
   :config
   (setq gptel-backend gptel--openrouter
-        gptel-model 'anthropic/claude-3.7-sonnet)
+        gptel-model 'openai/gpt-4o)
 
   (defun my/gptel-send-all-buffers (prompt)
     "Send PROMPT in all buffers where gptel-mode is active."
