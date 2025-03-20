@@ -1,7 +1,7 @@
 (use-package modus-themes
   :init
   (load-theme 'modus-operandi :no-confirm)
-  :bind ("<f9>" . modus-themes-toggle)
+  :bind (:map my-toggle-map ("t" . modus-themes-toggle))
   :custom
   (modus-themes-mixed-fonts t)
   (modus-themes-variable-pitch-ui t)

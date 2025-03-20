@@ -1,19 +1,20 @@
 (use-package whitespace
   :ensure nil
   :bind
-  (("<f6>" . whitespace-mode)
-   ("C-c z" . whitespace-cleanup)))
+  (("C-c z" . whitespace-cleanup)
+   :map my-toggle-map
+   ("w" . whitespace-mode)))
 
 (use-package display-line-numbers
   :ensure nil
-  :bind ("<f7>" . display-line-numbers-mode)
+  :bind (:map my-toggle-map ("l" . display-line-numbers-mode))
   :custom
   (display-line-numbers-widen t))
 
 (use-package visual-line-mode
   :ensure nil
   :hook text-mode
-  :bind ("<f8>" . visual-line-mode))
+  :bind (:map my-toggle-map ("v" . visual-line-mode)))
 
 (use-package logos
   :init
@@ -31,7 +32,8 @@
    ([remap backward-page]    . logos-backward-page-dwim)
    ("M-]" . logos-forward-page-dwim)
    ("M-[" . logos-backward-page-dwim)
-   ("<f5>" . logos-focus-mode))
+   :map my-toggle-map
+   ("f" . logos-focus-mode))
   :custom
   (logos-outlines-are-pages t))
 

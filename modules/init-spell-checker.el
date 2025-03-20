@@ -4,7 +4,8 @@
   :bind
   (([remap ispell-word] . jinx-correct)
    ("C-c J" . jinx-languages)
-   ("<f12>" . jinx-mode))
+   :map my-toggle-map
+   ("j" . jinx-mode))
   :custom
   (jinx-languages "en_US en_GB"))
 
