@@ -42,7 +42,7 @@
        (lambda ()
          (let ((denote-use-title (alfred-browser-title)))
            (denote-org-capture-with-prompts :title :keywords))))
-      :no-save nil
+      :no-save t
       :immediate-finish nil
       :kill-buffer t
       :jump-to-captured t)
