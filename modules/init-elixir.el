@@ -1,5 +1,6 @@
 (use-package elixir-ts-mode
   :ensure nil
+  :demand t
   :hook (elixir-ts-mode . elixir-format-before-save)
   :bind (:map my-insert-map ("e e" . my/elixir-package-insert))
   :config
