@@ -41,4 +41,12 @@
         ("t" . osx-dictionary-search-word-at-point)
         ("T" . osx-dictionary-search-input)))
 
+(use-package kagi
+  :ensure nil
+  :load-path "vendor/site-lisp/"
+  :bind
+  ( :map search-map
+    ("s" . kagi-search)
+    ("M-s" . kagi-search)))
+
 (provide 'init-search)

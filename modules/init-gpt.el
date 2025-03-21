@@ -23,12 +23,8 @@
   (("C-c <return>" . gptel-send)
    ("C-c C-<return>" . gptel-menu)
    ("C-c M-<return>" . my/gptel-send-all-buffers)
-   :map embark-region-map
-   ("g t" . my/gptel-translate)
-   ("g u" . my/gptel-summarize-text)
-   :map embark-prose-map
-   ("g t" . my/gptel-translate)
-   ("g u" . my/gptel-summarize-text))
+   :map embark-general-map
+   ("g t" . my/gptel-translate))
 
   :custom
   (gptel-default-mode 'org-mode)
@@ -78,19 +74,6 @@ to English, you maintain elements like paragraph breaks,
 emphasis, and tone while ensuring the translation captures the
 nuances of the source text."
         :context (list "translate")
-        :callback #'my/gptel--callback-display-bottom)))
-
-  (defun my/gptel-summarize-text (text)
-    "Summarize TEXT into takeaways."
-    (interactive "sText: ")
-    (let ((gptel-backend gptel--openrouter)
-          (gptel-model 'openai/gpt-4o-mini))
-      (gptel-request text
-        :system "You help users distill key points from
-text passages. When given a piece of text, you will identify and
-explain at least 3 important takeaways that capture the main
-ideas, themes, and insights from the content."
-        :context (list "summarize-text")
         :callback #'my/gptel--callback-display-bottom))))
 
 (use-package gptel-quick
