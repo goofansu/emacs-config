@@ -176,6 +176,7 @@
   :hook (dired-mode . denote-dired-mode)
   :bind
   (("C-c n n" . denote)
+   ("C-c n N" . denote-type)
    ("C-c n o" . denote-sort-dired)
    ("C-c n r" . denote-rename-file)
    ("C-c n j" . denote-journal-extras-new-or-existing-entry)
