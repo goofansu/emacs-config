@@ -175,8 +175,8 @@
   (setq denote-directory my-notes-directory)
   :hook (dired-mode . denote-dired-mode)
   :bind
-  (("C-c n n" . denote)
-   ("C-c n N" . denote-type)
+  (("C-c n n" . denote-open-or-create)
+   ("C-c n N" . denote-open-or-create-with-command)
    ("C-c n o" . denote-sort-dired)
    ("C-c n r" . denote-rename-file)
    ("C-c n j" . denote-journal-extras-new-or-existing-entry)
@@ -186,8 +186,6 @@
    ("C-c n I" . denote-add-links)
    ("C-c n b" . denote-backlinks)
    ("C-c n R" . denote-rename-file-using-front-matter)
-   ("M-g l" . denote-find-link)
-   ("M-g L" . denote-find-backlink)
    :map dired-mode-map
    ("C-c C-d C-i" . denote-link-dired-marked-notes)
    ("C-c C-d C-r" . denote-dired-rename-marked-files)
