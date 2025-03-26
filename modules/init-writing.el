@@ -179,8 +179,6 @@
    ("C-c n N" . denote-open-or-create-with-command)
    ("C-c n o" . denote-sort-dired)
    ("C-c n r" . denote-rename-file)
-   ("C-c n j" . denote-journal-extras-new-or-existing-entry)
-   ("C-c n J" . denote-journal-extras-new-entry)
    :map text-mode-map
    ("C-c n i" . denote-link-or-create)
    ("C-c n I" . denote-add-links)
