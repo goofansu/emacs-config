@@ -10,6 +10,14 @@
 (setq use-package-always-ensure t)
 (setq use-package-always-pin "gnu")
 
+;; Benchmark Emacs startup time
+(use-package benchmark-init
+  :pin melpa
+  :disabled t
+  :config
+  (benchmark-init/activate)
+  (add-hook 'after-init-hook 'benchmark-init/deactivate))
+
 ;; Set $PATH correctly
 (use-package exec-path-from-shell
   :pin nongnu
