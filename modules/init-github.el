@@ -10,6 +10,7 @@
 (use-package consult-gh
   :pin melpa
   :after consult
+  :bind ("C-c g g" . consult-gh)
   :custom
   (consult-gh-default-clone-directory "~/src/")
   (consult-gh-repo-action #'consult-gh--repo-browse-files-action)
