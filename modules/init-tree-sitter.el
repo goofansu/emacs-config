@@ -12,7 +12,8 @@
           (python "https://github.com/tree-sitter/tree-sitter-python")
           (toml "https://github.com/tree-sitter/tree-sitter-toml")
           (ruby "https://github.com/tree-sitter/tree-sitter-ruby")
-          (html "https://github.com/tree-sitter/tree-sitter-html")))
+          (html "https://github.com/tree-sitter/tree-sitter-html")
+          (yaml "https://github.com/tree-sitter-grammars/tree-sitter-yaml")))
 
   :custom
   (major-mode-remap-alist
@@ -21,7 +22,8 @@
      (javascript-mode . js-ts-mode)
      (json-mode . json-ts-mode)
      (conf-toml-mode . toml-ts-mode)
-     (c-mode . c-ts-mode)))
+     (c-mode . c-ts-mode)
+     (yaml-mode . yaml-ts-mode)))
 
   :config
   (defun my/treesit-install-language-grammars ()
