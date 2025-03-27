@@ -30,6 +30,7 @@
 (use-package keycast
   :pin melpa
   :after prot-modeline
+  :bind (:map my-toggle-map ("k" . keycast-mode-line-mode))
   :custom
   (keycast-mode-line-format "%2s%k%c%R")
   (keycast-mode-line-insert-after 'prot-modeline-vc-branch)
