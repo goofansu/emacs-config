@@ -23,12 +23,16 @@
 
   ;; Capture
   (org-capture-templates
-   `(("t" "Task" entry
-      (file "tasks.org")
-      ,(concat "* TODO %?\n"
+   `(("c" "Interstitial journaling" entry
+      (file denote-journal-capture-entry-today)
+      ,(concat "* %^{Thought} %^g\n"
                ":PROPERTIES:\n"
                ":CAPTURED: %U\n"
-               ":END:"))
+               ":END:")
+      :no-save t
+      :immediate-finish t
+      :kill-buffer t
+      :jump-to-captured nil)
      ("f" "Fleeting note" plain
       (file denote-last-path)
       #'denote-org-capture
@@ -46,16 +50,17 @@
       :immediate-finish nil
       :kill-buffer t
       :jump-to-captured t)
-     ("c" "Interstitial journaling" entry
-      (file denote-journal-capture-entry-today)
-      ,(concat "* %^{Thought} %^g\n"
-               ":PROPERTIES:\n"
-               ":CAPTURED: %U\n"
-               ":END:")
+     ("w" "Work note" plain
+      (file denote-last-path)
+      (function
+       (lambda ()
+         (let ((denote-use-directory (concat denote-directory "work/"))
+               (denote-use-title (alfred-browser-title)))
+           (denote-org-capture-with-prompts :title :keywords))))
       :no-save t
-      :immediate-finish t
+      :immediate-finish nil
       :kill-buffer t
-      :jump-to-captured nil)
+      :jump-to-captured t)
      ))
 
   ;; Code block
