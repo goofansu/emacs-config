@@ -60,7 +60,9 @@
   (("C-c y" . my/yank-file-path)
    ("C-c Y" . my/yank-file-path-relative-to-project)
    ("C-c D" . my/delete-this-file)
-   ("C-c R" . my/rename-this-file))
+   ("C-c R" . my/rename-this-file)
+   :map goto-map
+   ("M-g" . my/project-find-file-and-goto-line))
   :config
   (defun my/yank-file-path (&optional buffer dir)
     "Save the buffer path into the kill-ring.
@@ -115,7 +117,23 @@ The path is relative to `project-current'."
       (make-directory (file-name-directory new-path) 't)
       (rename-file old-path new-path)
       (set-visited-file-name new-path t t)
-      (message "Renamed to %s" (abbreviate-file-name new-path)))))
+      (message "Renamed to %s" (abbreviate-file-name new-path))))
+
+  (defun my/project-find-file-and-goto-line (file-line)
+    "Open a file within the current project and go to a specific line number.
+FILE-LINE should be in the format 'file:line' relative to the project root."
+    (interactive "sGo to line: ")
+    (if (string-match "\\(.*\\):\\([0-9]+\\)$" file-line)
+        (let ((file (match-string 1 file-line))
+              (line (string-to-number (match-string 2 file-line))))
+          (let* ((project-root-dir (project-root (project-current t)))
+                 (full-path (expand-file-name file project-root-dir)))
+            (if (file-exists-p full-path)
+                (progn
+                  (find-file full-path)
+                  (goto-line line))
+              (user-error "File does not exist: %s" full-path))))
+      (user-error "FILE-LINE must be in the format: 'file:line'"))))
 
 (use-package recentf
   :ensure nil
