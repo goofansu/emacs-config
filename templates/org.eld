@@ -11,7 +11,7 @@ org-mode
       "#+hugo_base_dir: " (p "~/src/yejun.dev") n
       "#+hugo_section: " (p "posts") n
       "#+hugo_draft: true" n
-      "#+hugo_custom_front_matter: " p)
+      "#+hugo_custom_front_matter: " (p "toc false"))
 
 (til "#+hugo_base_dir: ~/src/yejun.dev" n
      "#+hugo_section: til")
