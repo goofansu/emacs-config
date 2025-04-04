@@ -131,7 +131,8 @@ FILE-LINE should be in the format 'file:line' relative to the project root."
             (if (file-exists-p full-path)
                 (progn
                   (find-file full-path)
-                  (goto-line line))
+                  (goto-char (point-min))
+                  (forward-line (1- line)))
               (user-error "File does not exist: %s" full-path))))
       (user-error "FILE-LINE must be in the format: 'file:line'"))))
 
