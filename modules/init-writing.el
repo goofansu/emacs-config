@@ -23,23 +23,13 @@
 
   ;; Capture
   (org-capture-templates
-   `(("c" "Interstitial journaling" entry
-      (file denote-journal-capture-entry-today)
-      ,(concat "* %^{Thought} %^g\n"
-               ":PROPERTIES:\n"
-               ":CAPTURED: %U\n"
-               ":END:")
-      :no-save t
-      :immediate-finish t
-      :kill-buffer t
-      :jump-to-captured nil)
-     ("f" "Fleeting note" plain
+   `(("f" "Fleeting note" plain
       (file denote-last-path)
       #'denote-org-capture
-      :no-save nil
+      :no-save t
       :immediate-finish nil
       :kill-buffer t
-      :jump-to-captured t)
+      :jump-to-captured nil)
      ("r" "Reference note" plain
       (file denote-last-path)
       (function
