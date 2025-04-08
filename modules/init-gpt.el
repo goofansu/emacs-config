@@ -4,11 +4,6 @@
   (defvar gptel--openai nil
     "Override the variable to hide OpenAI models")
 
-  (defvar gptel--google
-    (gptel-make-gemini "Google"
-      :key (lambda () (auth-source-pass-get 'secret "api-key/gemini"))
-      :stream t))
-
   (defvar gptel--openrouter
     (gptel-make-openai "OpenRouter"
       :host "openrouter.ai"
@@ -64,8 +59,8 @@
 If region is active, use it as TEXT; otherwise prompt for input.
 Display the result in a side window with the content selected."
     (interactive "sText: ")
-    (let ((gptel-backend gptel--google)
-          (gptel-model 'gemini-2.0-flash))
+    (let ((gptel-backend gptel--openrouter)
+          (gptel-model 'openai/gpt-4o-mini))
       (gptel-request text
         :system "You translate text between English and Chinese (Mandarin),
 preserving both the original formatting and intended
