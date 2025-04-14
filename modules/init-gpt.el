@@ -4,6 +4,16 @@
   (defvar gptel--openai nil
     "Override the variable to hide OpenAI models")
 
+  (defvar gptel--kagi
+    (gptel-make-kagi "Kagi"
+      :key (lambda () (auth-source-pass-get 'secret "api-key/kagi"))
+      :models '("fastgpt")))
+
+  (defvar gptel--google
+    (gptel-make-gemini "Google"
+      :key (lambda () (auth-source-pass-get 'secret "api-key/gemini"))
+      :stream t))
+
   (defvar gptel--openrouter
     (gptel-make-openai "OpenRouter"
       :host "openrouter.ai"

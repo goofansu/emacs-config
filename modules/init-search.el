@@ -47,6 +47,8 @@
   :bind
   ( :map search-map
     ("s" . kagi-search)
-    ("M-s" . kagi-search)))
+    ("M-s" . kagi-search)
+    :map embark-general-map
+    ("g s" . kagi-summarize)))
 
 (provide 'init-search)
