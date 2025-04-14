@@ -26,6 +26,7 @@
                 logos-buffer-read-only nil
                 logos-scroll-lock nil
                 logos-olivetti t)
+  :hook (elfeed-show-mode . logos-focus-mode)
   :bind
   (([remap narrow-to-region] . logos-narrow-dwim)
    ([remap forward-page]     . logos-forward-page-dwim)
