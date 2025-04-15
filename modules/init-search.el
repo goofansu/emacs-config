@@ -44,7 +44,7 @@
 (use-package kagi
   :ensure nil
   :demand t
-  :load-path "vendor/site-lisp/"
+  :load-path "site-lisp/"
   :bind
   ( :map search-map
     ("s" . kagi-search)

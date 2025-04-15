@@ -50,7 +50,7 @@
 
 (use-package org-block-capf
   :ensure nil
-  :load-path "site-lisp/"
+  :load-path "vendor/"
   :hook (org-mode . org-block-capf-add-to-completion-at-point-functions))
 
 (provide 'init-completion)
