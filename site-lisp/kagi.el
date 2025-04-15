@@ -1,5 +1,5 @@
 (defun kagi-search (query)
-  "Search Kagi for QUERY.
+  "Search QUERY using Kagi Search.
 If region is active, use it as the query, otherwise prompt user."
   (interactive
    (list
@@ -10,16 +10,14 @@ If region is active, use it as the query, otherwise prompt user."
          (url (format "https://kagi.com/search?q=%s" query)))
     (browse-url url)))
 
-(defun kagi-feeling-lucky (target)
-  (interactive "sKagi feeling lucky: ")
-  (kagi-search (format "! %s" target)))
-
-(defun kagi-summarize (target)
+(defun kagi-summarize (query)
+  "Summarize QUERY using Kagi Universal Summarizer."
   (interactive "sKagi summarize: ")
-  (kagi-search (format "!sum %s" target)))
+  (kagi-search (format "!sum %s" query)))
 
-(defun kagi-translate (target)
+(defun kagi-translate (query)
+  "Translate QUERY using Kagi Translator."
   (interactive "sKagi translate: ")
-  (kagi-search (format "!tr %s" target)))
+  (kagi-search (format "!tr %s" query)))
 
 (provide 'kagi)

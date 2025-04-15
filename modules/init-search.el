@@ -43,12 +43,14 @@
 
 (use-package kagi
   :ensure nil
+  :demand t
   :load-path "vendor/site-lisp/"
   :bind
   ( :map search-map
     ("s" . kagi-search)
     ("M-s" . kagi-search)
     :map embark-general-map
-    ("g s" . kagi-summarize)))
+    ("g S" . kagi-summarize)
+    ("g T" . kagi-translate)))
 
 (provide 'init-search)
