@@ -74,12 +74,11 @@ Display the result in a side window with the content selected."
     (let ((gptel-backend gptel--openrouter)
           (gptel-model 'openai/gpt-4.1-mini))
       (gptel-request text
-        :system "You translate text between English and Chinese (Mandarin),
-preserving both the original formatting and intended
-meaning. Whether translating from English to Chinese or Chinese
-to English, you maintain elements like paragraph breaks,
-emphasis, and tone while ensuring the translation captures the
-nuances of the source text."
+        :system "Translate the provided text between English and
+Chinese (Mandarin). Return ONLY the completed translation without
+explanations, notes, or commentary. Maintain all original formatting
+including paragraphs, bullet points, and emphasis while ensuring the
+translation reads naturally to native speakers."
         :context (list "translate")
         :callback #'my/gptel--callback-display-bottom))))
 
