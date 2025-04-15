@@ -26,6 +26,7 @@
           "https://railsatscale.com/feed.xml"
           "https://sachachua.com/blog/category/emacs/feed/"
           "https://simonwillison.net/atom/everything/"
+          "https://sive.rs/en.atom"
           "https://webkit.org/feed/atom/"
           "https://world.hey.com/bb/feed.atom"
           "https://world.hey.com/dhh/feed.atom"
