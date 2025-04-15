@@ -22,10 +22,9 @@
       :key (lambda () (auth-source-pass-get 'secret "api-key/openrouter"))
       :models '(anthropic/claude-3.7-sonnet
                 anthropic/claude-3.7-sonnet:thinking
-                openai/gpt-4o-mini-search-preview
-                openai/gpt-4o-search-preview
-                openai/gpt-4o-mini
-                openai/gpt-4o)))
+                openai/gpt-4.1
+                openai/gpt-4.1-mini
+                openai/gpt-4.1-nano)))
 
   :bind
   (("C-c <return>" . gptel-send)
@@ -39,7 +38,7 @@
 
   :config
   (setq gptel-backend gptel--openrouter
-        gptel-model 'openai/gpt-4o)
+        gptel-model 'openai/gpt-4.1)
 
   (defun my/gptel-send-all-buffers (prompt)
     "Send PROMPT in all buffers where gptel-mode is active."
@@ -73,7 +72,7 @@ If region is active, use it as TEXT; otherwise prompt for input.
 Display the result in a side window with the content selected."
     (interactive "sText: ")
     (let ((gptel-backend gptel--openrouter)
-          (gptel-model 'openai/gpt-4o-mini))
+          (gptel-model 'openai/gpt-4.1-mini))
       (gptel-request text
         :system "You translate text between English and Chinese (Mandarin),
 preserving both the original formatting and intended
@@ -89,6 +88,6 @@ nuances of the source text."
   :bind (:map embark-general-map ("?" . gptel-quick))
   :config
   (setq gptel-quick-backend gptel--openrouter
-        gptel-quick-model 'openai/gpt-4o-mini))
+        gptel-quick-model 'openai/gpt-4.1-mini))
 
 (provide 'init-gpt)
