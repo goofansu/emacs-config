@@ -24,7 +24,8 @@
                 anthropic/claude-3.7-sonnet:thinking
                 openai/gpt-4.1
                 openai/gpt-4.1-mini
-                openai/gpt-4.1-nano)))
+                openai/gpt-4.1-nano
+                openai/o3)))
 
   :bind
   (("C-c <return>" . gptel-send)
