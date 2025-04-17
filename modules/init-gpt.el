@@ -4,16 +4,6 @@
   (defvar gptel--openai nil
     "Override the variable to hide OpenAI models")
 
-  (defvar gptel--kagi
-    (gptel-make-kagi "Kagi"
-      :key (lambda () (auth-source-pass-get 'secret "api-key/kagi"))
-      :models '("fastgpt")))
-
-  (defvar gptel--google
-    (gptel-make-gemini "Google"
-      :key (lambda () (auth-source-pass-get 'secret "api-key/gemini"))
-      :stream t))
-
   (defvar gptel--openrouter
     (gptel-make-openai "OpenRouter"
       :host "openrouter.ai"
@@ -23,9 +13,7 @@
       :models '(anthropic/claude-3.7-sonnet
                 anthropic/claude-3.7-sonnet:thinking
                 openai/gpt-4.1
-                openai/gpt-4.1-mini
-                openai/gpt-4.1-nano
-                openai/o3)))
+                openai/o4-mini)))
 
   :bind
   (("C-c <return>" . gptel-send)
@@ -73,7 +61,7 @@ If region is active, use it as TEXT; otherwise prompt for input.
 Display the result in a side window with the content selected."
     (interactive "sText: ")
     (let ((gptel-backend gptel--openrouter)
-          (gptel-model 'openai/gpt-4.1-mini))
+          (gptel-model 'openai/gpt-4.1))
       (gptel-request text
         :system "Translate the provided text between English and
 Chinese (Mandarin). Return ONLY the completed translation without
@@ -88,6 +76,6 @@ translation reads naturally to native speakers."
   :bind (:map embark-general-map ("?" . gptel-quick))
   :config
   (setq gptel-quick-backend gptel--openrouter
-        gptel-quick-model 'openai/gpt-4.1-mini))
+        gptel-quick-model 'openai/gpt-4.1))
 
 (provide 'init-gpt)
