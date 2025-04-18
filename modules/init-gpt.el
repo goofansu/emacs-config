@@ -13,6 +13,7 @@
       :models '(anthropic/claude-3.7-sonnet
                 anthropic/claude-3.7-sonnet:thinking
                 openai/gpt-4.1
+                openai/gpt-4.1-mini
                 openai/o4-mini
                 google/gemini-2.5-pro-preview-03-25
                 google/gemini-2.5-flash-preview)))
@@ -21,6 +22,8 @@
   (("C-c <return>" . gptel-send)
    ("C-c C-<return>" . gptel-menu)
    ("C-c M-<return>" . my/gptel-send-all-buffers)
+   :map search-map
+   ("T" . my/gptel-translate)
    :map embark-general-map
    ("g t" . my/gptel-translate)
    ("g s" . my/gptel-summarize))
@@ -62,9 +65,9 @@
     "Translate TEXT into English using LLM.
 If region is active, use it as TEXT; otherwise prompt for input.
 Display the result in a side window with the content selected."
-    (interactive "sText: ")
+    (interactive "sTranslate text: ")
     (let ((gptel-backend gptel--openrouter)
-          (gptel-model 'openai/gpt-4.1))
+          (gptel-model 'google/gemini-2.5-flash-preview))
       (gptel-request text
         :system "Translate the provided text between English and
 Chinese (Mandarin). Return ONLY the completed translation without
@@ -78,7 +81,7 @@ translation reads naturally to native speakers."
     "Translate TEXT into English using LLM.
 If region is active, use it as TEXT; otherwise prompt for input.
 Display the result in a side window with the content selected."
-    (interactive "sText: ")
+    (interactive "sSummarize text: ")
     (let ((gptel-backend gptel--openrouter)
           (gptel-model 'openai/gpt-4.1))
       (gptel-request text
@@ -91,6 +94,6 @@ Display the result in a side window with the content selected."
   :bind (:map embark-general-map ("?" . gptel-quick))
   :config
   (setq gptel-quick-backend gptel--openrouter
-        gptel-quick-model 'openai/gpt-4.1))
+        gptel-quick-model 'openai/gpt-4.1-mini))
 
 (provide 'init-gpt)

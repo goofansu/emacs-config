@@ -9,16 +9,6 @@ If region is active, use it as the query, otherwise prompt user."
   (let ((url (format "https://kagi.com/search?q=%s" (url-hexify-string query))))
     (browse-url url)))
 
-(defun kagi-summarize (query)
-  "Summarize QUERY using Kagi Universal Summarizer."
-  (interactive "sKagi summarize: ")
-  (kagi-search (format "!sum %s" query)))
-
-(defun kagi-translate (query)
-  "Translate QUERY using Kagi Translator."
-  (interactive "sKagi translate: ")
-  (kagi-search (format "!tr %s" query)))
-
 (defvar kagi-assistant-default-profile "gpt-4-1-mini"
   "Default profile for Kagi Assistant.")
 

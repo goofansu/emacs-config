@@ -36,10 +36,7 @@
 (use-package osx-dictionary
   :pin melpa
   :if (eq system-type 'darwin)
-  :bind
-  (:map search-map
-        ("t" . osx-dictionary-search-word-at-point)
-        ("T" . osx-dictionary-search-input)))
+  :bind (:map search-map ("t" . osx-dictionary-search-word-at-point)))
 
 (use-package kagi
   :ensure nil
@@ -48,9 +45,6 @@
   :bind
   ( :map search-map
     ("s" . kagi-search)
-    ("M-s" . kagi-assistant)
-    :map embark-general-map
-    ("g S" . kagi-summarize)
-    ("g T" . kagi-translate)))
+    ("M-s" . kagi-assistant)))
 
 (provide 'init-search)
