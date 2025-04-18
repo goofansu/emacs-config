@@ -136,14 +136,11 @@
    ("C-c C-;" . embark-export)
    ("C-c C-l" . embark-collect)
    :map embark-file-map
-   ("t" . find-file-other-window)
+   ("t" . find-file-other-tab)
    ("T" . find-file-other-frame)
    :map embark-buffer-map
-   ("t" . switch-to-buffer-other-window)
-   ("T" . switch-to-buffer-other-frame)
-   :map embark-bookmark-map
-   ("t" . bookmark-jump-other-window)
-   ("T" . bookmark-jump-other-frame))
+   ("t" . switch-to-buffer-other-tab)
+   ("T" . switch-to-buffer-other-frame))
   :custom
   (embark-indicators
    '(embark-minimal-indicator
