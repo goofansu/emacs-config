@@ -13,7 +13,9 @@
       :models '(anthropic/claude-3.7-sonnet
                 anthropic/claude-3.7-sonnet:thinking
                 openai/gpt-4.1
-                openai/o4-mini)))
+                openai/o4-mini
+                google/gemini-2.5-pro-preview-03-25
+                google/gemini-2.5-flash-preview)))
 
   :bind
   (("C-c <return>" . gptel-send)
