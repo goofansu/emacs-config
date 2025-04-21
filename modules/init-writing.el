@@ -25,9 +25,9 @@
   ;; Capture
   (org-capture-templates
    `(("f" "Fleeting note" entry
-      (file denote-journal-capture-entry-today)
+      (file denote-journal-path-to-new-or-existing-entry)
       "* %?"
-      :no-save t
+      :no-save nil
       :immediate-finish nil
       :kill-buffer t
       :jump-to-captured nil)
@@ -240,12 +240,7 @@ This function is ideal for managing referenced files in note-taking workflows."
               (insert (format "[[file:attachments/%s]]" renamed-name)))))))))
 
 (use-package denote-journal
-  :after denote
-  :config
-  (defun denote-journal-capture-entry-today ()
-    "Capture to Denote Journal entry for today."
-    (let ((date (format-time-string "%Y-%m-%d %H:%M:%S")))
-      (denote-journal-path-to-new-or-existing-entry date))))
+  :after denote)
 
 (use-package consult-denote
   :init
