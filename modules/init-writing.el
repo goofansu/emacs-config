@@ -10,7 +10,8 @@
    ("C-c l" . org-store-link)
    :map org-mode-map
    ([remap mark-defun] . org-babel-mark-block)
-   ("M-g o" . consult-org-heading))
+   ("M-g o" . consult-org-heading)
+   ("C-c C-M-l" . org-toggle-link-display))
 
   :custom
   (org-use-sub-superqscripts '{})
