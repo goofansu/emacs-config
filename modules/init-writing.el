@@ -24,9 +24,9 @@
 
   ;; Capture
   (org-capture-templates
-   `(("f" "Fleeting note" plain
-      (file denote-last-path)
-      #'denote-org-capture
+   `(("f" "Fleeting note" entry
+      (file denote-journal-capture-entry-today)
+      "* %?"
       :no-save t
       :immediate-finish nil
       :kill-buffer t
@@ -36,17 +36,6 @@
       (function
        (lambda ()
          (let ((denote-use-title (alfred-browser-title)))
-           (denote-org-capture-with-prompts :title :keywords))))
-      :no-save t
-      :immediate-finish nil
-      :kill-buffer t
-      :jump-to-captured t)
-     ("w" "Work note" plain
-      (file denote-last-path)
-      (function
-       (lambda ()
-         (let ((denote-use-directory (concat denote-directory "work/"))
-               (denote-use-title (alfred-browser-title)))
            (denote-org-capture-with-prompts :title :keywords))))
       :no-save t
       :immediate-finish nil
