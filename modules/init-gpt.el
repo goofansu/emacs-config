@@ -12,11 +12,13 @@
       :key (lambda () (auth-source-pass-get 'secret "api-key/openrouter"))
       :models '(anthropic/claude-3.7-sonnet
                 anthropic/claude-3.7-sonnet:thinking
+                google/gemini-2.5-flash-preview
+                google/gemini-2.5-pro-preview-03-25
                 openai/gpt-4.1
                 openai/gpt-4.1-mini
+                openai/gpt-4.1-nano
                 openai/o4-mini
-                google/gemini-2.5-pro-preview-03-25
-                google/gemini-2.5-flash-preview)))
+                openai/o4-mini-high)))
 
   :bind
   (("C-c <return>" . gptel-send)
@@ -83,7 +85,7 @@ If region is active, use it as TEXT; otherwise prompt for input.
 Display the result in a side window with the content selected."
     (interactive "sSummarize text: ")
     (let ((gptel-backend gptel--openrouter)
-          (gptel-model 'openai/gpt-4.1))
+          (gptel-model 'openai/gpt-4.1-mini))
       (gptel-request text
         :system "Summarize the given text."
         :context (list "summary")
