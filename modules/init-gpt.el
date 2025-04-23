@@ -17,6 +17,8 @@
                 openai/gpt-4.1
                 openai/gpt-4.1-mini
                 openai/gpt-4.1-nano
+                openai/gpt-4o-search-preview
+                openai/gpt-4o-mini-search-preview
                 openai/o4-mini
                 openai/o4-mini-high)))
 
