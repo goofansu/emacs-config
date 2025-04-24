@@ -15,10 +15,6 @@
                 google/gemini-2.5-flash-preview
                 google/gemini-2.5-pro-preview-03-25
                 openai/gpt-4.1
-                openai/gpt-4.1-mini
-                openai/gpt-4.1-nano
-                openai/gpt-4o-search-preview
-                openai/gpt-4o-mini-search-preview
                 openai/o4-mini
                 openai/o4-mini-high)))
 
@@ -26,6 +22,7 @@
   (("C-c <return>" . gptel-send)
    ("C-c C-<return>" . gptel-menu)
    ("C-c M-<return>" . my/gptel-send-all-buffers)
+   ("C-c C-g" . gptel-abort)
    :map search-map
    ("T" . my/gptel-translate)
    :map embark-general-map
@@ -35,7 +32,7 @@
   :custom
   (gptel-default-mode 'org-mode)
   (gptel-directives
-   '((default . "You are a large language model living in Emacs and a helpful assistant. Use suitable tools and respond concisely.")))
+   '((default . "You are a large language model living in Emacs and a helpful assistant. You have access to tools, and my notes located in ~/src/notes, use them accordingly. Respond concisely.")))
 
   :config
   (setq gptel-backend gptel--openrouter
@@ -89,7 +86,7 @@ If region is active, use it as TEXT; otherwise prompt for input.
 Display the result in a side window with the content selected."
     (interactive "sSummarize text: ")
     (let ((gptel-backend gptel--openrouter)
-          (gptel-model 'openai/gpt-4.1-mini))
+          (gptel-model 'openai/gpt-4.1))
       (gptel-request text
         :system "Summarize the given text."
         :context (list "summary")
@@ -125,9 +122,9 @@ Display the result in a side window with the content selected."
                 :name "read_documentation"
                 :function #'gptel-read-documentation
                 :description "Read the documentation for a given function or variable"
-                :args (list '(:name "name"
-                                    :type string
-                                    :description "The name of the function or variable whose documentation is to be retrieved"))
+                :args (list '( :name "name"
+                               :type string
+                               :description "The name of the function or variable whose documentation is to be retrieved"))
                 :category "emacs"))
 
   (add-to-list 'gptel-tools
@@ -139,9 +136,9 @@ Display the result in a side window with the content selected."
                               (buffer-substring-no-properties (point-min) (point-max))))
                 :name "read_buffer"
                 :description "Return the contents of an Emacs buffer"
-                :args (list '(:name "buffer"
-                                    :type string
-                                    :description "The name of the buffer whose contents are to be retrieved"))
+                :args (list '( :name "buffer"
+                               :type string
+                               :description "The name of the buffer whose contents are to be retrieved"))
                 :category "emacs"))
 
   (add-to-list 'gptel-tools
@@ -151,8 +148,7 @@ Display the result in a side window with the content selected."
                               (shell-command-to-string command)))
                 :name "run_command"
                 :description "Run a command."
-                :args (list
-                       '(:name "command"
+                :args (list '( :name "command"
                                :type "string"
                                :description "Command to run."))
                 :confirm t
@@ -166,9 +162,9 @@ Display the result in a side window with the content selected."
                               (buffer-string)))
                 :name "read_file"
                 :description "Read and display the contents of a file"
-                :args (list '(:name "filepath"
-                                    :type string
-                                    :description "Path to the file to read. Supports relative paths and ~."))
+                :args (list '( :name "filepath"
+                               :type string
+                               :description "Path to the file to read. Supports relative paths and ~."))
                 :category "filesystem"))
 
   (add-to-list 'gptel-tools
@@ -184,9 +180,9 @@ Display the result in a side window with the content selected."
                                   (buffer-substring-no-properties (point-min) (point-max))))))
                 :name "read_url"
                 :description "Fetch and read the contents of a URL"
-                :args (list '(:name "url"
-                                    :type string
-                                    :description "The URL to read"))
+                :args (list '( :name "url"
+                               :type string
+                               :description "The URL to read"))
                 :confirm t
                 :category "web"))
 
@@ -195,9 +191,9 @@ Display the result in a side window with the content selected."
                 :function #'brave-search-query
                 :name "brave_search"
                 :description "Perform a web search using the Brave Search API"
-                :args (list '(:name "query"
-                                    :type string
-                                    :description "The search query string"))
+                :args (list '( :name "query"
+                               :type string
+                               :description "The search query string"))
                 :category "web")))
 
 (use-package gptel-quick
@@ -205,6 +201,6 @@ Display the result in a side window with the content selected."
   :bind (:map embark-general-map ("?" . gptel-quick))
   :config
   (setq gptel-quick-backend gptel--openrouter
-        gptel-quick-model 'openai/gpt-4.1-mini))
+        gptel-quick-model 'openai/gpt-4.1))
 
 (provide 'init-gpt)
