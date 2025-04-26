@@ -38,13 +38,13 @@
   :if (eq system-type 'darwin)
   :bind (:map search-map ("t" . osx-dictionary-search-word-at-point)))
 
-(use-package kagi
+(use-package google
   :ensure nil
   :demand t
   :load-path "site-lisp/"
   :bind
   ( :map search-map
-    ("s" . kagi-search)
-    ("M-s" . kagi-assistant)))
+    ("s" . google-search)
+    ("M-s" . google-search)))
 
 (provide 'init-search)
