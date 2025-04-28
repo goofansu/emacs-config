@@ -40,7 +40,6 @@
 
 (use-package google
   :ensure nil
-  :demand t
   :load-path "site-lisp/"
   :bind
   ( :map search-map
