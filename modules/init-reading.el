@@ -22,6 +22,7 @@
           "https://nicholas.carlini.com/writing/feed.xml"
           "https://nullprogram.com/feed/"
           "https://overreacted.io/atom.xml"
+          "https://paolino.me/feed.xml"
           "https://protesilaos.com/codelog.xml"
           "https://railsatscale.com/feed.xml"
           "https://sachachua.com/blog/category/emacs/feed/"
