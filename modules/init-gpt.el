@@ -214,11 +214,14 @@ Display the result in a side window with the content selected."
   :hook (after-init . mcp-hub-start-all-server)
   :custom
   (mcp-hub-servers
-   `(("stability-ai" . ( :command "npx" :args ("-y" "mcp-server-stability-ai")
-                         :env ( :STABILITY_AI_API_KEY ,(auth-source-pass-get 'secret "api-key/stability-ai")
-                                :IMAGE_STORAGE_DIRECTORY ,(expand-file-name my-stability-images-directory))))
-     ("firecrawl" . ( :command "npx" :args ("-y" "firecrawl-mcp")
-                      :env ( :FIRECRAWL_API_KEY ,(auth-source-pass-get 'secret "api-key/firecrawl"))))
+   `(("stability-ai" .
+      ( :command "npx" :args ("-y" "mcp-server-stability-ai")
+        :env ( :STABILITY_AI_API_KEY ,(auth-source-pass-get 'secret "api-key/stability-ai")
+               :IMAGE_STORAGE_DIRECTORY ,(expand-file-name my-stability-images-directory))))
+
+     ("firecrawl" .
+      ( :command "npx" :args ("-y" "firecrawl-mcp")
+        :env ( :FIRECRAWL_API_KEY ,(auth-source-pass-get 'secret "api-key/firecrawl"))))
      )))
 
 (use-package gptel-mcp-tools
