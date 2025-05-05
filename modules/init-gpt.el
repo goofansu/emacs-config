@@ -108,13 +108,10 @@ Display the result in a side window with the content selected."
        (t
         (format "No documentation found for %s" symbol)))))
 
-  (defvar brave-search-api-key (auth-source-pass-get 'secret "api-key/brave-search")
-    "API key for accessing the Brave Search API.")
-
   (defun brave-search-query (query)
     "Perform a web search using the Brave Search API with the given QUERY."
     (let ((url-request-method "GET")
-          (url-request-extra-headers `(("X-Subscription-Token" . ,brave-search-api-key)))
+          (url-request-extra-headers `(("X-Subscription-Token" . ,(auth-source-pass-get 'secret "api-key/brave-search"))))
           (url (format "https://api.search.brave.com/res/v1/web/search?q=%s" (url-encode-url query))))
       (with-current-buffer (url-retrieve-synchronously url)
         (goto-char (point-min))
