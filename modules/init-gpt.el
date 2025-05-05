@@ -228,8 +228,6 @@ Display the result in a side window with the content selected."
   :ensure nil
   :load-path "site-lisp/"
   :after (gptel mcp-hub)
-  :demand t
-  :bind ("C-c t t" . gptel-mcp-tools-mode)
   :config
   (gptel-mcp-tools-register))
 
