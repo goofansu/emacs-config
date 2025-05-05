@@ -14,7 +14,6 @@ When disabled, all MCP tools are unselected in gptel."
 
 (defun gptel-mcp-tools-register ()
   "Register MCP tools to gptel."
-  (interactive)
   (let ((tools (mcp-hub-get-all-tool :asyncp t :categoryp t)))
     (mapcar #'(lambda (tool)
                 (apply #'gptel-make-tool
@@ -23,7 +22,6 @@ When disabled, all MCP tools are unselected in gptel."
 
 (defun gptel-mcp-tools-activate ()
   "Activate MCP tools in gptel."
-  (interactive)
   (let ((tools (mcp-hub-get-all-tool :asyncp t :categoryp t)))
     (mapcar #'(lambda (tool)
                 (let ((path (list (plist-get tool :category)
@@ -34,7 +32,6 @@ When disabled, all MCP tools are unselected in gptel."
 
 (defun gptel-mcp-tools-deactivate ()
   "Deactivate MCP tools in gptel."
-  (interactive)
   (let ((tools (mcp-hub-get-all-tool :asyncp t :categoryp t)))
     (mapcar #'(lambda (tool)
                 (let ((path (list (plist-get tool :category)
