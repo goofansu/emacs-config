@@ -39,6 +39,15 @@
   :group 'mcp
   :type 'integer)
 
+(defcustom mcp-server-wait-initial-time 2
+  "Seconds to wait after server init before fetching MCP resources.
+
+This delay is applied after server initialization completes, but
+before requesting tools, prompts and resources. Gives the server
+time to fully initialize all components before handling requests."
+  :group 'mcp
+  :type 'integer)
+
 (defcustom mcp-log-level 'info
   "The min log level for mcp server.
 Available levels:
@@ -91,6 +100,9 @@ Available levels:
    (-port
     :initarg :port
     :accessor mcp--port)
+   (-tls
+    :initarg :tls
+    :accessor mcp--tls)
    (-endpoint
     :initform nil
     :accessor mcp--endpoint))
@@ -153,7 +165,8 @@ The message is sent differently based on connection type:
              (url-request-data (encode-coding-string
                                 json
                                 'utf-8))
-             (url (format "http://%s:%s%s"
+             (url (format "%s://%s:%s%s"
+                          (if (mcp--tls connection) "https" "http")
                           (mcp--host connection)
                           (mcp--port connection)
                           (mcp--endpoint connection))))
@@ -198,56 +211,86 @@ The message is sent differently based on connection type:
     (with-current-buffer (process-buffer proc)
       (let* ((conn (process-get proc 'jsonrpc-connection))
              (queue (or (process-get proc 'jsonrpc-mqueue) nil))
-             (buf (or (process-get proc 'jsonrpc-pending) ""))
-             (data (concat buf string))
+             (buf (or (process-get proc 'jsonrpc-pending)
+                      (plist-get (process-put
+                                  proc 'jsonrpc-pending
+                                  (generate-new-buffer " *mcp-jsonrpc-pending*"))
+                                 'jsonrpc-pending)))
+             (data (with-current-buffer buf
+                     (goto-char (point-max))
+                     (insert string)
+                     (buffer-string)))
              (type (mcp--connection-type conn))
              (parsed-messages nil)
              (lines (split-string data "\n"))
-             (index 0)
-             (endpoint-waitp nil))
+             (parsed-index 0)
+             (endpoint-waitp nil)
+             (line-index 0))
         (dolist (line lines)
           (pcase type
             ('sse
              (cond
+              ((and (<= (+ line-index 1) (length lines))
+                    (string-prefix-p "event:" (elt lines (+ line-index 1)))))
               ((string-prefix-p "event: endpoint" line)
                (setq endpoint-waitp t))
               ((string-prefix-p "data: " line)
-               (let ((json-str (string-trim (substring line 6))))
+               (let ((json-str (if (and endpoint-waitp
+                                        (string-match "http://[^/]+\\(/[^[:space:]]+\\)" line))
+                                   (match-string 1 line)
+                                 (string-trim (substring line 6)))))
                  (unless (string-empty-p json-str)
                    (if endpoint-waitp
                        (setf (mcp--endpoint conn) json-str)
-                     (push (cons index json-str) parsed-messages)
-                     (cl-incf index)))))))
+                     (push (cons parsed-index json-str) parsed-messages)
+                     (cl-incf parsed-index)))))
+              ((and (mcp--endpoint conn)
+                    (not (or (string-prefix-p "2d" line)
+                             (string-prefix-p ": ping" line)
+                             (string-prefix-p "event: message" line)))
+                    (not (with-current-buffer buf (= (point-min) (point-max)))))
+               (let ((json-str (string-trim line)))
+                 (unless (string-empty-p json-str)
+                   (push (cons parsed-index json-str) parsed-messages)
+                   (cl-incf parsed-index))))))
             ('stdio
              (let ((json-str (string-trim line)))
                (unless (string-empty-p json-str)
-                 (push (cons index json-str) parsed-messages)
-                 (cl-incf index))))))
+                 (push (cons parsed-index json-str) parsed-messages)
+                 (cl-incf parsed-index)))))
+          (cl-incf line-index))
         (setq parsed-messages (nreverse parsed-messages))
 
+        (with-current-buffer buf (erase-buffer))
         ;; Add messages to MQUEUE
         (dolist (msg parsed-messages)
-          (pcase-let ((`(,index . ,json-str) msg))
-            (let ((json nil))
+          (pcase-let ((`(,_index . ,json-str) msg))
+            (let ((json nil)
+                  (json-str (with-current-buffer buf
+                              (if (= (point-min) (point-max))
+                                  json-str
+                                (goto-char (point-max))
+                                (insert json-str)
+                                (buffer-string)))))
               (condition-case-unless-debug err
                   (setq json (json-parse-string json-str
                                                 :object-type 'plist
                                                 :null-object nil
                                                 :false-object :json-false))
-                (error
-                 ;; If the last data parsing fails, it may be due to incomplete data transmission.
-                 (when (not (= index (- (length parsed-messages) 1)))
-                   (jsonrpc--warn "Invalid JSON: %s %s"
-                                  (cdr err) json-str))
-                 (if (string-prefix-p "{" json-str)
-                     ;; Save remaining data to pending for next processing
-                     (process-put proc 'jsonrpc-pending json-str)
-                   ;; When the data is obviously not a partial json message, the
-                   ;; server might be sending bogus data, we can ignore it
-                   (message "parse error"))))
+                (json-parse-error
+                 ;; parse error and not because of incomplete json
+                 (jsonrpc--warn "Invalid JSON: %s\t %s" (cdr err) json-str))
+                (json-end-of-file
+                 ;; Save remaining data to pending for next processing
+                 (with-current-buffer buf
+                   (goto-char (point-max))
+                   (insert json-str)
+                   (process-put proc 'jsonrpc-pending buf))))
               (when json
-                (setq json (plist-put json :jsonrpc-json json-str))
-                (push json queue)))))
+                (with-current-buffer buf (erase-buffer))
+                (when (listp json)
+                  (setq json (plist-put json :jsonrpc-json json-str))
+                  (push json queue))))))
 
         ;; Save updated queue
         (process-put proc 'jsonrpc-mqueue queue)
@@ -404,6 +447,7 @@ in the `mcp-server-connections` hash table for future reference."
                 (process-name (format "mcp-%s-server" name))
                 (process (pcase connection-type
                            ('sse
+                            (get-buffer-create buffer-name)
                             (open-network-stream process-name
                                                  buffer-name
                                                  (plist-get server-config :host)
@@ -455,7 +499,8 @@ in the `mcp-server-connections` hash table for future reference."
                                                  (funcall #'mcp-on-shutdown name))
                                  ,@(when (equal connection-type 'sse)
                                      (list :host (plist-get server-config :host)
-                                           :port (plist-get server-config :port))))))
+                                           :port (plist-get server-config :port)
+                                           :tls (plist-get server-config :tls))))))
             (initial-use-time 0)
             (initial-timer nil))
         ;; Initialize connection
@@ -490,15 +535,19 @@ in the `mcp-server-connections` hash table for future reference."
                                   (mcp-async-set-log-level connection mcp-log-level))
                                 (when initial-callback
                                   (funcall initial-callback connection))
-                                ;; Get prompts
-                                (when (plist-member capabilities :prompts)
-                                  (mcp-async-list-prompts connection prompts-callback))
-                                ;; Get tools
-                                (when (plist-member capabilities :tools)
-                                  (mcp-async-list-tools connection tools-callback))
-                                ;; Get resources
-                                (when (plist-member capabilities :resources)
-                                  (mcp-async-list-resources connection resources-callback))
+                                (run-with-idle-timer mcp-server-wait-initial-time
+                                                     nil
+                                                     #'(lambda ()
+                                                         ;; Get prompts
+                                                         (when (plist-member capabilities :prompts)
+                                                           (mcp-async-list-prompts connection prompts-callback))
+                                                         ;; Get tools
+                                                         (when (plist-member capabilities :tools)
+                                                           (mcp-async-list-tools connection tools-callback))
+                                                         ;; Get resources
+                                                         (when (plist-member capabilities :resources)
+                                                           (mcp-async-list-resources connection resources-callback)))
+                                                     )
                                 (setf (mcp--status connection)
                                       'connected))
                             (progn
