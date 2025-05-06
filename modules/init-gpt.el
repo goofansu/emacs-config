@@ -151,7 +151,7 @@ Display the result in a side window with the content selected."
                 :name "run_command"
                 :description "Run a command."
                 :args (list '( :name "command"
-                               :type "string"
+                               :type string
                                :description "Command to run."))
                 :confirm t
                 :category "command"))
