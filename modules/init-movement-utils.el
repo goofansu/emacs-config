@@ -116,7 +116,26 @@
   :hook emacs-startup
   :bind-keymap ("C-c b" . beframe-prefix-map)
   :custom
-  (beframe-functions-in-frames '(project-prompt-project-dir)))
+  (beframe-functions-in-frames '(project-prompt-project-dir))
+  :config
+  (defun my/beframe-buffer-names-sorted (&optional frame)
+    "Return the list of buffers from `beframe-buffer-names' sorted by visibility.
+With optional argument FRAME, return the list of buffers of FRAME."
+    (beframe-buffer-names frame :sort #'beframe-buffer-sort-visibility))
+
+  (defvar consult--source-beframe
+    `( :name     "Buffer (current frame)"
+       :narrow   ?F
+       :category buffer
+       :face     consult-buffer
+       :history  beframe-history
+       :items    ,#'my/beframe-buffer-names-sorted
+       :action   ,#'switch-to-buffer
+       :state    ,#'consult--buffer-state
+       :default  t))
+
+  (consult-customize consult--source-buffer :hidden t :default nil)
+  (add-to-list 'consult-buffer-sources 'consult--source-beframe))
 
 ;; Tab bar
 (use-package tab-bar
