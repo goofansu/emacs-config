@@ -91,7 +91,7 @@
   (defun my/org-hugo-denote-files ()
     "Return a list of Hugo-compatible files in `denote-directory'."
     (let ((default-directory (denote-directory)))
-      (process-lines "rg" "-l" "^#\\+hugo_base_dir" "--glob" "*.org")))
+      (process-lines "rg" "-i" "-l" "^#\\+hugo_base_dir" "--glob" "*.org")))
 
   (defun my/org-hugo-denote-files-find-file ()
     "Search Hugo-compatible files in `denote-directory' and visit the result."
