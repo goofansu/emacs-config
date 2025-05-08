@@ -113,7 +113,8 @@
     (let ((org-export-use-babel nil))
       (dolist (file (my/org-hugo-denote-files))
         (with-current-buffer (find-file-noselect file)
-          (org-hugo-export-to-md))))))
+          (org-hugo-export-to-md)))
+      (message "All notes have been exported to Hugo content"))))
 
 (use-package ox-gfm
   :pin melpa
