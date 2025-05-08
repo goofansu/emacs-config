@@ -41,7 +41,20 @@
       :immediate-finish nil
       :kill-buffer t
       :jump-to-captured t)
+     ("e" "Email note (unprocessed)" entry ; Also see `org-capture-templates-contexts'
+      (file+headline "tasks.org" "Unprocessed")
+      ,(concat "* TODO %:subject :mail:\n"
+               ":PROPERTIES:\n"
+               ":CAPTURED: %U\n"
+               ":END:\n\n"
+               "%a\n%i%?")
+      :empty-lines-after 1)
      ))
+
+  (org-capture-templates-contexts
+   '(("e" ((in-mode . "notmuch-search-mode")
+           (in-mode . "notmuch-show-mode")
+           (in-mode . "notmuch-tree-mode")))))
 
   ;; Code block
   (org-edit-src-content-indentation 0)
