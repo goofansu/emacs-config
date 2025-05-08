@@ -43,23 +43,16 @@
   :bind
   (("C-c e" . elfeed)
    :map elfeed-search-mode-map
-   ("B" . +elfeed/eww)
+   ("B" . my/elfeed-eww)
    :map elfeed-show-mode-map
-   ("B" . +elfeed/eww))
+   ("B" . my/elfeed-eww))
 
   :custom
   (elfeed-initial-tags '(unread inbox))
   (elfeed-search-filter "#50 +unread ")
 
   :config
-  (defun +elfeed--selected-entry ()
-    (pcase major-mode
-      ('elfeed-search-mode
-       (elfeed-search-selected :single))
-      ('elfeed-show-mode
-       elfeed-show-entry)))
-
-  (defun +elfeed/eww ()
+  (defun my/elfeed-eww ()
     (interactive)
     (let ((browse-url-browser-function #'eww))
       (pcase major-mode
