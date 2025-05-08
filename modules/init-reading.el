@@ -34,6 +34,7 @@
           "https://world.hey.com/jason/feed.atom"
           "https://world.hey.com/jorge/feed.atom"
           "https://world.hey.com/this.week.in.rails/feed.atom"
+          "https://www.danielcorin.com/index.xml"
           "https://www.feltpresence.com/rss/"
           "https://www.masteringemacs.org/feed"
           "https://www.mikeperham.com/index.xml"
