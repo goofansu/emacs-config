@@ -66,4 +66,31 @@
   (notmuch-wash-wrap-lines-length 120)
   (notmuch-unthreaded-show-out nil))
 
+(use-package notmuch-indicator
+  :init
+  (setq notmuch-indicator-notmuch-config-file
+        (expand-file-name "~/.config/notmuch/default/config"))
+  :custom
+  (notmuch-indicator-hide-empty-counters t)
+  (notmuch-indicator-add-to-mode-line-misc-info nil)
+  (notmuch-indicator-args
+   '(( :terms "tag:unread and tag:inbox and path:Home/**"
+       :label "📬"
+       :label-face prot-modeline-indicator-blue
+       :counter-face prot-modeline-indicator-blue)
+     ( :terms "tag:unread and tag:inbox and path:Work/** and from:notifications@github.com"
+       :label "👨🏻‍💻"
+       :label-face prot-modeline-indicator-cyan
+       :counter-face prot-modeline-indicator-cyan)
+     ( :terms "tag:unread and tag:inbox and from:jira@fariaedu.atlassian.net"
+       :label "💬"
+       :label-face prot-modeline-indicator-green
+       :counter-face prot-modeline-indicator-green)))
+  :config
+  (notmuch-indicator-mode 1))
+
+(use-package ol-notmuch
+  :pin melpa
+  :after notmuch)
+
 (provide 'init-mail)

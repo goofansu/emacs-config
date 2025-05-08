@@ -24,6 +24,7 @@
                   prot-modeline-flymake
                   "  "
                   mode-line-format-right-align
+                  prot-modeline-notmuch-indicator
                   "  "
                   prot-modeline-misc-info)))
 
