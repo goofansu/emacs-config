@@ -97,7 +97,7 @@ Display the result in a side window with the content selected."
         :context (list "summary")
         :callback #'my/gptel--callback-display-bottom)))
 
-  (defun gptel-read-documentation (symbol)
+  (defun my/gptel-read-documentation (symbol)
     "Read the documentation for SYMBOL, which can be a function or variable."
     (let ((sym (intern symbol)))
       (cond
@@ -108,7 +108,7 @@ Display the result in a side window with the content selected."
        (t
         (format "No documentation found for %s" symbol)))))
 
-  (defun brave-search-query (query)
+  (defun my/brave-search-query (query)
     "Perform a web search using the Brave Search API with the given QUERY."
     (let ((url-request-method "GET")
           (url-request-extra-headers `(("X-Subscription-Token" . ,(auth-source-pass-get 'secret "api-key/brave-search"))))
@@ -119,84 +119,79 @@ Display the result in a side window with the content selected."
           (let ((json-object-type 'hash-table)) ; Use hash-table for JSON parsing
             (json-parse-string (buffer-substring-no-properties (point) (point-max))))))))
 
-  (add-to-list 'gptel-tools
-               (gptel-make-tool
-                :name "read_documentation"
-                :function #'gptel-read-documentation
-                :description "Read the documentation for a given function or variable"
-                :args (list '( :name "name"
-                               :type string
-                               :description "The name of the function or variable whose documentation is to be retrieved"))
-                :category "emacs"))
+  (setq gptel-tools
+        (list (gptel-make-tool
+               :name "read_documentation"
+               :function #'my/gptel-read-documentation
+               :description "Read the documentation for a given function or variable"
+               :args (list '( :name "name"
+                              :type string
+                              :description "The name of the function or variable whose documentation is to be retrieved"))
+               :category "emacs")
 
-  (add-to-list 'gptel-tools
-               (gptel-make-tool
-                :function (lambda (buffer)
-                            (unless (buffer-live-p (get-buffer buffer))
-                              (error "Error: buffer %s is not live." buffer))
-                            (with-current-buffer buffer
-                              (buffer-substring-no-properties (point-min) (point-max))))
-                :name "read_buffer"
-                :description "Return the contents of an Emacs buffer"
-                :args (list '( :name "buffer"
-                               :type string
-                               :description "The name of the buffer whose contents are to be retrieved"))
-                :category "emacs"))
+              (gptel-make-tool
+               :function (lambda (buffer)
+                           (unless (buffer-live-p (get-buffer buffer))
+                             (error "Error: buffer %s is not live." buffer))
+                           (with-current-buffer buffer
+                             (buffer-substring-no-properties (point-min) (point-max))))
+               :name "read_buffer"
+               :description "Return the contents of an Emacs buffer"
+               :args (list '( :name "buffer"
+                              :type string
+                              :description "The name of the buffer whose contents are to be retrieved"))
+               :category "emacs")
 
-  (add-to-list 'gptel-tools
-               (gptel-make-tool
-                :function (lambda (command)
-                            (with-temp-message (format "Running command: %s" command)
-                              (shell-command-to-string command)))
-                :name "run_command"
-                :description "Run a command."
-                :args (list '( :name "command"
-                               :type string
-                               :description "Command to run."))
-                :confirm t
-                :category "command"))
+              (gptel-make-tool
+               :function (lambda (command)
+                           (with-temp-message (format "Running command: %s" command)
+                             (shell-command-to-string command)))
+               :name "run_command"
+               :description "Run a command."
+               :args (list '( :name "command"
+                              :type string
+                              :description "Command to run."))
+               :confirm t
+               :category "command")
 
-  (add-to-list 'gptel-tools
-               (gptel-make-tool
-                :function (lambda (filepath)
-                            (with-temp-buffer
-                              (insert-file-contents (expand-file-name filepath))
-                              (buffer-string)))
-                :name "read_file"
-                :description "Read and display the contents of a file"
-                :args (list '( :name "filepath"
-                               :type string
-                               :description "Path to the file to read. Supports relative paths and ~."))
-                :category "filesystem"))
+              (gptel-make-tool
+               :function (lambda (filepath)
+                           (with-temp-buffer
+                             (insert-file-contents (expand-file-name filepath))
+                             (buffer-string)))
+               :name "read_file"
+               :description "Read and display the contents of a file"
+               :args (list '( :name "filepath"
+                              :type string
+                              :description "Path to the file to read. Supports relative paths and ~."))
+               :category "filesystem")
 
-  (add-to-list 'gptel-tools
-               (gptel-make-tool
-                :function (lambda (url)
-                            (with-current-buffer (url-retrieve-synchronously url)
-                              (goto-char (point-min))
-                              (forward-paragraph)
-                              (let ((dom (libxml-parse-html-region (point) (point-max))))
-                                (run-at-time 0 nil #'kill-buffer (current-buffer))
-                                (with-temp-buffer
-                                  (shr-insert-document dom)
-                                  (buffer-substring-no-properties (point-min) (point-max))))))
-                :name "read_url"
-                :description "Fetch and read the contents of a URL"
-                :args (list '( :name "url"
-                               :type string
-                               :description "The URL to read"))
-                :confirm t
-                :category "web"))
+              (gptel-make-tool
+               :function (lambda (url)
+                           (with-current-buffer (url-retrieve-synchronously url)
+                             (goto-char (point-min))
+                             (forward-paragraph)
+                             (let ((dom (libxml-parse-html-region (point) (point-max))))
+                               (run-at-time 0 nil #'kill-buffer (current-buffer))
+                               (with-temp-buffer
+                                 (shr-insert-document dom)
+                                 (buffer-substring-no-properties (point-min) (point-max))))))
+               :name "read_url"
+               :description "Fetch and read the contents of a URL"
+               :args (list '( :name "url"
+                              :type string
+                              :description "The URL to read"))
+               :confirm t
+               :category "web")
 
-  (add-to-list 'gptel-tools
-               (gptel-make-tool
-                :function #'brave-search-query
-                :name "brave_search"
-                :description "Perform a web search using the Brave Search API"
-                :args (list '( :name "query"
-                               :type string
-                               :description "The search query string"))
-                :category "web")))
+              (gptel-make-tool
+               :function #'my/brave-search-query
+               :name "brave_search"
+               :description "Perform a web search using the Brave Search API"
+               :args (list '( :name "query"
+                              :type string
+                              :description "The search query string"))
+               :category "web"))))
 
 (use-package gptel-quick
   :vc (gptel-quick :url "https://github.com/karthink/gptel-quick.git")
