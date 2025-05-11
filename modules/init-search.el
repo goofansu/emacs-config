@@ -41,9 +41,6 @@
 (use-package google
   :ensure nil
   :load-path "site-lisp/"
-  :bind
-  ( :map search-map
-    ("s" . google-search)
-    ("M-s" . google-search)))
+  :bind (:map search-map ("M-s" . google-search)))
 
 (provide 'init-search)
