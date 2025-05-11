@@ -15,9 +15,9 @@ When disabled, all MCP tools are unselected in gptel."
 (defun gptel-mcp-tools-register ()
   "Register MCP tools to gptel."
   (let ((tools (mcp-hub-get-all-tool :asyncp t :categoryp t)))
-    (mapcar #'(lambda (tool)
-                (apply #'gptel-make-tool
-                       tool))
+    (mapcar (lambda (tool)
+              (apply #'gptel-make-tool
+                     (append tool '(:confirm t))))
             tools)
     (message "Registered %s MCP tools to gptel" (length tools))))
 
