@@ -218,6 +218,7 @@ Display the result in a side window with the content selected."
   :load-path "site-lisp/"
   :after (gptel mcp-hub)
   :config
-  (mcp-hub-start-all-server #'gptel-mcp-tools-register))
+  (mcp-hub-start-all-server #'gptel-mcp-tools-register)
+  (keymap-set my-toggle-map "t" #'gptel-mcp-tools-mode))
 
 (provide 'init-gpt)
