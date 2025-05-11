@@ -37,7 +37,17 @@ Each server configuration is a list of the form
   :group 'mcp-hub
   :type '(list (cons string (list symbol string))))
 
-(defun mcp-hub--start-server (server)
+(defun mcp-hub--start-server (server &optional inited-callback)
+  "Start an MCP server with the given configuration.
+SERVER should be a cons cell of the form (NAME . CONFIG) where:
+- NAME is a string identifying the server
+- CONFIG is a plist containing either:
+  - :command and :args for local servers
+  - :url for remote servers
+
+Optional argument INITED-CALLBACK is a function called when the server
+has successfully initialized and tools are available. The callback
+receives no arguments."
   (apply #'mcp-connect-server
          (append (list (car server))
                  (cdr server)
@@ -46,7 +56,9 @@ Each server configuration is a list of the form
                            (mcp-hub-update))
                        :tools-callback
                        #'(lambda (_ _)
-                           (mcp-hub-update))
+                           (mcp-hub-update)
+                           (when inited-callback
+                             (funcall inited-callback)))
                        :prompts-callback
                        #'(lambda (_ _)
                            (mcp-hub-update))
@@ -65,6 +77,8 @@ filtering out any invalid entries. Each tool is created as a text tool
 that can be used for interaction.
 
 When ASYNCP is non-nil, the tools will be created asynchronously.
+
+When CATEGORYP is non-nil, the tools will be add to a category.
 
 Returns a list of text tools created from all valid tools across all
 connected servers. The list excludes any tools that couldn't be created
@@ -94,19 +108,39 @@ Example:
     (nreverse res)))
 
 ;;;###autoload
-(defun mcp-hub-start-all-server ()
+(defun mcp-hub-start-all-server (&optional callback)
   "Start all configured MCP servers.
 This function will attempt to start each server listed in `mcp-hub-servers'
-if it's not already running."
+if it's not already running.
+
+Optional argument CALLBACK is a function to be called when all servers have
+either started successfully or failed to start.The callback receives no
+arguments."
   (interactive)
-  (mapcar #'(lambda (server)
-              (unless (gethash (car server)
-                               mcp-server-connections)
-                (condition-case err
-                    (mcp-hub--start-server server)
-                  (error
-                   (message "start %s server error: %s" (car server) err)))))
-          mcp-hub-servers))
+  (let* ((servers-to-start (cl-remove-if (lambda (server)
+                                           (gethash (car server) mcp-server-connections))
+                                         mcp-hub-servers))
+         (total (length servers-to-start))
+         (started 0))
+    (if (zerop total)
+        (progn
+          (message "All MCP servers already running")
+          (when callback (funcall callback)))
+      (message "Starting %d MCP server(s)..." total)
+      (dolist (server servers-to-start)
+        (condition-case err
+            (mcp-hub--start-server
+             server
+             (lambda ()
+               (cl-incf started)
+               (message "Started server %s (%d/%d)" (car server) started total)
+               (when (and callback (>= started total))
+                 (funcall callback))))
+          (error
+           (message "Failed to start server %s: %s" (car server) err)
+           (cl-incf started)
+           (when (and callback (>= started total))
+             (funcall callback))))))))
 
 ;;;###autoload
 (defun mcp-hub-close-all-server ()
@@ -191,7 +225,7 @@ including connection status, available tools, resources, and prompts."
 
 ;;;###autoload
 (defun mcp-hub ()
-  "View mcp hub server"
+  "View mcp hub server."
   (interactive)
   ;; start all server
   (when (and mcp-hub-servers

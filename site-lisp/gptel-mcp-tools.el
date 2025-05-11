@@ -18,7 +18,8 @@ When disabled, all MCP tools are unselected in gptel."
     (mapcar #'(lambda (tool)
                 (apply #'gptel-make-tool
                        tool))
-            tools)))
+            tools)
+    (message "Registered %s MCP tools to gptel" (length tools))))
 
 (defun gptel-mcp-tools-activate ()
   "Activate MCP tools in gptel."

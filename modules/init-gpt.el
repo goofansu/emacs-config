@@ -203,7 +203,7 @@ Display the result in a side window with the content selected."
 (use-package mcp-hub
   :ensure nil
   :load-path "vendor/"
-  :hook (after-init . mcp-hub-start-all-server)
+  :after gptel
   :custom
   (mcp-hub-servers
    `(("stability-ai" .
@@ -220,6 +220,6 @@ Display the result in a side window with the content selected."
   :load-path "site-lisp/"
   :after (gptel mcp-hub)
   :config
-  (gptel-mcp-tools-register))
+  (mcp-hub-start-all-server #'gptel-mcp-tools-register))
 
 (provide 'init-gpt)
