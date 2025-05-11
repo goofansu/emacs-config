@@ -23,6 +23,7 @@
    ("C-c C-<return>" . gptel-menu)
    ("C-c M-<return>" . my/gptel-send-all-buffers)
    ("C-c C-g" . gptel-abort)
+   ("C-c r" . gptel-rewrite)
    :map search-map
    ("T" . my/gptel-translate)
    :map embark-general-map
