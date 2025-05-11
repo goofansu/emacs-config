@@ -22,6 +22,3 @@
 (require 'init-programming)
 (require 'init-reading)
 (require 'init-writing)
-
-;; Services
-(require 'init-github)
