@@ -21,14 +21,10 @@
   :bind
   (("C-c <return>" . gptel-send)
    ("C-c C-<return>" . gptel-menu)
-   ("C-c M-<return>" . my/gptel-send-all-buffers)
-   ("C-c C-g" . gptel-abort)
-   ("C-c r" . gptel-rewrite)
    :map search-map
    ("T" . my/gptel-translate)
-   :map embark-general-map
-   ("g t" . my/gptel-translate)
-   ("g s" . my/gptel-summarize))
+   :map embark-region-map
+   ("g t" . my/gptel-translate))
 
   :custom
   (gptel-default-mode 'org-mode)
@@ -81,18 +77,6 @@ explanations, notes, or commentary. Maintain all original formatting
 including paragraphs, bullet points, and emphasis while ensuring the
 translation reads naturally to native speakers."
         :context (list "translate")
-        :callback #'my/gptel--callback-display-bottom)))
-
-  (defun my/gptel-summarize (text)
-    "Translate TEXT into English using LLM.
-If region is active, use it as TEXT; otherwise prompt for input.
-Display the result in a side window with the content selected."
-    (interactive "sSummarize text: ")
-    (let ((gptel-backend gptel--openrouter)
-          (gptel-model 'openai/gpt-4.1))
-      (gptel-request text
-        :system "Summarize the given text."
-        :context (list "summary")
         :callback #'my/gptel--callback-display-bottom)))
 
   (defun my/gptel-read-documentation (symbol)
