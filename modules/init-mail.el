@@ -36,7 +36,7 @@
   (notmuch-search-oldest-first nil)
   (notmuch-search-result-format
    '(("date" . "%12s  ")
-     ("count" . "%-7s  ")
+     ("count" . "%-10s  ")
      ("authors" . "%-20.20s  ")
      ("subject" . "%-80.80s  ")
      ("tags" . "(%s)")))
