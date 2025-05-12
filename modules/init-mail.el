@@ -78,14 +78,10 @@
        :label "📬"
        :label-face prot-modeline-indicator-blue
        :counter-face prot-modeline-indicator-blue)
-     ( :terms "tag:unread and tag:inbox and path:Work/** and from:notifications@github.com"
+     ( :terms "tag:unread and tag:inbox and path:Work/**"
        :label "👨🏻‍💻"
        :label-face prot-modeline-indicator-cyan
-       :counter-face prot-modeline-indicator-cyan)
-     ( :terms "tag:unread and tag:inbox and from:jira@fariaedu.atlassian.net"
-       :label "💬"
-       :label-face prot-modeline-indicator-green
-       :counter-face prot-modeline-indicator-green)))
+       :counter-face prot-modeline-indicator-cyan)))
   :config
   (notmuch-indicator-mode 1))
 
