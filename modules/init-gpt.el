@@ -195,6 +195,9 @@ translation reads naturally to native speakers."
      ("firecrawl" .
       ( :command "npx" :args ("-y" "firecrawl-mcp")
         :env ( :FIRECRAWL_API_KEY ,(auth-source-pass-get 'secret "api-key/firecrawl"))))
+     ("github" .
+      ( :command "github-mcp-server" :args ("stdio")
+        :env ( :GITHUB_PERSONAL_ACCESS_TOKEN ,(auth-source-pass-get 'secret "api-key/github"))))
      )))
 
 (use-package gptel-mcp-tools
