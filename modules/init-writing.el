@@ -24,28 +24,22 @@
 
   ;; Capture
   (org-capture-templates
-   `(("f" "Fleeting note" entry
-      (file denote-journal-path-to-new-or-existing-entry)
-      "* %?"
-      :no-save nil
-      :immediate-finish nil
-      :kill-buffer t
+   `(("c" "Note" entry
+      (file "notes.org")
+      ,(concat "* %^{Title}\n"
+               ":PROPERTIES:\n"
+               ":CAPTURED: %U\n"
+               ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
+               ":END:\n\n"
+               "%?")
+      :empty-lines-after 1
       :jump-to-captured nil)
-     ("r" "Reference note" plain
-      (file denote-last-path)
-      (function
-       (lambda ()
-         (let ((denote-use-title (alfred-browser-title)))
-           (denote-org-capture-with-prompts :title :keywords))))
-      :no-save t
-      :immediate-finish nil
-      :kill-buffer t
-      :jump-to-captured t)
      ("e" "Email note (unprocessed)" entry ; Also see `org-capture-templates-contexts'
       (file+headline "tasks.org" "Unprocessed")
       ,(concat "* TODO %:subject :mail:\n"
                ":PROPERTIES:\n"
                ":CAPTURED: %U\n"
+               ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
                ":END:\n\n"
                "%a\n%i%?")
       :empty-lines-after 1)
