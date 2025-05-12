@@ -188,14 +188,7 @@ translation reads naturally to native speakers."
   :after gptel
   :custom
   (mcp-hub-servers
-   `(("stability-ai" .
-      ( :command "npx" :args ("-y" "mcp-server-stability-ai")
-        :env ( :STABILITY_AI_API_KEY ,(auth-source-pass-get 'secret "api-key/stability-ai")
-               :IMAGE_STORAGE_DIRECTORY ,(expand-file-name "~/Downloads/stability-ai-images/"))))
-     ("firecrawl" .
-      ( :command "npx" :args ("-y" "firecrawl-mcp")
-        :env ( :FIRECRAWL_API_KEY ,(auth-source-pass-get 'secret "api-key/firecrawl"))))
-     ("github" .
+   `(("github" .
       ( :command "github-mcp-server" :args ("stdio")
         :env ( :GITHUB_PERSONAL_ACCESS_TOKEN ,(auth-source-pass-get 'secret "api-key/github"))))
      )))
