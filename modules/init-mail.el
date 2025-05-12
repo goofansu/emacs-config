@@ -48,14 +48,24 @@
       . " %-80.80s  ")
      ("tags" . "(%s)")))
   (notmuch-saved-searches
-   `(( :name "inbox"
-       :query "tag:inbox"
+   `(( :name "home"
+       :query "tag:inbox and path:Home/**"
        :sort-order newest-first
-       :key ,(kbd "i"))
-     ( :name "unread (inbox)"
-       :query "tag:unread and tag:inbox"
+       :key ,(kbd "h"))
+     ( :name "work"
+       :query "tag:inbox and path:Work/**"
        :sort-order newest-first
-       :key ,(kbd "u"))
+       :key ,(kbd "w"))
+     ( :name "github"
+       :query "tag:inbox and from:notifications@github.com"
+       :count-query "tag:inbox and tag:unread and from:notifications@github.com"
+       :sort-order 'newest-first
+       :key ,(kbd "g"))
+     ( :name "jira"
+       :query "tag:inbox and from:atlassian.net"
+       :count-query "tag:inbox and tag:unread and from:jira@fariaedu.atlassian.net"
+       :sort-order 'newest-first
+       :key ,(kbd "j"))
      ))
   ;; Compose
   (notmuch-always-prompt-for-sender nil)
