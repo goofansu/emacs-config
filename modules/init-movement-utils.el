@@ -158,7 +158,7 @@ With optional argument FRAME, return the list of buffers of FRAME."
 
 ;; Buffer
 (use-package avy
-  :bind (:map goto-map ("c" . avy-goto-char-2)))
+  :bind (:map goto-map ("c" . avy-goto-char-timer)))
 
 (use-package move-text
   :pin melpa
