@@ -149,7 +149,6 @@ FILE-LINE should be in the format 'file:line' relative to the project root."
   (history-length 500)
   (history-delete-duplicates t)
   :config
-  (add-to-list 'savehist-additional-variables 'log-edit-comment-ring)
   (savehist-mode 1))
 
 (use-package isearch
@@ -216,5 +215,10 @@ FILE-LINE should be in the format 'file:line' relative to the project root."
   :ensure nil
   :config
   (delete-selection-mode 1))
+
+(use-package vc
+  :ensure nil
+  :init
+  (add-to-list 'savehist-additional-variables 'log-edit-comment-ring))
 
 (provide 'init-better-defaults)
