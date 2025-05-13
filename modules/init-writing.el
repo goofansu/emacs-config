@@ -22,21 +22,7 @@
   (org-agenda-files (list org-directory))
   (org-use-fast-todo-selection 'expert)
   (org-todo-keywords
-   '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "|" "DONE(d)" "CANCELED(c)")))
-  (org-tag-alist
-   '((:startgroup)
-	 ("@home" . ?h)
-	 (:grouptags)
-	 ("writing" . ?r)
-	 (:endgroup)
-
-     (:startgroup)
-	 ("@work" . ?w)
-	 (:grouptags)
-	 ("story" . ?s)
-	 ("task" . ?t)
-	 ("bug" . ?b)
-	 (:endgroup)))
+   '((sequence "TODO(t)" "DOING(i)" "NEXT(n)" "WAIT(w)" "|" "DONE(d)" "CANCELED(c)")))
 
   ;; Capture
   (org-capture-templates
@@ -48,19 +34,7 @@
                ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
                ":END:\n\n"
                "%?")
-      :prepend t
-      :empty-lines 1)
-     ("c" "Note" entry
-      (file "notes.org")
-      ,(concat "* %^{Title}\n"
-               ":PROPERTIES:\n"
-               ":CAPTURED: %U\n"
-               ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
-               ":END:\n\n"
-               "%?")
-      :prepend t
-      :empty-lines 1
-      :jump-to-captured nil)
+      :prepend t)
      ("e" "Email" entry ; Also see `org-capture-templates-contexts'
       (file "tasks.org")
       ,(concat "* TODO %:subject :mail:\n"
@@ -69,9 +43,26 @@
                ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
                ":END:\n\n"
                "%a\n%i%?")
-      :prepend t
-      :empty-lines 1
-      :immediate-finish t)
+      :prepend t)
+     ("c" "Fleeting note" entry
+      (file "notes.org")
+      ,(concat "* %^{Title}\n"
+               ":PROPERTIES:\n"
+               ":CAPTURED: %U\n"
+               ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
+               ":END:\n\n"
+               "%?")
+      :no-save nil
+      :jump-to-captured nil)
+     ("r" "Reference note" plain
+      (file denote-last-path)
+      (function
+       (lambda ()
+         (let ((denote-use-title (alfred-browser-title)))
+           (denote-org-capture-with-prompts :title :keywords))))
+      :no-save t
+      :kill-buffer t
+      :jump-to-captured t)
      ))
 
   (org-capture-templates-contexts
