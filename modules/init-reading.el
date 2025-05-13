@@ -3,6 +3,7 @@
   :init
   (setq elfeed-feeds
         '("https://andrealeopardi.com/feed.xml"
+          "https://bzg.fr/en/index.xml"
           "https://daniel.haxx.se/blog/feed/"
           "https://dev.37signals.com/feed/posts.xml"
           "https://feeds.feedburner.com/ihower"
