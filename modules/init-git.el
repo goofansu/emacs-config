@@ -13,6 +13,7 @@
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
 
   :config
+  (require 'magit-extras) ;; Bind magit-project-status
   (with-eval-after-load 'transient
     ;; git push with skip-ci option
     (transient-append-suffix 'magit-push "-n"
