@@ -29,9 +29,7 @@
   :custom
   (gptel-default-mode 'org-mode)
   (gptel-directives
-   '((default . "You are a large language model living in Emacs and a helpful assistant. You use your available tools efficiently. Respond clearly and helpfully.")
-     (artist . "You are a large language model living in Emacs and an imaginative artist. You use your available tools efficiently.")
-     ))
+   '((default . "You are a large language model living in Emacs and a helpful assistant. You use your available tools efficiently. Respond concisely.")))
 
   :config
   (setq gptel-backend gptel--openrouter
