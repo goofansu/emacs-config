@@ -21,10 +21,36 @@
   ;; Agenda
   (org-agenda-files (list org-directory))
   (org-use-fast-todo-selection 'expert)
+  (org-todo-keywords
+   '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "|" "DONE(d)" "CANCELED(c)")))
+  (org-tag-alist
+   '((:startgroup)
+	 ("@home" . ?h)
+	 (:grouptags)
+	 ("writing" . ?r)
+	 (:endgroup)
+
+     (:startgroup)
+	 ("@work" . ?w)
+	 (:grouptags)
+	 ("story" . ?s)
+	 ("task" . ?t)
+	 ("bug" . ?b)
+	 (:endgroup)))
 
   ;; Capture
   (org-capture-templates
-   `(("c" "Note" entry
+   `(("t" "Task" entry
+      (file "tasks.org")
+      ,(concat "* TODO %^{Title} %^g\n"
+               ":PROPERTIES:\n"
+               ":CAPTURED: %U\n"
+               ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
+               ":END:\n\n"
+               "%?")
+      :prepend t
+      :empty-lines 1)
+     ("c" "Note" entry
       (file "notes.org")
       ,(concat "* %^{Title}\n"
                ":PROPERTIES:\n"
@@ -32,17 +58,20 @@
                ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
                ":END:\n\n"
                "%?")
-      :empty-lines-after 1
+      :prepend t
+      :empty-lines 1
       :jump-to-captured nil)
-     ("e" "Email note (unprocessed)" entry ; Also see `org-capture-templates-contexts'
-      (file+headline "tasks.org" "Unprocessed")
+     ("e" "Email" entry ; Also see `org-capture-templates-contexts'
+      (file "tasks.org")
       ,(concat "* TODO %:subject :mail:\n"
                ":PROPERTIES:\n"
                ":CAPTURED: %U\n"
                ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
                ":END:\n\n"
                "%a\n%i%?")
-      :empty-lines-after 1)
+      :prepend t
+      :empty-lines 1
+      :immediate-finish t)
      ))
 
   (org-capture-templates-contexts
