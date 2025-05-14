@@ -48,10 +48,9 @@
   :init
   (add-to-list 'savehist-additional-variables 'consult-gh--known-orgs-list)
   (add-to-list 'savehist-additional-variables 'consult-gh--known-repos-list)
-  :bind ("C-c g g" . consult-gh)
+  :bind ("C-c g p" . consult-gh-search-prs)
   :custom
-  (consult-gh-default-clone-directory my-src-directory)
-  (consult-gh-large-file-warning-threshold 2500000)
+  (consult-gh-pr-action #'consult-gh--pr-browse-url-action)
   :config
   (consult-gh-enable-default-keybindings))
 
