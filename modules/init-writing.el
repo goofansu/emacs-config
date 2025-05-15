@@ -121,6 +121,7 @@
 
 (use-package citar
   :pin melpa
+  :after org
   :init
   (setq org-cite-global-bibliography `(,my-notes-reference-file))
   (setq org-cite-insert-processor 'citar)
