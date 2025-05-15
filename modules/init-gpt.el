@@ -180,4 +180,23 @@ translation reads naturally to native speakers."
   (setq gptel-quick-backend gptel--openrouter
         gptel-quick-model 'openai/gpt-4.1))
 
+(use-package mcp-hub
+  :ensure nil
+  :load-path "vendor/"
+  :after gptel
+  :custom
+  (mcp-hub-servers
+   `(("github" .
+      ( :command "github-mcp-server" :args ("stdio")
+        :env ( :GITHUB_PERSONAL_ACCESS_TOKEN ,(auth-source-pass-get 'secret "api-key/github"))))
+     )))
+
+(use-package gptel-mcp-tools
+  :ensure nil
+  :load-path "site-lisp/"
+  :after (gptel mcp-hub)
+  :config
+  (mcp-hub-start-all-server #'gptel-mcp-tools-register)
+  (keymap-set my-toggle-map "t" #'gptel-mcp-tools-mode))
+
 (provide 'init-gpt)
