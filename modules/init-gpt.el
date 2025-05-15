@@ -186,9 +186,7 @@ translation reads naturally to native speakers."
   :after gptel
   :custom
   (mcp-hub-servers
-   `(("github" .
-      ( :command "github-mcp-server" :args ("stdio")
-        :env ( :GITHUB_PERSONAL_ACCESS_TOKEN ,(auth-source-pass-get 'secret "api-key/github"))))
+   `(("time" . (:command "uvx" :args ("mcp-server-time" "--local-timezone" "Asia/Shanghai")))
      )))
 
 (use-package gptel-mcp-tools
