@@ -12,16 +12,6 @@
   :config
   (vertico-mode 1))
 
-(use-package ffap
-  :bind ("M-m" . ffap-menu)
-  :config
-  ;; Disable `ffap-menu's *Completions* buffer* because it's uncessary with vertico.
-  (advice-add 'ffap-menu-ask :around
-              (lambda (&rest args)
-                (cl-letf (((symbol-function #'minibuffer-completion-help)
-                           #'ignore))
-                  (apply args)))))
-
 (use-package vertico-repeat
   :ensure nil
   :after vertico

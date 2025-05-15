@@ -221,4 +221,14 @@ FILE-LINE should be in the format 'file:line' relative to the project root."
   :init
   (add-to-list 'savehist-additional-variables 'log-edit-comment-ring))
 
+(use-package ffap
+  :bind ("M-m" . ffap-menu)
+  :config
+  ;; Disable `ffap-menu's *Completions* buffer* because it's uncessary with vertico.
+  (advice-add 'ffap-menu-ask :around
+              (lambda (&rest args)
+                (cl-letf (((symbol-function #'minibuffer-completion-help)
+                           #'ignore))
+                  (apply args)))))
+
 (provide 'init-better-defaults)
