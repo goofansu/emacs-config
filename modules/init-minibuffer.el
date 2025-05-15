@@ -42,10 +42,18 @@
 
 (use-package vertico-quick
   :ensure nil
+  :after vertico
   :bind
   (:map vertico-map
-        ("M-q" . vertico-quick-insert)
-        ("C-q" . vertico-quick-exit)))
+        ("M-i" . vertico-quick-insert)
+        ("'" . vertico-quick-exit)
+        ("C-'" . my/vertico-quick-embark))
+  :config
+  (defun my/vertico-quick-embark (&optional arg)
+    "Embark on candidate using quick keys."
+    (interactive)
+    (when (vertico-quick-jump)
+      (embark-act arg))))
 
 (use-package vertico-multiform
   :ensure nil
