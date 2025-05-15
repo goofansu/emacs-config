@@ -132,7 +132,8 @@ With optional argument FRAME, return the list of buffers of FRAME."
        :items    ,#'my/beframe-buffer-names-sorted
        :action   ,#'switch-to-buffer
        :state    ,#'consult--buffer-state
-       :default  t))
+       :default  t)
+    "Beframe buffer source for `consult-buffer'.")
 
   (consult-customize consult--source-buffer :hidden t :default nil)
   (add-to-list 'consult-buffer-sources 'consult--source-beframe))
