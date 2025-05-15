@@ -95,8 +95,4 @@
   :config
   (notmuch-indicator-mode 1))
 
-(use-package ol-notmuch
-  :pin melpa
-  :after notmuch)
-
 (provide 'init-mail)

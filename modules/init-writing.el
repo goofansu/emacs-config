@@ -21,54 +21,26 @@
   ;; Agenda
   (org-agenda-files (list org-directory))
   (org-use-fast-todo-selection 'expert)
-  (org-todo-keywords
-   '((sequence "TODO(t)" "DOING(i)" "NEXT(n)" "WAIT(w)" "|" "DONE(d)" "CANCELED(c)")))
 
   ;; Capture
   (org-capture-templates
-   `(("t" "Task" entry
-      (file "tasks.org")
-      ,(concat "* TODO %^{Title} %^g\n"
-               ":PROPERTIES:\n"
-               ":CAPTURED: %U\n"
-               ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
-               ":END:\n\n"
-               "%?")
-      :prepend t)
-     ("e" "Email" entry ; Also see `org-capture-templates-contexts'
-      (file "tasks.org")
-      ,(concat "* TODO %:subject :mail:\n"
-               ":PROPERTIES:\n"
-               ":CAPTURED: %U\n"
-               ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
-               ":END:\n\n"
-               "%a\n%i%?")
-      :prepend t)
-     ("c" "Fleeting note" entry
+   `(("c" "Fleeting note" entry
       (file "notes.org")
       ,(concat "* %^{Title}\n"
                ":PROPERTIES:\n"
                ":CAPTURED: %U\n"
                ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
                ":END:\n\n"
-               "%?")
-      :no-save nil
+               "%a\n%?")
       :jump-to-captured nil)
-     ("r" "Reference note" plain
+     ("n" "Reference note" plain
       (file denote-last-path)
-      (function
-       (lambda ()
-         (let ((denote-use-title (alfred-browser-title)))
-           (denote-org-capture-with-prompts :title :keywords))))
+      #'denote-org-capture
       :no-save t
+      :immediate-finish nil
       :kill-buffer t
       :jump-to-captured t)
      ))
-
-  (org-capture-templates-contexts
-   '(("e" ((in-mode . "notmuch-search-mode")
-           (in-mode . "notmuch-show-mode")
-           (in-mode . "notmuch-tree-mode")))))
 
   ;; Code block
   (org-edit-src-content-indentation 0)
