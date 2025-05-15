@@ -24,15 +24,18 @@
 
 (use-package vertico-repeat
   :ensure nil
+  :after vertico
   :hook (minibuffer-setup . vertico-repeat-save)
   :bind ("C-x ." . vertico-repeat))
 
 (use-package vertico-suspend
   :ensure nil
+  :after vertico
   :bind ("M-z" . vertico-suspend))
 
 (use-package vertico-directory
   :ensure nil
+  :after vertico
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)
   :bind
   (:map vertico-map
@@ -57,6 +60,7 @@
 
 (use-package vertico-multiform
   :ensure nil
+  :after vertico
   :custom
   (vertico-multiform-categories
    '((embark-keybinding grid)
