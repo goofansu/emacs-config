@@ -11,6 +11,7 @@
 ;; Features
 (require 'init-git)
 (require 'init-gpt)
+(require 'init-irc)
 (require 'init-mail)
 (require 'init-pass)
 (require 'init-search)
