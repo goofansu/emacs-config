@@ -10,6 +10,17 @@
   :config
   (global-corfu-mode 1))
 
+(use-package corfu-quick
+  :ensure nil
+  :after corfu
+  :bind (:map corfu-map ("'" . corfu-quick-complete)))
+
+(use-package corfu-history
+  :ensure nil
+  :after corfu
+  :config
+  (corfu-history-mode 1))
+
 (use-package cape
   :init
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
