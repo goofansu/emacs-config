@@ -2,23 +2,22 @@
   :ensure nil
   :load-path "site-lisp/"
   :if (eq system-type 'darwin)
-  :demand t
-  :init
-  (keymap-global-unset "C-z")
-  :bind
-  (("s-o" . find-file)
-   ("s-s" . save-buffer)
-   ("s-S" . write-file)
-   ("s-a" . mark-whole-buffer)
-   ("s-c" . kill-ring-save)
-   ("s-v" . yank)
-   ("s-x" . kill-region)
-   ("s-z" . undo)
-   ("s-Z" . undo-redo)
-   ("C-z z" . zap-to-char)
-   ("C-z C-z" . zap-up-to-char))
   :custom
-  (vscode-program "cursor"))
+  (vscode-program "cursor")
+  :config
+  (keymap-global-set "s-o" #'find-file)
+  (keymap-global-set "s-s" #'save-buffer)
+  (keymap-global-set "s-S" #'write-file)
+  (keymap-global-set "s-a" #'mark-whole-buffer)
+  (keymap-global-set "s-c" #'kill-ring-save)
+  (keymap-global-set "s-v" #'yank)
+  (keymap-global-set "s-x" #'kill-region)
+  (keymap-global-set "s-z" #'undo)
+  (keymap-global-set "s-Z" #'undo-redo)
+  ;; zap to char
+  (keymap-global-unset "C-z")
+  (keymap-global-set "C-z z" #'zap-to-char)
+  (keymap-global-set "C-z C-z" #'zap-up-to-char))
 
 (use-package alfred
   :ensure nil

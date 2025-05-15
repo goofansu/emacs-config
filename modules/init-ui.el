@@ -16,8 +16,6 @@
 
 (use-package fontaine
   :if (display-graphic-p)
-  :demand t
-  :bind ("C-c F" . fontaine-set-preset)
   :custom
   (fontaine-presets
    '((small
@@ -44,7 +42,8 @@
       :variable-pitch-family "Aporetic Serif")
      ))
   :config
-  (fontaine-set-preset 'regular))
+  (fontaine-set-preset 'regular)
+  (keymap-global-set "C-c F" #'fontaine-set-preset))
 
 (use-package spacious-padding
   :if (display-graphic-p)

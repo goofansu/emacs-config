@@ -55,6 +55,7 @@
   (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
 (use-package popper
+  :hook emacs-startup
   :init
   (setq popper-reference-buffers
         (append '(compilation-mode
@@ -65,7 +66,6 @@
                 '("^\\*Messages\\*$"
                   ("^\\*Async Shell Command\\*$" . hide)
                   "^\\*Shell Command Output\\*$")))
-  :hook emacs-startup
   :bind
   (("C-`"   . popper-toggle)
    ("M-`"   . popper-cycle)

@@ -68,6 +68,7 @@
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package consult
+  :demand t
   :init
   ;; Optionally configure the register formatting. This improves the register
   ;; preview for `consult-register', `consult-register-load',
