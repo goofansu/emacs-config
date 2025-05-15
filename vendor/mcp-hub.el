@@ -90,8 +90,8 @@ Example:
   (let ((res ))
     (maphash #'(lambda (name server)
                  (when (and server
-                          (equal (mcp--status server)
-                                 'connected))
+                            (equal (mcp--status server)
+                                   'connected))
                    (when-let* ((tools (mcp--tools server))
                                (tool-names (mapcar #'(lambda (tool) (plist-get tool :name)) tools)))
                      (dolist (tool-name tool-names)
@@ -108,17 +108,22 @@ Example:
     (nreverse res)))
 
 ;;;###autoload
-(defun mcp-hub-start-all-server (&optional callback)
+(defun mcp-hub-start-all-server (&optional callback servers)
   "Start all configured MCP servers.
 This function will attempt to start each server listed in `mcp-hub-servers'
 if it's not already running.
 
 Optional argument CALLBACK is a function to be called when all servers have
 either started successfully or failed to start.The callback receives no
-arguments."
+arguments.
+
+Optional argument SERVERS is a list of server names (strings) to filter which
+servers should be started. When nil, all configured servers are considered."
   (interactive)
   (let* ((servers-to-start (cl-remove-if (lambda (server)
-                                           (gethash (car server) mcp-server-connections))
+                                           (or (and servers
+                                                    (not (cl-find (car server) servers :test #'string=)))
+                                               (gethash (car server) mcp-server-connections)))
                                          mcp-hub-servers))
          (total (length servers-to-start))
          (started 0))
@@ -229,8 +234,8 @@ including connection status, available tools, resources, and prompts."
   (interactive)
   ;; start all server
   (when (and mcp-hub-servers
-           (= (hash-table-count mcp-server-connections)
-              0))
+             (= (hash-table-count mcp-server-connections)
+                0))
     (mcp-hub-start-all-server))
   ;; show buffer
   (pop-to-buffer "*Mcp-Hub*" nil)

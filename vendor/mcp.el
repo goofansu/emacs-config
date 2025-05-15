@@ -515,58 +515,65 @@ in the `mcp-server-connections` hash table for future reference."
                t
                #'(lambda ()
                    (cl-incf initial-use-time)
-                   (when (or (equal connection-type 'stdio)
-                             (and (equal connection-type 'sse)
-                                  (mcp--endpoint connection)))
+                   (if (jsonrpc-running-p connection)
+                       (when (or (equal connection-type 'stdio)
+                                 (and (equal connection-type 'sse)
+                                      (mcp--endpoint connection)))
+                         (cancel-timer initial-timer)
+                         (mcp-async-initialize-message
+                          connection
+                          #'(lambda (protocolVersion serverInfo capabilities)
+                              (if (string= protocolVersion *MCP-VERSION*)
+                                  (progn
+                                    (message "[mcp] Connected! Server `MCP (%s)' now managing." (jsonrpc-name connection))
+                                    (setf (mcp--capabilities connection) capabilities
+                                          (mcp--server-info connection) serverInfo)
+                                    ;; Notify server initialized
+                                    (mcp-notify connection
+                                                :notifications/initialized)
+                                    ;; handle logging
+                                    (when (plist-member capabilities :logging)
+                                      (mcp-async-set-log-level connection mcp-log-level))
+                                    (when initial-callback
+                                      (funcall initial-callback connection))
+                                    (run-with-idle-timer mcp-server-wait-initial-time
+                                                         nil
+                                                         #'(lambda ()
+                                                             ;; Get prompts
+                                                             (when (plist-member capabilities :prompts)
+                                                               (mcp-async-list-prompts connection prompts-callback))
+                                                             ;; Get tools
+                                                             (when (plist-member capabilities :tools)
+                                                               (mcp-async-list-tools connection tools-callback))
+                                                             ;; Get resources
+                                                             (when (plist-member capabilities :resources)
+                                                               (mcp-async-list-resources connection resources-callback)))
+                                                         )
+                                    (setf (mcp--status connection)
+                                          'connected))
+                                (progn
+                                  (message "[mcp] Error %s server protocolVersion(%s) not support, client Version: %s."
+                                           (jsonrpc-name connection)
+                                           protocolVersion
+                                           *MCP-VERSION*)
+                                  (mcp-stop-server (jsonrpc-name connection)))))
+                          #'(lambda (code message)
+                              (when error-callback
+                                (funcall error-callback code message))
+                              (setf (mcp--status connection)
+                                    'error)
+                              (message "Sadly, mpc server reports %s: %s"
+                                       code message)))
+                         (when (> initial-use-time mcp-server-start-time)
+                           (mcp-stop-server name)
+                           (cancel-timer initial-timer)
+                           (message "Sadly: mcp server start error timeout")))
                      (cancel-timer initial-timer)
-                     (mcp-async-initialize-message
-                      connection
-                      #'(lambda (protocolVersion serverInfo capabilities)
-                          (if (string= protocolVersion *MCP-VERSION*)
-                              (progn
-                                (message "[mcp] Connected! Server `MCP (%s)' now managing." (jsonrpc-name connection))
-                                (setf (mcp--capabilities connection) capabilities
-                                      (mcp--server-info connection) serverInfo)
-                                ;; Notify server initialized
-                                (mcp-notify connection
-                                            :notifications/initialized)
-                                ;; handle logging
-                                (when (plist-member capabilities :logging)
-                                  (mcp-async-set-log-level connection mcp-log-level))
-                                (when initial-callback
-                                  (funcall initial-callback connection))
-                                (run-with-idle-timer mcp-server-wait-initial-time
-                                                     nil
-                                                     #'(lambda ()
-                                                         ;; Get prompts
-                                                         (when (plist-member capabilities :prompts)
-                                                           (mcp-async-list-prompts connection prompts-callback))
-                                                         ;; Get tools
-                                                         (when (plist-member capabilities :tools)
-                                                           (mcp-async-list-tools connection tools-callback))
-                                                         ;; Get resources
-                                                         (when (plist-member capabilities :resources)
-                                                           (mcp-async-list-resources connection resources-callback)))
-                                                     )
-                                (setf (mcp--status connection)
-                                      'connected))
-                            (progn
-                              (message "[mcp] Error %s server protocolVersion(%s) not support, client Version: %s."
-                                       (jsonrpc-name connection)
-                                       protocolVersion
-                                       *MCP-VERSION*)
-                              (mcp-stop-server (jsonrpc-name connection)))))
-                      #'(lambda (code message)
-                          (when error-callback
-                            (funcall error-callback code message))
-                          (setf (mcp--status connection)
-                                'error)
-                          (message "Sadly, mpc server reports %s: %s"
-                                   code message)))
-                     (when (> initial-use-time mcp-server-start-time)
-                       (mcp-stop-server name)
-                       (cancel-timer initial-timer)
-                       (message "Sadly: mcp server start error timeout"))))))))))
+                     (when error-callback
+                       (funcall error-callback -1 "mcp server process start error")
+                       (setf (mcp--status connection)
+                             'error)
+                       (message "Sadly, %s mcp server process start error" name))))))))))
 
 ;;;###autoload
 (defun mcp-stop-server (name)
