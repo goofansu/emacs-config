@@ -28,14 +28,14 @@
         (switch-to-buffer target))))
 
   (defvar consult--source-circe
-    `(:name     "Circe Channels"
-                :narrow   ?C
-                :category buffer
-                :face     consult-buffer
-                :items    ,#'my/circe-channel-names
-                :action   ,#'switch-to-buffer
-                :state    ,#'consult--buffer-state
-                :hidden   t)
+    `( :name     "irc buffer"
+       :narrow   ?i
+       :category buffer
+       :face     consult-buffer
+       :items    ,#'my/circe-channel-names
+       :action   ,#'switch-to-buffer
+       :state    ,#'consult--buffer-state
+       :hidden   t)
     "Circe buffer source for `consult-buffer'.")
   (add-to-list 'consult-buffer-sources 'consult--source-circe))
 

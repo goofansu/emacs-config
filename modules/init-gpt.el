@@ -51,7 +51,7 @@
 
   (defvar consult--source-gptel
     `( :name     "gptel buffer"
-       :narrow   ?G
+       :narrow   ?g
        :category buffer
        :face     consult-buffer
        :history  beframe-history
