@@ -16,13 +16,9 @@
   :config
   (circe-set-display-handler "353" 'circe-display-ignore)
   (circe-set-display-handler "366" 'circe-display-ignore)
+
   (defun my/circe-channel-names ()
-    (delq nil
-          (mapcar (lambda (buf)
-                    (with-current-buffer buf
-                      (when (eq major-mode 'circe-channel-mode)
-                        (buffer-name buf))))
-                  (buffer-list))))
+    (mapcar #'buffer-name (match-buffers '(major-mode . circe-channel-mode))))
 
   (defun my/circe-jump-to-channel ()
     (interactive)
@@ -33,7 +29,7 @@
 
   (defvar consult--source-circe
     `(:name     "Circe Channels"
-                :narrow   ?c
+                :narrow   ?C
                 :category buffer
                 :face     consult-buffer
                 :items    ,#'my/circe-channel-names

@@ -44,11 +44,10 @@
 
   (defun my/gptel-buffer-names ()
     "Return the names of buffers where `gptel-mode' is active."
-    (let (result)
-      (dolist (buf (buffer-list) result)
-        (with-current-buffer buf
-          (when (bound-and-true-p gptel-mode)
-            (push (buffer-name buf) result))))))
+    (mapcar #'buffer-name (match-buffers
+                           (lambda (buf)
+                             (with-current-buffer buf
+                               (bound-and-true-p gptel-mode))))))
 
   (defvar consult--source-gptel
     `( :name     "gptel buffer"
