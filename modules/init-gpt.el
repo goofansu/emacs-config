@@ -21,6 +21,7 @@
   :bind
   (("C-c <return>" . gptel-send)
    ("C-c C-<return>" . gptel-menu)
+   ("s-N" . my/gptel-chat)
    :map search-map
    ("T" . my/gptel-translate)
    :map embark-region-map
@@ -34,6 +35,34 @@
   :config
   (setq gptel-backend gptel--openrouter
         gptel-model 'openai/gpt-4.1)
+
+  (defun my/gptel-chat ()
+    (interactive)
+    (let* ((name (generate-new-buffer-name "*gptel-chat*"))
+           (buffer (gptel name)))
+      (pop-to-buffer buffer)))
+
+  (defun my/gptel-buffer-names ()
+    "Return the names of buffers where `gptel-mode' is active."
+    (let (result)
+      (dolist (buf (buffer-list) result)
+        (with-current-buffer buf
+          (when (bound-and-true-p gptel-mode)
+            (push (buffer-name buf) result))))))
+
+  (defvar consult--source-gptel
+    `( :name     "gptel buffer"
+       :narrow   ?G
+       :category buffer
+       :face     consult-buffer
+       :history  beframe-history
+       :items    ,#'my/gptel-buffer-names
+       :action   ,#'switch-to-buffer
+       :state    ,#'consult--buffer-state
+       :hidden   t)
+    "gptel buffer source for `consult-buffer'.")
+
+  (add-to-list 'consult-buffer-sources 'consult--source-gptel)
 
   (defun my/gptel-send-all-buffers (prompt)
     "Send PROMPT in all buffers where gptel-mode is active."

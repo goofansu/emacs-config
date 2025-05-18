@@ -100,10 +100,9 @@
   :ensure nil
   :bind
   (("C-s-f" . toggle-frame-fullscreen)
-   ("s-w" . tab-close-or-delete-frame)
-   ("s-N" . make-frame))
+   ("s-w" . my/tab-close-or-delete-frame))
   :config
-  (defun tab-close-or-delete-frame ()
+  (defun my/tab-close-or-delete-frame ()
     "Close the current tab if there are multiple tabs, otherwise delete the frame."
     (interactive)
     (if (and (bound-and-true-p tab-bar-mode)
