@@ -65,6 +65,9 @@ receives no arguments."
                        :resources-callback
                        #'(lambda (_ _)
                            (mcp-hub-update))
+                       :resources-templates-callback
+                       #'(lambda (_ _)
+                           (mcp-hub-update))
                        :error-callback
                        #'(lambda (_ _)
                            (mcp-hub-update))))))
@@ -90,8 +93,8 @@ Example:
   (let ((res ))
     (maphash #'(lambda (name server)
                  (when (and server
-                            (equal (mcp--status server)
-                                   'connected))
+                          (equal (mcp--status server)
+                                 'connected))
                    (when-let* ((tools (mcp--tools server))
                                (tool-names (mapcar #'(lambda (tool) (plist-get tool :name)) tools)))
                      (dolist (tool-name tool-names)
@@ -123,7 +126,7 @@ servers should be started. When nil, all configured servers are considered."
   (let* ((servers-to-start (cl-remove-if (lambda (server)
                                            (or (and servers
                                                     (not (cl-find (car server) servers :test #'string=)))
-                                               (gethash (car server) mcp-server-connections)))
+                                               (mcp--server-running-p (car server))))
                                          mcp-hub-servers))
          (total (length servers-to-start))
          (started 0))
@@ -175,6 +178,7 @@ Returns a list of server statuses, where each status is a plist containing:
 - :status - Either `connected' or `stop'
 - :tools - Available tools (if connected)
 - :resources - Available resources (if connected)
+- :template-resources - Available template resources (if connected)
 - :prompts - Available prompts (if connected)"
   (mapcar #'(lambda (server)
               (let ((name (car server)))
@@ -184,6 +188,7 @@ Returns a list of server statuses, where each status is a plist containing:
                           :status (mcp--status connection)
                           :tools (mcp--tools connection)
                           :resources (mcp--resources connection)
+                          :template-resources (mcp--template-resources connection)
                           :prompts (mcp--prompts connection))
                   (list :name name :status 'stop))))
           mcp-hub-servers))
@@ -193,8 +198,9 @@ Returns a list of server statuses, where each status is a plist containing:
 If called interactively, ARG is the prefix argument.
 When SILENT is non-nil, suppress any status messages.
 This function refreshes the *Mcp-Hub* buffer with the latest server information,
-including connection status, available tools, resources, and prompts."
-  (interactive "P")
+including connection status, available tools, resources, template resources and
+prompts."
+  (interactive)
   (when-let* ((server-list (mcp-hub-get-servers))
               (server-show (mapcar #'(lambda (server)
                                        (let* ((name (plist-get server :name))
@@ -216,8 +222,9 @@ including connection status, available tools, resources, and prompts."
                                                                          (length x)))
                                                              (list (plist-get server :tools)
                                                                    (plist-get server :resources)
+                                                                   (plist-get server :template-resources)
                                                                    (plist-get server :prompts)))
-                                                   (list "nil" "nil" "nil")))))
+                                                   (list "nil" "nil" "nil" "nil")))))
                                    server-list)))
     (with-current-buffer (get-buffer-create "*Mcp-Hub*")
       (setq tabulated-list-entries
@@ -229,11 +236,14 @@ including connection status, available tools, resources, and prompts."
       (tabulated-list-print t))))
 
 ;;;###autoload
-(defun mcp-hub ()
-  "View mcp hub server."
-  (interactive)
+(defun mcp-hub (&optional start)
+  "View mcp hub server.
+Start all server if START is non-nil or if called interactively with a prefix
+argument."
+  (interactive "P")
   ;; start all server
-  (when (and mcp-hub-servers
+  (when (and start
+             mcp-hub-servers
              (= (hash-table-count mcp-server-connections)
                 0))
     (mcp-hub-start-all-server))
@@ -295,6 +305,7 @@ currently highlighted in the *Mcp-Hub* buffer."
          ("Status" 15 t)
          ("Tools" 10 t)
          ("Resources" 10 t)
+         ("Template" 10 t)
          ("Prompts" 10 t)])
   (setq tabulated-list-padding 2)
   (setq tabulated-list-sort-key '("Name" . nil))
