@@ -23,7 +23,22 @@
 
 ;;; Commentary:
 
+;; mcp is an Emacs client for interfacing with [[https://modelcontextprotocol.io/introduction][MCP]], supporting connections to MCP
+;; servers.
 ;;
+;; Features:
+;;
+;; - Structured communication with MCP servers
+;; - Support for filesystem and generic MCP servers
+;; - Extensible tool and prompt system
+;; - Asynchronous and synchronous operations
+;; - Resource management capabilities
+;; - Intuitive interface for managing server lifecycle (start/stop/restart)
+;; - Integration with popular Emacs packages (e.g., gptel, llm)
+;;
+;; Usage:
+;; - config `mcp-hub-servers'
+;; - call `mcp-hub' to start mcp servers
 
 ;;; Code:
 
@@ -31,7 +46,7 @@
 (require 'cl-lib)
 (require 'url)
 
-(defconst *MCP-VERSION* (list "2025-03-26" "2024-11-05")
+(defconst mcp--support-versions (list "2025-03-26" "2024-11-05")
   "MCP support version.")
 
 (defcustom mcp-server-start-time 60
@@ -68,6 +83,11 @@ Available levels:
           (const :tag "critical" critical)
           (const :tag "alert" alert)
           (const :tag "emergency" emergency)))
+
+(defcustom mcp-log-size nil
+  "Maximum size for logging jsonrpc event.  0 disables, nil means infinite."
+  :group 'mcp
+  :type 'integer)
 
 (defclass mcp-process-connection (jsonrpc-process-connection)
   ((connection-type
@@ -163,7 +183,7 @@ Available levels:
   "Return non-nil if JSONRPC connection CONN is running."
   (setf (mcp--running conn) nil))
 
-(defun parse-http-header (headers)
+(defun mcp--parse-http-header (headers)
   "Parse HTTP response headers into a plist.
 
 HEADERS is a string containing the raw HTTP response headers.
@@ -171,7 +191,7 @@ Returns a plist where each header field is a keyword (e.g. :content-type)
 with its corresponding value.
 
 Example:
-  (parse-http-header \"Content-Type: text/html\\r\\nServer: nginx\\r\\n\")
+  (mcp--parse-http-header \"Content-Type: text/html\\r\\nServer: nginx\\r\\n\")
   => (:content-type \"text/html\" :server \"nginx\")"
   (when-let* ((header-lines (split-string headers "\n"))
               (status-line (car header-lines))
@@ -258,7 +278,7 @@ The message is sent differently based on connection type:
                              (when (search-forward "\n\n" nil t)
                                (let* ((headers (buffer-substring (point-min) (point)))
                                       (body (buffer-substring (point) (point-max)))
-                                      (headers-plist (parse-http-header headers))
+                                      (headers-plist (mcp--parse-http-header headers))
                                       (session-id (plist-get headers-plist :mcp-session-id))
                                       (response-code (plist-get headers-plist :response-code)))
                                  (when (string= "4"
@@ -350,7 +370,7 @@ The message is sent differently based on connection type:
               (pcase type
                 ('http
                  (if (string-prefix-p "HTTP" data-block)
-                     (if-let* ((headers (parse-http-header data-block))
+                     (if-let* ((headers (mcp--parse-http-header data-block))
                                (response-code (plist-get headers :response-code))
                                (content-type (plist-get headers :content-type)))
                          (when (or (not (string= response-code "200"))
@@ -374,15 +394,17 @@ The message is sent differently based on connection type:
                          (when-let* ((event-line event-line)
                                      (data-size (string-to-number (string-trim data-size-line)
                                                                   16))
-                                     (event-type (if (string-match "ping" event-line)
+                                     (event-type (if (string-prefix-p ": ping" event-line)
                                                      'ping
                                                    (intern (string-trim (substring event-line 6)))))
-                                     (body-size (length (string-trim (string-join (cdr data-line) "\n"))))
+                                     (body-size (let ((len 0))
+                                                  (dolist (i (cdr data-line)) (setq len (+ len (length i))))
+                                                  (+ len (length (cdr data-line)) -1)))
                                      (rest-size (- data-size
-                                                   2
+                                                   2 ; \r\n after data-size
                                                    ;; only sse need add 2
                                                    (if (mcp--sse conn)
-                                                       2
+                                                       2 ; \r\n after the last data-line
                                                      0)
                                                    body-size)))
                            (pcase event-type
@@ -394,7 +416,7 @@ The message is sent differently based on connection type:
                                   (setf (mcp--endpoint conn) endpoint)
                                   (mcp--send-initial-message conn))))
                              ('message
-                              (if (= 0 rest-size)
+                              (if (>= 0 rest-size)
                                   (push data
                                         parsed-messages)
                                 (process-put proc 'jsonrpc-message-rest-size rest-size)
@@ -484,7 +506,8 @@ The message is sent differently based on connection type:
                                       port
                                       :type (if (mcp--tls conn)
                                                 'tls
-                                              'network)))))
+                                              'network)
+                                      :coding 'utf-8-unix))))
     (let* ((stderr-buffer-name (format "*%s stderr*" name))
            (stderr-buffer (jsonrpc--forwarding-buffer stderr-buffer-name "[stderr] " conn))
            (hidden-name (concat " " stderr-buffer-name)))
@@ -599,12 +622,20 @@ Returns nil if URL is invalid or not HTTP/HTTPS."
                         80))
               :path filename)))))
 
-(defun mcp--send-initial-message (connection)
-  "Send initialization message to MCP server CONNECTION."
+(defun mcp--send-initial-message (connection &optional check-sse)
+  "Send initialization message to MCP server CONNECTION.
+
+This function sends the initial handshake message to establish communication
+with the MCP server. It is called internally during server connection setup.
+
+CONNECTION is the MCP connection object representing the server connection.
+CHECK-SSE is an optional boolean flag indicating whether to verify is SSE
+mcp server before sending."
   (mcp-async-initialize-message
    connection
+   check-sse
    #'(lambda (protocolVersion serverInfo capabilities)
-       (if (cl-find protocolVersion *MCP-VERSION* :test #'string=)
+       (if (cl-find protocolVersion mcp--support-versions :test #'string=)
            (progn
              (message "[mcp] Connected! Server `MCP (%s)' now managing." (jsonrpc-name connection))
              (setf (mcp--capabilities connection) capabilities
@@ -637,7 +668,7 @@ Returns nil if URL is invalid or not HTTP/HTTPS."
            (message "[mcp] Error %s server protocolVersion(%s) not support, client Version: %s."
                     (jsonrpc-name connection)
                     protocolVersion
-                    *MCP-VERSION*)
+                    mcp--support-versions)
            (mcp-stop-server (jsonrpc-name connection)))))
    #'(lambda (code message)
        (mcp-stop-server (jsonrpc-name connection))
@@ -711,7 +742,7 @@ in the `mcp-server-connections` hash table for future reference."
                                :command (append (list command)
                                                 (plist-get server-config :args))
                                :connection-type 'pipe
-                               :coding 'utf-8-emacs-unix
+                               :coding 'utf-8-unix
                                ;; :noquery t
                                :stderr (get-buffer-create
                                         (format "*%s stderr*" name))
@@ -726,6 +757,7 @@ in the `mcp-server-connections` hash table for future reference."
                                  :connection-type ,connection-type
                                  :name ,name
                                  :process ,process
+                                 :events-buffer-config (:size ,mcp-log-size)
                                  :request-dispatcher ,(lambda (_ method params)
                                                         (funcall #'mcp-request-dispatcher name method params))
                                  :notification-dispatcher ,(lambda (connection method params)
@@ -753,7 +785,7 @@ in the `mcp-server-connections` hash table for future reference."
                                    (if (jsonrpc-running-p connection)
                                        (when (or (equal connection-type 'stdio)
                                                  (equal connection-type 'http))
-                                         (mcp--send-initial-message connection))
+                                         (mcp--send-initial-message connection t))
                                      (error "Process start error"))
                                  (error
                                   (mcp-stop-server (jsonrpc-name connection))
@@ -936,10 +968,12 @@ On error, it displays an error message with the code from the server."
                                      (message "Sadly, %s mpc server reports %s: %s"
                                               (jsonrpc-name connection) code message))))
 
-(defun mcp-async-initialize-message (connection callback &optional error-callback)
+(defun mcp-async-initialize-message (connection check-sse callback &optional error-callback)
   "Sending an `initialize' request to the CONNECTION.
 
 CONNECTION is the MCP connection object.
+CHECK-SSE is an optional boolean flag indicating whether to verify is SSE
+mcp server before sending.
 CALLBACK is a function to call upon successful initialization.
 ERROR-CALLBACK is an optional function to call if an error occurs.
 
@@ -947,7 +981,7 @@ This function sends an `initialize' request to the server
 with the client's capabilities and version information."
   (jsonrpc-async-request connection
                          :initialize
-                         (list :protocolVersion (car *MCP-VERSION*)
+                         (list :protocolVersion (car mcp--support-versions)
                                :capabilities '(:roots (:listChanged t))
                                :clientInfo '(:name "mcp-emacs" :version "0.1.0"))
                          :success-fn
@@ -962,10 +996,11 @@ with the client's capabilities and version information."
                                       (jsonrpc-name connection) code message)))
                          :timeout mcp-server-start-time
                          :timeout-fn (lambda ()
-                                       (if error-callback
-                                           (funcall error-callback 124 "timeout")
-                                         (message "Sadly, mcp server (%s) timed out"
-                                                  (jsonrpc-name connection))))))
+                                       (unless (and check-sse (mcp--sse connection))
+                                         (if error-callback
+                                             (funcall error-callback 124 "timeout")
+                                           (message "Sadly, mcp server (%s) timed out"
+                                                    (jsonrpc-name connection)))))))
 
 (defun mcp-async-list-tools (connection &optional callback error-callback)
   "Get a list of tools from the MCP server using the provided CONNECTION.
