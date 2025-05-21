@@ -6,6 +6,7 @@
           "https://bzg.fr/en/index.xml"
           "https://daniel.haxx.se/blog/feed/"
           "https://dev.37signals.com/feed/posts.xml"
+          "https://developer.chrome.com/static/blog/feed.xml"
           "https://feeds.feedburner.com/ihower"
           "https://ferd.ca/feed.rss"
           "https://fly.io/phoenix-files/feed.xml"
