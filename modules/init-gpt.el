@@ -10,12 +10,46 @@
       :endpoint "/api/v1/chat/completions"
       :stream t
       :key (lambda () (auth-source-pass-get 'secret "api-key/openrouter"))
-      :models '(anthropic/claude-sonnet-4
-                google/gemini-2.5-flash-preview-05-20
-                google/gemini-2.5-pro-preview
-                openai/gpt-4.1
-                openai/o4-mini
-                openai/o4-mini-high)))
+      :models '((anthropic/claude-sonnet-4
+                 :description "High-performance model with exceptional reasoning and efficiency"
+                 :capabilities (media tool-use cache)
+                 :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp" "application/pdf")
+                 :context-window 200
+                 :input-cost 3
+                 :output-cost 15
+                 :cutoff-date "2025-03")
+                (openai/gpt-4.1
+                 :description "Flagship model for complex tasks"
+                 :capabilities (media tool-use json url)
+                 :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
+                 :context-window 1024
+                 :input-cost 2.0
+                 :output-cost 8.0
+                 :cutoff-date "2024-05")
+                (openai/gpt-4.1-mini
+                 :description "Balance between intelligence, speed and cost"
+                 :capabilities (media tool-use json url)
+                 :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
+                 :context-window 1024
+                 :input-cost 0.4
+                 :output-cost 1.6
+                 :cutoff-date "2024-05")
+                (openai/gpt-4.1-nano
+                 :description "Fastest, most cost-effective GPT-4.1 model"
+                 :capabilities (media tool-use json url)
+                 :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
+                 :context-window 1024
+                 :input-cost 0.10
+                 :output-cost 0.40
+                 :cutoff-date "2024-05")
+                (openai/o4-mini
+                 :description "Fast, effective reasoning with efficient performance in coding and visual tasks"
+                 :capabilities (reasoning media tool-use json url)
+                 :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
+                 :context-window 200
+                 :input-cost 1.10
+                 :output-cost 4.40
+                 :cutoff-date "2024-05"))))
 
   :bind
   (("C-c <return>" . gptel-send)
@@ -28,12 +62,19 @@
 
   :custom
   (gptel-default-mode 'org-mode)
-  (gptel-directives
-   '((default . "You are a large language model living in Emacs and a helpful assistant. You use your available tools efficiently. Respond concisely.")))
 
   :config
   (setq gptel-backend gptel--openrouter
         gptel-model 'openai/gpt-4.1)
+
+  (gptel-make-gemini "Google"
+    :key (lambda () (auth-source-pass-get 'secret "api-key/gemini"))
+    :stream t
+    :models
+    (cl-remove-if-not
+     (lambda (model)
+       (string-prefix-p "gemini-2.5" (symbol-name (car model))))
+     gptel--gemini-models))
 
   (defun my/gptel-chat ()
     (interactive)
@@ -94,7 +135,7 @@ If region is active, use it as TEXT; otherwise prompt for input.
 Display the result in a side window with the content selected."
     (interactive "sTranslate text: ")
     (let ((gptel-backend gptel--openrouter)
-          (gptel-model 'google/gemini-2.5-flash-preview))
+          (gptel-model 'openai/gpt-4.1))
       (gptel-request text
         :system "Translate the provided text between English and
 Chinese (Mandarin). Return ONLY the completed translation without
