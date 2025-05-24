@@ -5,8 +5,8 @@
 (use-package ob-racket
   :vc (ob-racket :url "https://github.com/hasu/emacs-ob-racket.git")
   :after org
-  :custom
-  (ob-racket-default-lang "sicp"))
+  :config
+  (setq ob-racket-default-lang "sicp"))
 
 (use-package sicp
   :pin melpa
