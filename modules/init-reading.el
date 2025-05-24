@@ -12,6 +12,7 @@
           "https://fly.io/phoenix-files/feed.xml"
           "https://ghuntley.com/rss/"
           "https://huyenchip.com/feed.xml"
+          "https://irreal.org/blog/?feed=rss2"
           "https://jamesg.blog/feeds/posts.xml"
           "https://jvns.ca/atom.xml"
           "https://karpathy.bearblog.dev/feed/"
