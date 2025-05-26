@@ -1,7 +1,7 @@
 (use-package eglot
   :ensure nil
   :hook
-  ((ruby-mode ruby-ts-mode) . eglot-ensure)
+  ;; ((ruby-mode ruby-ts-mode) . eglot-ensure)
   ((python-mode python-ts-mode) . eglot-ensure)
   ((elixir-ts-mode heex-ts-mode) . eglot-ensure)
   (nix-mode . eglot-ensure)
@@ -9,7 +9,7 @@
   :custom
   (eglot-ignored-server-capabilities '(:completionProvider))
   :config
-  (dolist (mode '(((ruby-mode ruby-ts-mode) . ("ruby-lsp"))
+  (dolist (mode '(;; ((ruby-mode ruby-ts-mode) . ("ruby-lsp"))
                   ((python-mode python-ts-mode) . ("ruff" "server"))
                   ((elixir-ts-mode heex-ts-mode) . ("nextls" "--stdio=true"))
                   (nix-mode . ("nixd"))
