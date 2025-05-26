@@ -33,9 +33,12 @@
                ":END:\n\n"
                "%a\n%?")
       :jump-to-captured nil)
-     ("n" "Reference note" plain
+     ("r" "Reference note" plain
       (file denote-last-path)
-      #'denote-org-capture
+      (function
+       (lambda ()
+         (let ((denote-use-title (alfred-browser-title)))
+           (denote-org-capture-with-prompts :title :keywords))))
       :no-save t
       :immediate-finish nil
       :kill-buffer t
