@@ -7,8 +7,7 @@
   :ensure nil
   :config
   (windmove-default-keybindings)
-  (windmove-delete-default-keybindings)
-  (windmove-swap-states-default-keybindings))
+  (windmove-delete-default-keybindings))
 
 (use-package winner
   :ensure nil
