@@ -1,5 +1,5 @@
 (use-package magit
-  :pin nongnu
+  :pin melpa
   :defer 1
   :bind
   (("C-c g b" . magit-checkout)
