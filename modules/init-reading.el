@@ -1,6 +1,7 @@
 (use-package elfeed
   :pin melpa
   :init
+  (setq elfeed-db-directory (expand-file-name ".elfeed/" my-sync-directory))
   (setq elfeed-feeds
         '("https://andrealeopardi.com/feed.xml"
           "https://bzg.fr/en/index.xml"
@@ -92,6 +93,8 @@
 
 (use-package calibredb
   :pin melpa
+  :init
+  (setq calibredb-root-dir (expand-file-name "Calibre/" my-sync-directory))
   :bind ("C-c E" . calibredb))
 
 (use-package nov

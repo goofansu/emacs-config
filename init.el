@@ -3,6 +3,9 @@
 (defvar my-src-directory "~/src/"
   "Directory for source code repos.")
 
+(defvar my-sync-directory "~/Library/CloudStorage/Dropbox/"
+  "Directory for syncing files.")
+
 ;; Bootstrap
 (require 'init-bootstrap)
 (require 'init-emacs)
