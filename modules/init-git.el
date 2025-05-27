@@ -45,13 +45,16 @@
 (use-package consult-gh
   :pin melpa
   :after consult
-  :init
+  :bind
+  (("C-c g i c" . consult-gh-issue-create)
+   ("C-c g i i" . consult-gh-issue-list)
+   ("C-c g i s" . consult-gh-search-issues)
+   ("C-c g p c" . consult-gh-pr-create)
+   ("C-c g p p" . consult-gh-pr-list)
+   ("C-c g p s" . consult-gh-search-prs))
+  :config
   (add-to-list 'savehist-additional-variables 'consult-gh--known-orgs-list)
   (add-to-list 'savehist-additional-variables 'consult-gh--known-repos-list)
-  :bind ("C-c g p" . consult-gh-search-prs)
-  :custom
-  (consult-gh-pr-action #'consult-gh--pr-browse-url-action)
-  :config
   (consult-gh-enable-default-keybindings))
 
 (use-package consult-gh-embark
