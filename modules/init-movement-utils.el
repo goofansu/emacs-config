@@ -98,7 +98,7 @@
 (use-package frame
   :ensure nil
   :bind
-  (("C-s-f" . toggle-frame-fullscreen)
+  (("C-s-f" . select-frame-by-name)
    ("s-w" . my/tab-close-or-delete-frame))
   :config
   (defun my/tab-close-or-delete-frame ()
