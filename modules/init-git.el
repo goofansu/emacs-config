@@ -49,6 +49,7 @@
    ("C-c g p p" . consult-gh-pr-list)
    ("C-c g p s" . consult-gh-search-prs))
   :config
+  (message "test consult-gh-pr-create")
   (add-to-list 'savehist-additional-variables 'consult-gh--known-orgs-list)
   (add-to-list 'savehist-additional-variables 'consult-gh--known-repos-list)
   (consult-gh-enable-default-keybindings))
