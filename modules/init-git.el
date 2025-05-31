@@ -48,6 +48,8 @@
    ("C-c g p c" . consult-gh-pr-create)
    ("C-c g p p" . consult-gh-pr-list)
    ("C-c g p s" . consult-gh-search-prs))
+  :custom
+  (consult-gh-topic-major-mode 'org-mode)
   :config
   (add-to-list 'savehist-additional-variables 'consult-gh--known-orgs-list)
   (add-to-list 'savehist-additional-variables 'consult-gh--known-repos-list)
