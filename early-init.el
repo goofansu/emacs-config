@@ -1,7 +1,6 @@
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 
-(setq ns-use-native-fullscreen nil)
 (when (native-comp-available-p)
   (setq native-comp-async-report-warnings-errors 'silent))
 
