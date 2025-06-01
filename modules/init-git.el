@@ -42,7 +42,10 @@
   :pin melpa
   :after consult
   :bind
-  (("C-c g i c" . consult-gh-issue-create)
+  (("C-c g r c" . consult-gh-repo-create)
+   ("C-c g r r" . consult-gh-repo-list)
+   ("C-c g r s" . consult-gh-search-repos)
+   ("C-c g i c" . consult-gh-issue-create)
    ("C-c g i i" . consult-gh-issue-list)
    ("C-c g i s" . consult-gh-search-issues)
    ("C-c g p c" . consult-gh-pr-create)
@@ -50,6 +53,8 @@
    ("C-c g p s" . consult-gh-search-prs))
   :custom
   (consult-gh-topic-major-mode 'org-mode)
+  (consult-gh-default-clone-directory my-src-directory)
+  (consult-gh-repo-action #'consult-gh--repo-browse-url-action)
   :config
   (add-to-list 'savehist-additional-variables 'consult-gh--known-orgs-list)
   (add-to-list 'savehist-additional-variables 'consult-gh--known-repos-list)
