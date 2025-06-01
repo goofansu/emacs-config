@@ -2,8 +2,8 @@
 (tool-bar-mode -1)
 
 (setq ns-use-native-fullscreen nil)
-;; (setq native-comp-jit-compilation nil)
-(setq native-comp-async-report-warnings-errors 'silent)
+(when (native-comp-available-p)
+  (setq native-comp-async-report-warnings-errors 'silent))
 
 ;; Boost startup performance
 (setq gc-cons-threshold most-positive-fixnum
