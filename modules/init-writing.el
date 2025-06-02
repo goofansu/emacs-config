@@ -99,38 +99,14 @@
 (use-package ox-hugo
   :pin melpa
   :after org
-  :bind ("C-c n h" . my/org-hugo-denote-files-find-file)
   :custom
   (org-hugo-default-static-subdirectory-for-externals "attachments")
-  (org-hugo-front-matter-format "yaml")
-  :config
-  (defun my/org-hugo-denote-files ()
-    "Return a list of Hugo-compatible files in `denote-directory'."
-    (let ((default-directory (denote-directory)))
-      (process-lines "rg" "-i" "-l" "^#\\+hugo_base_dir" "--glob" "*.org")))
+  (org-hugo-front-matter-format "yaml"))
 
-  (defun my/org-hugo-denote-files-find-file ()
-    "Search Hugo-compatible files in `denote-directory' and visit the result."
-    (interactive)
-    (let* ((default-directory (denote-directory))
-           (selected-file (consult--read
-                           (my/org-hugo-denote-files)
-                           :prompt (format "Select FILE in %s: "  default-directory)
-                           :sort nil
-                           :require-match t
-                           :category 'file
-                           :state (consult--file-preview)
-                           :history 'denote-file-history)))
-      (find-file selected-file)))
-
-  (defun my/org-hugo-export-all-denote-files ()
-    "Export all Hugo-compatible files in `denote-directory'."
-    (interactive)
-    (let ((org-export-use-babel nil))
-      (dolist (file (my/org-hugo-denote-files))
-        (with-current-buffer (find-file-noselect file)
-          (org-hugo-export-to-md)))
-      (message "All notes have been exported to Hugo content"))))
+(use-package denote-hugo
+  :ensure nil
+  :load-path "site-lisp/"
+  :bind ("C-c n h" . denote-hugo-find-file))
 
 (use-package ox-gfm
   :pin melpa
