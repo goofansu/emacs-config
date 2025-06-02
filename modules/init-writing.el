@@ -175,19 +175,21 @@
   (denote-rename-buffer-mode 1)
   (advice-add 'denote-link-ol-export :around
               (lambda (orig-fun link description format)
+                "Advice for `denote-link-ol-export' that customizes Org link export to Hugo Markdown.
+If exporting to markdown ('md') with Hugo backend (`org-export-current-backend' is 'hugo'),
+replace export with a relref shortcode referencing either the EXPORT_FILE_NAME or the file basename.
+Otherwise, call the original function."
                 (if (and (eq format 'md)
                          (eq org-export-current-backend 'hugo))
                     (let* ((path (denote-get-path-by-id link))
                            (export-file-name
                             (or
-                             ;; Use export_file_name if it exists
                              (when (file-exists-p path)
                                (with-temp-buffer
                                  (insert-file-contents path)
                                  (goto-char (point-min))
                                  (when (re-search-forward "^#\\+export_file_name: \\(.+\\)" nil t)
                                    (match-string 1))))
-                             ;; Otherwise, use the original file's base name
                              (file-name-nondirectory path))))
                       (format "[%s]({{< relref \"%s\" >}})"
                               description
