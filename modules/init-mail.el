@@ -85,11 +85,11 @@
   (notmuch-indicator-add-to-mode-line-misc-info nil)
   (notmuch-indicator-args
    '(( :terms "tag:unread and tag:inbox and path:Home/**"
-       :label "💬"
+       :label "H"
        :label-face prot-modeline-indicator-blue
        :counter-face prot-modeline-indicator-blue)
      ( :terms "tag:unread and tag:inbox and path:Work/**"
-       :label "👨🏻‍💻"
+       :label "W"
        :label-face prot-modeline-indicator-cyan
        :counter-face prot-modeline-indicator-cyan)))
   :config
