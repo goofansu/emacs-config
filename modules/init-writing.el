@@ -14,13 +14,24 @@
    ("C-c C-M-l" . org-toggle-link-display))
 
   :custom
-  (org-use-sub-superqscripts '{})
-  (org-M-RET-may-split-line '((default . nil)))
+  (org-export-dispatch-use-expert-ui t)
+  (org-export-with-sub-superscripts '{})
+  (org-use-fast-todo-selection 'expert)
+  (org-use-sub-superscripts '{})
+
+  ;; Editing
+  (org-catch-invisible-edits 'show-and-error)
   (org-insert-heading-respect-content t)
+  (org-special-ctrl-a/e t)
+
+  ;; Styling
+  (org-ellipsis "…")
+  (org-hide-emphasis-markers t)
+  (org-pretty-entities t)
 
   ;; Agenda
   (org-agenda-files (list org-directory))
-  (org-use-fast-todo-selection 'expert)
+  (org-agenda-tags-column 0)
 
   ;; Capture
   (org-capture-templates
@@ -51,10 +62,6 @@
   (org-src-preserve-indentation t)
   (org-src-window-setup 'current-window)
 
-  ;; Export
-  (org-export-with-sub-superscripts '{})
-  (org-export-dispatch-use-expert-ui t)
-
   ;; Log
   (org-log-into-drawer t)
   (org-log-done 'time)
@@ -73,6 +80,13 @@
      (shell . t)
      (ruby . t)
      (python . t))))
+
+(use-package org-modern
+  :after org
+  :custom
+  (org-modern-star nil)
+  :config
+  (global-org-modern-mode))
 
 (use-package org-anki
   :pin melpa
