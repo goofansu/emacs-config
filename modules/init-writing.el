@@ -85,6 +85,7 @@
   :after org
   :custom
   (org-modern-star nil)
+  (org-modern-table nil)
   :config
   (global-org-modern-mode))
 
