@@ -60,4 +60,10 @@
   (add-to-list 'savehist-additional-variables 'consult-gh--known-repos-list)
   (consult-gh-enable-default-keybindings))
 
+(use-package consult-gh-embark
+  :pin melpa
+  :after consult-gh
+  :config
+  (consult-gh-embark-mode 1))
+
 (provide 'init-git)
