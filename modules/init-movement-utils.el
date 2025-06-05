@@ -19,10 +19,10 @@
 (use-package transpose-frame
   :pin melpa
   :bind
-  (:map window-prefix-map
-        ("w" . transpose-frame)
-        ("r" . rotate-frame-clockwise)
-        ("R" . rotate-frame-anticlockwise)))
+  ( :map window-prefix-map
+    ("w" . transpose-frame)
+    ("r" . rotate-frame-clockwise)
+    ("R" . rotate-frame-anticlockwise)))
 
 (use-package ace-window
   :init
