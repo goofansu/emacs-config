@@ -163,8 +163,7 @@ With optional argument FRAME, return the list of buffers of FRAME."
 
 (use-package move-text
   :pin melpa
-  :bind
-  (("s-<up>" . move-text-up)
-   ("s-<down>" . move-text-down)))
+  :config
+  (move-text-default-bindings))
 
 (provide 'init-movement-utils)
