@@ -40,6 +40,7 @@
 
 (use-package olivetti
   :pin melpa
+  :defer t
   :custom
   (olivetti-minimum-body-width 120)
   (olivetti-recall-visual-line-mode-entry-state t))

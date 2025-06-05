@@ -5,12 +5,14 @@
 
 (use-package windmove
   :ensure nil
+  :defer 1
   :config
   (windmove-default-keybindings)
   (windmove-delete-default-keybindings))
 
 (use-package winner
   :ensure nil
+  :defer 1
   :config
   (winner-mode 1))
 

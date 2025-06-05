@@ -150,6 +150,7 @@ FILE-LINE should be in the format 'file:line' relative to the project root."
   (history-length 500)
   (history-delete-duplicates t)
   :config
+  (add-to-list 'savehist-additional-variables 'log-edit-comment-ring)
   (savehist-mode 1))
 
 (use-package isearch
@@ -165,6 +166,7 @@ FILE-LINE should be in the format 'file:line' relative to the project root."
 
 (use-package ediff
   :ensure nil
+  :defer t
   :custom
   (ediff-window-setup-function #'ediff-setup-windows-plain)
   (ediff-split-window-function #'split-window-horizontally))
@@ -201,6 +203,7 @@ FILE-LINE should be in the format 'file:line' relative to the project root."
 
 (use-package doc-view
   :ensure nil
+  :defer t
   :custom
   (doc-view-mupdf-use-svg t)
   (doc-view-resolution 300))
@@ -211,16 +214,6 @@ FILE-LINE should be in the format 'file:line' relative to the project root."
   (dired-recursive-copies 'always)
   (dired-recursive-deletes 'always)
   (dired-dwim-target t))
-
-(use-package delsel
-  :ensure nil
-  :config
-  (delete-selection-mode 1))
-
-(use-package vc
-  :ensure nil
-  :init
-  (add-to-list 'savehist-additional-variables 'log-edit-comment-ring))
 
 (use-package ffap
   :bind ("M-m" . ffap-menu)
