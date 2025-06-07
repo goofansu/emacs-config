@@ -7,10 +7,9 @@
   ;; Do not allow the cursor in the minibuffer prompt.
   (setq minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+  :hook after-init
   :custom
-  (vertico-cycle t)
-  :config
-  (vertico-mode 1))
+  (vertico-cycle t))
 
 (use-package vertico-repeat
   :ensure nil

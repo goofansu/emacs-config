@@ -5,16 +5,9 @@
 
 (use-package windmove
   :ensure nil
-  :defer 1
   :config
   (windmove-default-keybindings)
   (windmove-delete-default-keybindings))
-
-(use-package winner
-  :ensure nil
-  :defer 1
-  :config
-  (winner-mode 1))
 
 (use-package transpose-frame
   :pin melpa
@@ -56,7 +49,7 @@
   (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
 (use-package popper
-  :hook emacs-startup
+  :hook after-init
   :init
   (setq popper-reference-buffers
         (append '(compilation-mode
@@ -113,7 +106,7 @@
 
 (use-package beframe
   :if (display-graphic-p)
-  :hook emacs-startup
+  :hook after-init
   :bind-keymap ("C-c b" . beframe-prefix-map)
   :custom
   (beframe-functions-in-frames '(project-prompt-project-dir))

@@ -15,7 +15,8 @@
      (t . (regular 1.15)))))
 
 (use-package fontaine
-  :if (display-graphic-p)
+  :hook after-init
+  :bind ("C-c F" . fontaine-set-preset)
   :custom
   (fontaine-presets
    '((small
@@ -42,14 +43,11 @@
       :variable-pitch-family "Aporetic Serif")
      ))
   :config
-  (fontaine-set-preset 'regular)
-  (keymap-global-set "C-c F" #'fontaine-set-preset))
+  (fontaine-set-preset (or (fontaine-restore-latest-preset) 'regular)))
 
 (use-package spacious-padding
-  :if (display-graphic-p)
+  :hook after-init
   :custom
-  (spacious-padding-subtle-mode-line t)
-  :config
-  (spacious-padding-mode 1))
+  (spacious-padding-subtle-mode-line t))
 
 (provide 'init-ui)

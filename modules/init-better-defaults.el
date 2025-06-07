@@ -46,12 +46,7 @@
   (window-combination-resize t)
 
   ;; Xref
-  (xref-search-program 'ripgrep)
-
-  :config
-  (save-place-mode 1)
-  (blink-cursor-mode -1)
-  (global-subword-mode 1))
+  (xref-search-program 'ripgrep))
 
 (use-package emacs
   :ensure nil
@@ -138,20 +133,22 @@ FILE-LINE should be in the format 'file:line' relative to the project root."
 
 (use-package recentf
   :ensure nil
-  :defer 1
+  :hook after-init
   :custom
-  (recentf-max-saved-items 200)
-  :config
-  (recentf-mode 1))
+  (recentf-max-saved-items 200))
 
 (use-package savehist
   :ensure nil
+  :hook after-init
   :custom
   (history-length 500)
   (history-delete-duplicates t)
   :config
-  (add-to-list 'savehist-additional-variables 'log-edit-comment-ring)
-  (savehist-mode 1))
+  (add-to-list 'savehist-additional-variables 'log-edit-comment-ring))
+
+(use-package saveplace
+  :ensure nil
+  :hook (after-init . save-place-mode))
 
 (use-package isearch
   :ensure nil
@@ -208,6 +205,10 @@ FILE-LINE should be in the format 'file:line' relative to the project root."
   (doc-view-mupdf-use-svg t)
   (doc-view-resolution 300))
 
+(use-package delsel
+  :ensure nil
+  :hook (after-init . delete-selection-mode))
+
 (use-package dired
   :ensure nil
   :custom
@@ -216,8 +217,7 @@ FILE-LINE should be in the format 'file:line' relative to the project root."
   (dired-dwim-target t))
 
 (use-package dired-preview
-  :config
-  (dired-preview-global-mode 1))
+  :hook (after-init . dired-preview-global-mode))
 
 (use-package ffap
   :bind ("M-m" . ffap-menu)
@@ -228,5 +228,9 @@ FILE-LINE should be in the format 'file:line' relative to the project root."
                 (cl-letf (((symbol-function #'minibuffer-completion-help)
                            #'ignore))
                   (apply args)))))
+
+(use-package winner
+  :ensure nil
+  :hook after-init)
 
 (provide 'init-better-defaults)
