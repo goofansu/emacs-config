@@ -4,7 +4,7 @@
 (defvar my-toggle-map (make-sparse-keymap)
   "A keymap for toggle commands.")
 
-(define-key global-map (kbd "C-c i") my-insert-map)
-(define-key global-map (kbd "C-c t") my-toggle-map)
+(keymap-set global-map "C-c i" my-insert-map)
+(keymap-set global-map "C-c t" my-toggle-map)
 
 (provide 'init-keymaps)
