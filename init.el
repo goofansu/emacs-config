@@ -8,8 +8,8 @@
 
 ;; Bootstrap
 (require 'init-bootstrap)
-(require 'init-emacs)
 (require 'init-macos)
+(require 'init-emacs)
 
 ;; Features
 (require 'init-git)

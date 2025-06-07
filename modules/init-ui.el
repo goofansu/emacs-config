@@ -1,6 +1,14 @@
 (use-package modus-themes
   :init
-  (load-theme 'modus-operandi :no-confirm)
+  (defun my/load-modus-theme ()
+    "Load a Modus theme according to current macOS appearance.
+Load modus-vivendi theme if in macOS dark mode, otherwise load
+modus-operandi theme."
+    (interactive)
+    (if (macos-dark-mode-p)
+        (load-theme 'modus-vivendi :no-confirm)
+      (load-theme 'modus-operandi :no-confirm)))
+  :hook (after-init . my/load-modus-theme)
   :bind ("<f9>" . modus-themes-toggle)
   :custom
   (modus-themes-mixed-fonts t)
