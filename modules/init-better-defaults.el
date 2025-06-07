@@ -215,6 +215,10 @@ FILE-LINE should be in the format 'file:line' relative to the project root."
   (dired-recursive-deletes 'always)
   (dired-dwim-target t))
 
+(use-package dired-preview
+  :config
+  (dired-preview-global-mode 1))
+
 (use-package ffap
   :bind ("M-m" . ffap-menu)
   :config
