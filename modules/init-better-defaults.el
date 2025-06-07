@@ -211,13 +211,16 @@ FILE-LINE should be in the format 'file:line' relative to the project root."
 
 (use-package dired
   :ensure nil
+  :defer t
   :custom
   (dired-recursive-copies 'always)
   (dired-recursive-deletes 'always)
   (dired-dwim-target t))
 
 (use-package dired-preview
-  :hook (after-init . dired-preview-global-mode))
+  :after dired
+  :config
+  (dired-preview-global-mode 1))
 
 (use-package ffap
   :bind ("M-m" . ffap-menu)
