@@ -150,13 +150,4 @@ With optional argument FRAME, return the list of buffers of FRAME."
                  (when (<= ,i (length (tab-bar-tabs)))
                    (tab-bar-select-tab ,i))))))
 
-;; Buffer
-(use-package avy
-  :bind (:map goto-map ("c" . avy-goto-char-timer)))
-
-(use-package move-text
-  :pin melpa
-  :config
-  (move-text-default-bindings))
-
 (provide 'init-movement-utils)

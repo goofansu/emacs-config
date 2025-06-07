@@ -2,6 +2,14 @@
   :pin melpa
   :bind ("C-c f" . apheleia-format-buffer))
 
+(use-package avy
+  :bind (:map goto-map ("c" . avy-goto-char-timer)))
+
+(use-package move-text
+  :pin melpa
+  :config
+  (move-text-default-bindings))
+
 (use-package multiple-cursors
   :pin nongnu
   :bind
