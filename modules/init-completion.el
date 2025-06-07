@@ -7,6 +7,7 @@
   :custom
   (corfu-cycle t)
   (corfu-auto t)
+  (corfu-auto-delay 0.5)
   :config
   (global-corfu-mode 1))
 
