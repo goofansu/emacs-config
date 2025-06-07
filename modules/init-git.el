@@ -2,7 +2,7 @@
   :pin melpa
   :init
   (with-eval-after-load 'project
-    (define-key project-prefix-map "m" #'magit-project-status)
+    (keymap-set project-prefix-map "m" #'magit-project-status)
     (add-to-list 'project-switch-commands '(magit-project-status "Magit") t))
   :bind
   (("C-c g b" . magit-checkout)
