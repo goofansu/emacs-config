@@ -240,6 +240,17 @@ This function is ideal for managing referenced files in note-taking workflows."
   :after denote
   :bind ("C-c n j" . denote-journal-new-entry))
 
+(use-package denote-sequence
+  :bind
+  (("C-c n s s" . denote-sequence)
+   ("C-c n s f" . denote-sequence-find)
+   ("C-c n s l" . denote-sequence-link)
+   ("C-c n s d" . denote-sequence-dired)
+   ("C-c n s r" . denote-sequence-reparent)
+   ("C-c n s c" . denote-sequence-convert))
+  :custom
+  (denote-sequence-scheme 'alphanumeric))
+
 (use-package consult-denote
   :init
   (with-eval-after-load 'denote
@@ -264,7 +275,6 @@ This function is ideal for managing referenced files in note-taking workflows."
 (use-package denote-explore
   :pin melpa
   :hook (org-capture-after-finalize . my/denote-explore-sync-metadata)
-  :bind ("C-c n s" . denote-explore-sync-metadata)
   :config
   (defun my/denote-explore-sync-metadata ()
     "Sync denote filenames when org-capture's target is a denote file.
