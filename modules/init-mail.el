@@ -68,6 +68,11 @@
        :count-query "tag:inbox and tag:unread and from:jira@fariaedu.atlassian.net"
        :sort-order 'newest-first
        :key ,(kbd "j"))
+     ( :name "bamboohr"
+       :query "tag:inbox and from:bamboohr.com"
+       :count-query "tag:inbox and tag:unread and from:notifications@app.bamboohr.com"
+       :sort-order 'newest-first
+       :key ,(kbd "b"))
      ))
   ;; Compose
   (notmuch-always-prompt-for-sender nil)
