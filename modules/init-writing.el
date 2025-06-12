@@ -46,13 +46,14 @@
       :prepend t)
      ("c" "Fleeting note" entry
       (file "notes.org")
-      ,(concat "* %^{Title}\n"
+      ,(concat "* %^{Title}%^g\n"
                ":PROPERTIES:\n"
                ":CAPTURED: %U\n"
                ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
                ":END:\n\n"
                "%a\n%?")
-      :jump-to-captured nil)
+      :jump-to-captured nil
+      :empty-lines 1)
      ("r" "Reference note" plain
       (file denote-last-path)
       (function
