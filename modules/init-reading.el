@@ -15,6 +15,7 @@
           "https://ghuntley.com/rss/"
           "https://huyenchip.com/feed.xml"
           "https://irreal.org/blog/?feed=rss2"
+          "https://ismailefe.org/feed.xml"
           "https://jamesg.blog/feeds/posts.xml"
           "https://jvns.ca/atom.xml"
           "https://karpathy.bearblog.dev/feed/"
@@ -41,6 +42,7 @@
           "https://world.hey.com/this.week.in.rails/feed.atom"
           "https://www.danielcorin.com/index.xml"
           "https://www.feltpresence.com/rss/"
+          "https://www.inkandswitch.com/index.xml"
           "https://www.masteringemacs.org/feed"
           "https://www.mikeperham.com/index.xml"
           "https://www.theerlangelist.com/rss"))
