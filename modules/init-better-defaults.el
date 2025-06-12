@@ -37,7 +37,7 @@
   ;; Startup
   (inhibit-startup-screen t)
   (initial-scratch-message nil)
-  (initial-major-mode 'text-mode)
+  (initial-major-mode 'org-mode)
 
   ;; Version control
   (vc-follow-symlinks t)
