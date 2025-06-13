@@ -64,6 +64,7 @@
   (gptel-default-mode 'org-mode)
 
   :config
+  (require 'gptel-integrations)
   (setq gptel-backend gptel--openrouter
         gptel-model 'openai/gpt-4.1)
 
@@ -248,21 +249,16 @@ translation reads naturally to native speakers."
   (setq gptel-quick-backend gptel--openrouter
         gptel-quick-model 'openai/gpt-4.1))
 
-(use-package mcp-hub
-  :ensure nil
-  :load-path "vendor/"
+(use-package mcp
+  :pin melpa
   :after gptel
   :custom
   (mcp-hub-servers
    `(("time" . (:command "uvx" :args ("mcp-server-time" "--local-timezone" "Asia/Shanghai")))
-     )))
-
-(use-package gptel-mcp-tools
-  :ensure nil
-  :load-path "site-lisp/"
-  :after (gptel mcp-hub)
+     ("github" . ( :command "github-mcp-server" :args ("stdio")
+                   :env ( :GITHUB_PERSONAL_ACCESS_TOKEN ,(auth-source-pass-get 'secret "api-key/github"))))
+     ))
   :config
-  (mcp-hub-start-all-server #'gptel-mcp-tools-register)
-  (keymap-set my-toggle-map "t" #'gptel-mcp-tools-mode))
+  (require 'mcp-hub))
 
 (provide 'init-gpt)
