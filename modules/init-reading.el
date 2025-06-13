@@ -21,6 +21,7 @@
           "https://karpathy.bearblog.dev/feed/"
           "https://karthinks.com/tags/emacs/index.xml"
           "https://lethain.com/feeds/"
+          "https://lucumr.pocoo.org/feed.atom"
           "https://marco.org/rss"
           "https://martinfowler.com/feed.atom"
           "https://media.rss.com/around-the-prompt/feed.xml"
