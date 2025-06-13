@@ -146,32 +146,18 @@ translation reads naturally to native speakers."
         :context (list "translate")
         :callback #'my/gptel--callback-display-bottom)))
 
-  (defun my/gptel-read-documentation (symbol)
-    "Read the documentation for SYMBOL, which can be a function or variable."
-    (let ((sym (intern symbol)))
-      (cond
-       ((fboundp sym)
-        (documentation sym))
-       ((boundp sym)
-        (documentation-property sym 'variable-documentation))
-       (t
-        (format "No documentation found for %s" symbol)))))
-
-  (defun my/brave-search-query (query)
-    "Perform a web search using the Brave Search API with the given QUERY."
-    (let ((url-request-method "GET")
-          (url-request-extra-headers `(("X-Subscription-Token" . ,(auth-source-pass-get 'secret "api-key/brave-search"))))
-          (url (format "https://api.search.brave.com/res/v1/web/search?q=%s" (url-encode-url query))))
-      (with-current-buffer (url-retrieve-synchronously url)
-        (goto-char (point-min))
-        (when (re-search-forward "^$" nil 'move)
-          (let ((json-object-type 'hash-table)) ; Use hash-table for JSON parsing
-            (json-parse-string (buffer-substring-no-properties (point) (point-max))))))))
-
   (setq gptel-tools
         (list (gptel-make-tool
                :name "read_documentation"
-               :function #'my/gptel-read-documentation
+               :function (lambda (symbol)
+                           (let ((sym (intern symbol)))
+                             (cond
+                              ((fboundp sym)
+                               (documentation sym))
+                              ((boundp sym)
+                               (documentation-property sym 'variable-documentation))
+                              (t
+                               (format "No documentation found for %s" symbol)))))
                :description "Read the documentation for a given function or variable"
                :args (list '( :name "name"
                               :type string
@@ -234,7 +220,15 @@ translation reads naturally to native speakers."
                :category "web")
 
               (gptel-make-tool
-               :function #'my/brave-search-query
+               :function (lambda (query)
+                           (let ((url-request-method "GET")
+                                 (url-request-extra-headers `(("X-Subscription-Token" . ,(auth-source-pass-get 'secret "api-key/brave-search"))))
+                                 (url (format "https://api.search.brave.com/res/v1/web/search?q=%s" (url-encode-url query))))
+                             (with-current-buffer (url-retrieve-synchronously url)
+                               (goto-char (point-min))
+                               (when (re-search-forward "^$" nil 'move)
+                                 (let ((json-object-type 'hash-table)) ; Use hash-table for JSON parsing
+                                   (json-parse-string (buffer-substring-no-properties (point) (point-max))))))))
                :name "brave_search"
                :description "Perform a web search using the Brave Search API"
                :args (list '( :name "query"
