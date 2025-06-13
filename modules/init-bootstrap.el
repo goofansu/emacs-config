@@ -1,6 +1,3 @@
-;; Making custom-file disposable
-(setq custom-file (make-temp-file "emacs-custom-"))
-
 ;; Initializing package manager
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
