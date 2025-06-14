@@ -64,7 +64,6 @@
   (gptel-default-mode 'org-mode)
 
   :config
-  (require 'gptel-integrations)
   (setq gptel-backend gptel--openrouter
         gptel-model 'openai/gpt-4.1)
 
@@ -146,113 +145,115 @@ translation reads naturally to native speakers."
         :context (list "translate")
         :callback #'my/gptel--callback-display-bottom)))
 
+  ;; Tools
   (setq gptel-tools
-        (list (gptel-make-tool
-               :category "emacs"
-               :name "read_documentation"
-               :description "Read the documentation for a given function or variable"
-               :args (list '( :name "name"
-                              :type string
-                              :description "The name of the function or variable whose documentation is to be retrieved"))
-               :function (lambda (symbol)
-                           (let ((sym (intern symbol)))
-                             (cond
-                              ((fboundp sym)
-                               (documentation sym))
-                              ((boundp sym)
-                               (documentation-property sym 'variable-documentation))
-                              (t
-                               (format "No documentation found for %s" symbol))))))
+        (list
+         (gptel-make-tool
+          :confirm t
+          :category "command"
+          :name "run_command"
+          :description "Run a command."
+          :args (list '( :name "command"
+                         :type string
+                         :description "Command to run."))
+          :function (lambda (command)
+                      (with-temp-message (format "Running command: %s" command)
+                        (shell-command-to-string command))))
 
-              (gptel-make-tool
-               :category "emacs"
-               :name "read_buffer"
-               :description "Return the contents of an Emacs buffer"
-               :args (list '( :name "buffer"
-                              :type string
-                              :description "The name of the buffer whose contents are to be retrieved"))
-               :function (lambda (buffer)
-                           (unless (buffer-live-p (get-buffer buffer))
-                             (error "Error: buffer %s is not live." buffer))
-                           (with-current-buffer buffer
-                             (buffer-substring-no-properties (point-min) (point-max)))))
+         (gptel-make-tool
+          :category "emacs"
+          :name "read_buffer"
+          :description "Return the contents of an Emacs buffer"
+          :args (list '( :name "buffer"
+                         :type string
+                         :description "The name of the buffer whose contents are to be retrieved"))
+          :function (lambda (buffer)
+                      (unless (buffer-live-p (get-buffer buffer))
+                        (error "Error: buffer %s is not live." buffer))
+                      (with-current-buffer buffer
+                        (buffer-substring-no-properties (point-min) (point-max)))))
 
-              (gptel-make-tool
-               :confirm t
-               :category "command"
-               :name "run_command"
-               :description "Run a command."
-               :args (list '( :name "command"
-                              :type string
-                              :description "Command to run."))
-               :function (lambda (command)
-                           (with-temp-message (format "Running command: %s" command)
-                             (shell-command-to-string command))))
+         (gptel-make-tool
+          :category "emacs"
+          :name "read_documentation"
+          :description "Read the documentation for a given function or variable"
+          :args (list '( :name "name"
+                         :type string
+                         :description "The name of the function or variable whose documentation is to be retrieved"))
+          :function (lambda (symbol)
+                      (let ((sym (intern symbol)))
+                        (cond
+                         ((fboundp sym)
+                          (documentation sym))
+                         ((boundp sym)
+                          (documentation-property sym 'variable-documentation))
+                         (t
+                          (format "No documentation found for %s" symbol))))))
 
-              (gptel-make-tool
-               :category "filesystem"
-               :name "read_file"
-               :description "Read and display the contents of a file"
-               :args (list '( :name "filepath"
-                              :type string
-                              :description "Path to the file to read. Supports relative paths and ~."))
-               :function (lambda (filepath)
-                           (with-temp-buffer
-                             (insert-file-contents (expand-file-name filepath))
-                             (buffer-string))))
+         (gptel-make-tool
+          :category "filesystem"
+          :name "read_file"
+          :description "Read and display the contents of a file"
+          :args (list '( :name "filepath"
+                         :type string
+                         :description "Path to the file to read. Supports relative paths and ~."))
+          :function (lambda (filepath)
+                      (with-temp-buffer
+                        (insert-file-contents (expand-file-name filepath))
+                        (buffer-string))))
 
-              (gptel-make-tool
-               :category "web"
-               :name "read_url"
-               :description "Fetch and read the contents of a URL"
-               :args (list '( :name "url"
-                              :type string
-                              :description "The URL to read"))
-               :function (lambda (url)
-                           (with-current-buffer (url-retrieve-synchronously url)
-                             (goto-char (point-min))
-                             (forward-paragraph)
-                             (let ((dom (libxml-parse-html-region (point) (point-max))))
-                               (run-at-time 0 nil #'kill-buffer (current-buffer))
-                               (with-temp-buffer
-                                 (shr-insert-document dom)
-                                 (buffer-substring-no-properties (point-min) (point-max)))))))
+         (gptel-make-tool
+          :category "web"
+          :name "read_url"
+          :description "Fetch and read the contents of a URL"
+          :args (list '( :name "url"
+                         :type string
+                         :description "The URL to read"))
+          :function (lambda (url)
+                      (with-current-buffer (url-retrieve-synchronously url)
+                        (goto-char (point-min))
+                        (forward-paragraph)
+                        (let ((dom (libxml-parse-html-region (point) (point-max))))
+                          (run-at-time 0 nil #'kill-buffer (current-buffer))
+                          (with-temp-buffer
+                            (shr-insert-document dom)
+                            (buffer-substring-no-properties (point-min) (point-max)))))))))
 
-              (gptel-make-tool
-               :category "web"
-               :name "brave_search"
-               :description "Perform a web search using the Brave Search API"
-               :args (list '( :name "query"
-                              :type string
-                              :description "The search query string"))
-               :function (lambda (query)
-                           (let ((url-request-method "GET")
-                                 (url-request-extra-headers `(("X-Subscription-Token" . ,(auth-source-pass-get 'secret "api-key/brave-search"))))
-                                 (url (format "https://api.search.brave.com/res/v1/web/search?q=%s" (url-encode-url query))))
-                             (with-current-buffer (url-retrieve-synchronously url)
-                               (goto-char (point-min))
-                               (when (re-search-forward "^$" nil 'move)
-                                 (let ((json-object-type 'hash-table)) ; Use hash-table for JSON parsing
-                                   (json-parse-string (buffer-substring-no-properties (point) (point-max)))))))))
-              )))
+  ;; Presets
+  (gptel-make-preset 'default
+    :description "Default tools"
+    :backend "OpenRouter"
+    :model 'openai/gpt-4.1
+    :tools (mapcar #'gptel-tool-name gptel-tools))
+
+  (gptel-make-preset 'github
+    :description "GitHub tasks"
+    :backend "OpenRouter"
+    :model 'openai/gpt-4.1
+    :tools '("get_issue" "list_issues" "get_pull_request" "list_pull_requests" "get_pull_request_files")))
 
 (use-package gptel-quick
   :vc (gptel-quick :url "https://github.com/karthink/gptel-quick.git")
   :bind (:map embark-general-map ("?" . gptel-quick))
   :config
   (setq gptel-quick-backend gptel--openrouter
-        gptel-quick-model 'openai/gpt-4.1))
+        gptel-quick-model 'openai/gpt-4.1-mini))
 
 (use-package mcp
   :pin melpa
   :after gptel
   :custom
   (mcp-hub-servers
-   `(("time" . (:command "uvx" :args ("mcp-server-time" "--local-timezone" "Asia/Shanghai")))
-     ("github" . ( :command "github-mcp-server" :args ("stdio")
-                   :env ( :GITHUB_PERSONAL_ACCESS_TOKEN ,(auth-source-pass-get 'secret "api-key/github"))))
+   `(("time" . ( :command "uvx"
+                 :args ("mcp-server-time" "--local-timezone" "Asia/Shanghai")))
+
+     ("github" . ( :command "github-mcp-server"
+                   :args ("stdio")
+                   :env ( :GITHUB_PERSONAL_ACCESS_TOKEN ,(auth-source-pass-get 'secret "api-key/github")
+                          :GITHUB_TOOLSETS "issues,pull_requests")))
      ))
   :config
-  (require 'mcp-hub))
+  (require 'gptel-integrations)
+  (mcp-hub-start-all-server #'gptel-mcp-connect))
 
 (provide 'init-gpt)
