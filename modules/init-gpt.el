@@ -234,23 +234,18 @@ translation reads naturally to native speakers."
     :tools '("read_documentation"))
 
   (gptel-make-preset 'web
-    :description "Search web for reference"
+    :description "Search web"
     :backend "OpenRouter"
     :model 'openai/gpt-4.1
     :tools '("read_url" "web_search_exa"))
 
-  (gptel-make-preset 'wiki
-    :description "Search Wikipedia for reference"
+  (gptel-make-preset 'coding
+    :description "Coding tasks"
     :backend "OpenRouter"
-    :model 'openai/gpt-4.1
-    :system "Search Wikipedia and respond with the source links."
-    :tools '("wikipedia_search_exa"))
-
-  (gptel-make-preset 'github
-    :description "GitHub tasks"
-    :backend "OpenRouter"
-    :model 'openai/gpt-4.1
-    :tools '("get_issue" "list_issues" "get_pull_request" "list_pull_requests" "get_pull_request_files")))
+    :model 'anthropic/claude-sonnet-4
+    :system "You are an expert coding assistant. Your role is to provide high-quality code solutions, refactorings, and explanations."
+    :tools '("read_buffer" "read_file" "run_command" "get_pull_request" "get_pull_request_files"))
+  )
 
 (use-package gptel-quick
   :vc (gptel-quick :url "https://github.com/karthink/gptel-quick.git")
@@ -270,7 +265,7 @@ translation reads naturally to native speakers."
                           :GITHUB_TOOLSETS "issues,pull_requests")))
 
      ("exa" . ( :command "npx"
-                :args ("-y", "exa-mcp-server", "--tools=web_search_exa,wikipedia_search_exa")
+                :args ("-y", "exa-mcp-server", "--tools=web_search_exa")
                 :env ( :EXA_API_KEY ,(auth-source-pass-get 'secret "api-key/exa-ai"))))
      ))
   :config
