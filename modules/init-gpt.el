@@ -226,6 +226,26 @@ translation reads naturally to native speakers."
     :model 'openai/gpt-4.1
     :tools (mapcar #'gptel-tool-name gptel-tools))
 
+  (gptel-make-preset 'emacs
+    :description "Emacs documentation"
+    :backend "OpenRouter"
+    :model 'openai/gpt-4.1
+    :system "You are an Emacs expert, respond with examples."
+    :tools '("read_documentation"))
+
+  (gptel-make-preset 'web
+    :description "Search web for reference"
+    :backend "OpenRouter"
+    :model 'openai/gpt-4.1
+    :tools '("read_url" "web_search_exa"))
+
+  (gptel-make-preset 'wiki
+    :description "Search Wikipedia for reference"
+    :backend "OpenRouter"
+    :model 'openai/gpt-4.1
+    :system "Search Wikipedia and respond with the source links."
+    :tools '("wikipedia_search_exa"))
+
   (gptel-make-preset 'github
     :description "GitHub tasks"
     :backend "OpenRouter"
@@ -244,13 +264,14 @@ translation reads naturally to native speakers."
   :after gptel
   :custom
   (mcp-hub-servers
-   `(("time" . ( :command "uvx"
-                 :args ("mcp-server-time" "--local-timezone" "Asia/Shanghai")))
-
-     ("github" . ( :command "github-mcp-server"
+   `(("github" . ( :command "github-mcp-server"
                    :args ("stdio")
                    :env ( :GITHUB_PERSONAL_ACCESS_TOKEN ,(auth-source-pass-get 'secret "api-key/github")
                           :GITHUB_TOOLSETS "issues,pull_requests")))
+
+     ("exa" . ( :command "npx"
+                :args ("-y", "exa-mcp-server", "--tools=web_search_exa,wikipedia_search_exa")
+                :env ( :EXA_API_KEY ,(auth-source-pass-get 'secret "api-key/exa-ai"))))
      ))
   :config
   (require 'gptel-integrations)
