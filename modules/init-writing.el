@@ -35,7 +35,34 @@
 
   ;; Capture
   (org-capture-templates
-   `(("e" "Email" entry ; Also see `org-capture-templates-contexts'
+   `(("c" "Note" entry
+      (file "notes.org")
+      ,(concat "* %^{Title} %^g\n"
+               ":PROPERTIES:\n"
+               ":CAPTURED: %U\n"
+               ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
+               ":END:\n\n"
+               "%a\n%?")
+      :empty-lines 1)
+     ("j" "Journal" entry
+      (file+olp+datetree "journal.org")
+      ,(concat "* %^{Title} %^g\n"
+               ":PROPERTIES:\n"
+               ":CAPTURED: %U\n"
+               ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
+               ":END:\n\n"
+               "%a\n%?")
+      :empty-lines 1)
+     ("t" "Task" entry
+      (file "tasks.org")
+      ,(concat "* TODO %^{Title} %^g\n"
+               ":PROPERTIES:\n"
+               ":CAPTURED: %U\n"
+               ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
+               ":END:\n\n"
+               "%a\n%?")
+      :empty-lines 1)
+     ("e" "Email" entry ; Also see `org-capture-templates-contexts'
       (file "tasks.org")
       ,(concat "* TODO %:subject :mail:\n"
                ":PROPERTIES:\n"
@@ -44,16 +71,6 @@
                ":END:\n\n"
                "%a\n%i%?")
       :prepend t)
-     ("c" "Fleeting note" entry
-      (file "notes.org")
-      ,(concat "* %^{Title}%^g\n"
-               ":PROPERTIES:\n"
-               ":CAPTURED: %U\n"
-               ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
-               ":END:\n\n"
-               "%a\n%?")
-      :jump-to-captured nil
-      :empty-lines 1)
      ("r" "Reference note" plain
       (file denote-last-path)
       (function
