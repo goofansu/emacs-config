@@ -43,7 +43,7 @@
                ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
                ":END:\n\n"
                "%a\n%?")
-      :empty-lines 1)
+      :empty-lines-before 1)
      ("j" "Journal" entry
       (file+olp+datetree "journal.org")
       ,(concat "* %^{Title} %^g\n"
@@ -52,7 +52,7 @@
                ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
                ":END:\n\n"
                "%a\n%?")
-      :empty-lines 1)
+      :empty-lines-after 1)
      ("t" "Task" entry
       (file "tasks.org")
       ,(concat "* TODO %^{Title} %^g\n"
@@ -61,7 +61,8 @@
                ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
                ":END:\n\n"
                "%a\n%?")
-      :empty-lines 1)
+      :empty-lines-after 1
+      :prepend t)
      ("e" "Email" entry ; Also see `org-capture-templates-contexts'
       (file "tasks.org")
       ,(concat "* TODO %:subject :mail:\n"
@@ -69,7 +70,9 @@
                ":CAPTURED: %U\n"
                ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
                ":END:\n\n"
-               "%a\n%i%?")
+               "%a")
+      :immediate-finish t
+      :empty-lines-after 1
       :prepend t)
      ("r" "Reference note" plain
       (file denote-last-path)
