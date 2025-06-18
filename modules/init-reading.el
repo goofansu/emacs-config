@@ -9,6 +9,7 @@
           "https://danturkel.com/feeds/rss.xml"
           "https://dev.37signals.com/feed/posts.xml"
           "https://developer.chrome.com/static/blog/feed.xml"
+          "https://feed.thoughtbot.com/"
           "https://feeds.feedburner.com/ihower"
           "https://ferd.ca/feed.rss"
           "https://fly.io/phoenix-files/feed.xml"
