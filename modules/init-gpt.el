@@ -237,15 +237,7 @@ translation reads naturally to native speakers."
     :description "Search web"
     :backend "OpenRouter"
     :model 'openai/gpt-4.1
-    :tools '("read_url" "web_search_exa"))
-
-  (gptel-make-preset 'coding
-    :description "Coding tasks"
-    :backend "OpenRouter"
-    :model 'anthropic/claude-sonnet-4
-    :system "You are an expert coding assistant. Your role is to provide high-quality code solutions, refactorings, and explanations."
-    :tools '("read_buffer" "read_file" "run_command" "get_pull_request" "get_pull_request_files"))
-  )
+    :tools '("read_url" "web_search_exa")))
 
 (use-package gptel-quick
   :vc (gptel-quick :url "https://github.com/karthink/gptel-quick.git")
