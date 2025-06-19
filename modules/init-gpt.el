@@ -237,7 +237,20 @@ translation reads naturally to native speakers."
     :description "Search web"
     :backend "OpenRouter"
     :model 'openai/gpt-4.1
-    :tools '("read_url" "web_search_exa")))
+    :tools '("read_url"
+             "web_search_exa"))
+
+  (gptel-make-preset 'github
+    :description "GitHub tasks"
+    :backend "OpenRouter"
+    :model 'openai/gpt-4.1
+    :tools '("get_issue"
+             "get_issue_comments"
+             "get_pull_request"
+             "get_pull_request_comments"
+             "get_pull_request_diff"
+             "get_pull_request_files"))
+  )
 
 (use-package gptel-quick
   :vc (gptel-quick :url "https://github.com/karthink/gptel-quick.git")
