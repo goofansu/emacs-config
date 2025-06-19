@@ -49,7 +49,26 @@
                  :context-window 200
                  :input-cost 1.10
                  :output-cost 4.40
-                 :cutoff-date "2024-05"))))
+                 :cutoff-date "2024-05")
+                (google/gemini-2.5-flash
+                 :description "Best model in terms of price-performance, offering well-rounded capabilities."
+                 :capabilities (tool-use json media)
+                 :mime-types ("image/png" "image/jpeg" "image/webp" "image/heic" "image/heif"
+                              "application/pdf" "text/plain" "text/csv" "text/html")
+                 :context-window 1048 ; 65536 output token limit
+                 :input-cost 0.3
+                 :output-cost 2.50
+                 :cutoff-date "2025-01")
+                (google/gemini-2.5-pro
+                 :description "State-of-the-art thinking model, capable of reasoning over complex problems"
+                 :capabilities (tool-use json media)
+                 :mime-types ("image/png" "image/jpeg" "image/webp" "image/heic" "image/heif"
+                              "application/pdf" "text/plain" "text/csv" "text/html")
+                 :context-window 1048 ; 65536 output token limit
+                 :input-cost 1.25 ; 2.50 for >200k tokens
+                 :output-cost 10.00 ; 15 for >200k tokens
+                 :cutoff-date "2025-01")
+                )))
 
   :bind
   (("C-c <return>" . gptel-send)
@@ -66,15 +85,6 @@
   :config
   (setq gptel-backend gptel--openrouter
         gptel-model 'openai/gpt-4.1)
-
-  (gptel-make-gemini "Google"
-    :key (lambda () (auth-source-pass-get 'secret "api-key/gemini"))
-    :stream t
-    :models
-    (cl-remove-if-not
-     (lambda (model)
-       (string-prefix-p "gemini-2.5" (symbol-name (car model))))
-     gptel--gemini-models))
 
   (defun my/gptel-chat ()
     (interactive)
