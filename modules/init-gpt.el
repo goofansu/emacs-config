@@ -250,6 +250,14 @@ translation reads naturally to native speakers."
     :tools '("read_url"
              "web_search_exa"))
 
+  (gptel-make-preset 'wiki
+    :description "Search Wikipedia"
+    :backend "OpenRouter"
+    :model 'openai/gpt-4
+    :system "Search wikipedia, respond with source links."
+    :tools '("read_url"
+             "wikipedia_search_exa"))
+
   (gptel-make-preset 'github
     :description "GitHub tasks"
     :backend "OpenRouter"
@@ -280,7 +288,7 @@ translation reads naturally to native speakers."
                           :GITHUB_TOOLSETS "issues,pull_requests")))
 
      ("exa" . ( :command "npx"
-                :args ("-y", "exa-mcp-server", "--tools=web_search_exa")
+                :args ("-y", "exa-mcp-server", "--tools=web_search_exa,wikipedia_search_exa")
                 :env ( :EXA_API_KEY ,(auth-source-pass-get 'secret "api-key/exa-ai"))))
      ))
   :config
