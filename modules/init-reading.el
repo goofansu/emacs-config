@@ -4,6 +4,7 @@
   (setq elfeed-db-directory (expand-file-name ".elfeed/" my-sync-directory))
   (setq elfeed-feeds
         '("https://andrealeopardi.com/feed.xml"
+          "https://blog.appsignal.com/feed.xml"
           "https://bzg.fr/en/index.xml"
           "https://daniel.haxx.se/blog/feed/"
           "https://danturkel.com/feeds/rss.xml"
@@ -36,6 +37,7 @@
           "https://sachachua.com/blog/category/emacs/feed/"
           "https://simonwillison.net/atom/everything/"
           "https://sive.rs/en.atom"
+          "https://spiess.dev/feed.xml"
           "https://webkit.org/feed/atom/"
           "https://world.hey.com/bb/feed.atom"
           "https://world.hey.com/dhh/feed.atom"
