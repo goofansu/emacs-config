@@ -292,20 +292,10 @@ This function is ideal for managing referenced files in note-taking workflows."
     (consult-denote-mode 1))
   :bind
   (("C-c n f" . consult-denote-find)
-   ("C-c n F" . my/consult-denote-find-today)
    ("C-c n g" . consult-denote-grep))
   :custom
   (consult-denote-find-command #'consult-fd)
-  (consult-denote-grep-command #'consult-ripgrep)
-  :config
-  (defun my/consult-denote-find-today ()
-    "Call `consult-denote-find-command' in `denote-directory' using the current date."
-    (declare (interactive-only t))
-    (interactive)
-    (let ((initial (format-time-string "%Y%m%d")))
-      (funcall-interactively consult-denote-find-command
-                             (denote-directory)
-                             initial))))
+  (consult-denote-grep-command #'consult-ripgrep))
 
 (use-package denote-explore
   :pin melpa
