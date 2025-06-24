@@ -7,8 +7,7 @@
 
 (use-package move-text
   :pin melpa
-  :config
-  (move-text-default-bindings))
+  :hook (after-init . move-text-default-bindings))
 
 (use-package multiple-cursors
   :pin nongnu
