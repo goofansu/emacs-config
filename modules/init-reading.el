@@ -3,8 +3,10 @@
   :init
   (setq elfeed-db-directory (expand-file-name ".elfeed/" my-sync-directory))
   (setq elfeed-feeds
-        '("https://andrealeopardi.com/feed.xml"
+        '("https://abdullin.com/atom.xml"
+          "https://andrealeopardi.com/feed.xml"
           "https://blog.appsignal.com/feed.xml"
+          "https://blog.cloud-mes.com/atom.xml"
           "https://bzg.fr/en/index.xml"
           "https://daniel.haxx.se/blog/feed/"
           "https://danturkel.com/feeds/rss.xml"
@@ -49,7 +51,9 @@
           "https://www.inkandswitch.com/index.xml"
           "https://www.masteringemacs.org/feed"
           "https://www.mikeperham.com/index.xml"
-          "https://www.theerlangelist.com/rss"))
+          "https://www.theerlangelist.com/rss"
+          "https://yiming.dev/rss.xml"
+          ))
 
   :bind
   (("C-c e" . elfeed)
