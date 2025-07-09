@@ -46,7 +46,8 @@
    ("o" . embark-aw-bookmark-jump))
 
   :custom
-  (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+  (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  (aw-scope 'frame))
 
 (use-package popper
   :hook after-init
