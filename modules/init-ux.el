@@ -24,8 +24,6 @@
                 logos-hide-fringe t
                 logos-variable-pitch t
                 logos-olivetti t)
-  :hook
-  (elfeed-show-mode . logos-focus-mode)
   :bind
   (("C-x n n" . logos-narrow-dwim)
    ("C-x ]" . logos-forward-page-dwim)
