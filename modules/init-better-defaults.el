@@ -61,31 +61,39 @@
   :config
   (defun my/yank-file-path (&optional buffer dir)
     "Save the buffer path into the kill-ring.
-If BUFFER is not nil, find filename of BUFFER, otherwise, find
-filename of `current-buffer'. If DIR is not nil, get a relative
-file path, otherwise, get a full file path with
-`abbreviate-file-name'."
+If BUFFER is not nil, find filename of BUFFER, otherwise, find filename of `current-buffer'.
+If DIR is not nil, get a relative file path, otherwise, get a full file path.
+When region is active, includes line numbers (e.g., file.rb#L1 or file.rb#L1-L10)."
     (interactive)
-    (if-let* ((filename (if buffer
-                            (buffer-file-name buffer)
-                          (buffer-file-name)))
-              (path (if dir
-                        (file-relative-name filename dir)
-                      (abbreviate-file-name filename))))
-        (progn
-          (kill-new path)
-          (message "Copied path: %s" path))
-      (user-error "Buffer is not visiting any file")))
+    (let* ((target-buffer (or buffer (current-buffer)))
+           (filename (buffer-file-name target-buffer))
+           (file-path (if filename
+                          (if dir
+                              (file-relative-name filename dir)
+                            filename)
+                        (buffer-name target-buffer)))
+           (reference (if (use-region-p)
+                          (let ((start-line (line-number-at-pos (region-beginning)))
+                                (end-line (line-number-at-pos (region-end))))
+                            (if (= start-line end-line)
+                                (format "%s#L%d" file-path start-line)
+                              (format "%s#L%d-L%d" file-path start-line end-line)))
+                        file-path)))
+      (kill-new reference)
+      (message "Copied path: %s" reference)))
 
-  (defun my/yank-file-path-relative-to-project ()
-    "Save the relative buffer path into the kill-ring.
-The path is relative to `project-current'."
+  (defun my/yank-file-path-relative-to-project (&optional buffer)
+    "Save the buffer path into the kill-ring.
+If BUFFER is not nil, use that buffer, otherwise use current buffer.
+If in a project, the path is relative to project root.
+If not in a project, uses the full file path.
+When region is active, includes line numbers (e.g., file.rb#L1 or file.rb#L1-L10)."
     (interactive)
     (let ((project-root-dir
            (condition-case nil
                (project-root (project-current))
              (error nil))))
-      (my/yank-file-path nil project-root-dir)))
+      (my/yank-file-path buffer project-root-dir)))
 
   (defun my/delete-this-file ()
     "Kill the current buffer and deletes the file it is visiting."
