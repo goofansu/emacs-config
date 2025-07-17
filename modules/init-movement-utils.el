@@ -119,7 +119,6 @@ With optional argument FRAME, return the list of buffers of FRAME."
 
   (defvar consult--source-beframe
     `( :name     "Buffer (current frame)"
-       :narrow   ?F
        :category buffer
        :face     consult-buffer
        :history  beframe-history
