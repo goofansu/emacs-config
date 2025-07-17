@@ -1,9 +1,33 @@
 (use-package elfeed
   :pin melpa
   :init
+  (setq elfeed-db-directory (expand-file-name ".elfeed/" my-sync-directory))
   (setq elfeed-feeds
-        '("https://sachachua.com/blog/category/emacs-news/feed/"
-          "https://world.hey.com/this.week.in.rails/feed.atom"))
+        '("https://addyosmani.com/rss.xml"
+          "https://andrealeopardi.com/feed.xml"
+          "https://dev.37signals.com/feed/posts.xml"
+          "https://ferd.ca/feed.rss"
+          "https://herman.bearblog.dev/feed/"
+          "https://huyenchip.com/feed.xml"
+          "https://jvns.ca/atom.xml"
+          "https://karpathy.bearblog.dev/feed/"
+          "https://karthinks.com/tags/emacs/index.xml"
+          "https://lucumr.pocoo.org/feed.atom"
+          "https://martinfowler.com/feed.atom"
+          "https://mitchellh.com/feed.xml"
+          "https://overreacted.io/atom.xml"
+          "https://paolino.me/feed.xml"
+          "https://protesilaos.com/codelog.xml"
+          "https://railsatscale.com/feed.xml"
+          "https://simonwillison.net/atom/everything/"
+          "https://sive.rs/en.atom"
+          "https://world.hey.com/bb/feed.atom"
+          "https://world.hey.com/dhh/feed.atom"
+          "https://world.hey.com/jason/feed.atom"
+          "https://world.hey.com/jorge/feed.atom"
+          "https://www.mikeperham.com/index.xml"
+          "https://www.mitchellhanberg.com/feed.xml"
+          "https://www.ryansinger.co/rss/"))
 
   :bind
   (("C-c e" . elfeed)
