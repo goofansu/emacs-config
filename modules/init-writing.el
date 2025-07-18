@@ -124,14 +124,6 @@
   :config
   (global-org-modern-mode))
 
-(use-package org-anki
-  :pin melpa
-  :after org
-  :custom
-  (org-anki-default-deck "Default")
-  (org-anki-default-match "@anki&todo<>\"TODO\"")
-  (org-anki-inherit-tags nil))
-
 (use-package ox-hugo
   :pin melpa
   :after org
