@@ -1,8 +1,6 @@
 (use-package yaml-mode
   :pin nongnu
-  :defer t
-  :mode "Procfile\\'"
-  :mode "Procfile\\.dev\\'")
+  :mode ("Procfile\\'" "Procfile\\.dev\\'"))
 
 (use-package yaml-pro
   :pin melpa

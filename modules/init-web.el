@@ -1,8 +1,6 @@
 (use-package web-mode
   :pin nongnu
-  :defer t
-  :mode "\\.erb\\'"
-  :mode "\\.vue\\'"
+  :mode ("\\.erb\\'" "\\.vue\\'")
   :custom
   (web-mode-markup-indent-offset 2)
   (web-mode-css-indent-offset 2)
