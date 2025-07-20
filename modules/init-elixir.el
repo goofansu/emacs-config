@@ -1,5 +1,6 @@
 (use-package elixir-ts-mode
   :ensure nil
+  :mode ("\\.elixir\\'" "\\.ex\\'" "\\.exs\\'" "mix\\.lock")
   :config
   (defun elixir-format-before-save ()
     (add-hook 'before-save-hook #'eglot-format-buffer nil t))
