@@ -291,6 +291,6 @@ This function is ideal for managing referenced files in note-taking workflows."
 
 (use-package denote-explore
   :pin melpa
-  :after denote)
+  :bind ("C-c n x" . denote-explore-sync-metadata))
 
 (provide 'init-writing)
