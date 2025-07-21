@@ -5,6 +5,7 @@
   (setq elfeed-feeds
         '("https://addyosmani.com/rss.xml"
           "https://andrealeopardi.com/feed.xml"
+          "https://antirez.com/rss"
           "https://dev.37signals.com/feed/posts.xml"
           "https://ferd.ca/feed.rss"
           "https://herman.bearblog.dev/feed/"
