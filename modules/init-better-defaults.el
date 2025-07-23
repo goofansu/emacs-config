@@ -246,6 +246,7 @@ FILE-LINE should be in the format 'file:line' relative to the project root."
 
 (use-package desktop
   :ensure nil
+  :disabled t
   :init
   (setq desktop-dirname user-emacs-directory)
   :hook (after-init . desktop-save-mode))
