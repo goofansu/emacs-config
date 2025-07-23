@@ -226,9 +226,9 @@ FILE-LINE should be in the format 'file:line' relative to the project root."
   (dired-dwim-target t))
 
 (use-package dired-preview
-  :after dired
-  :config
-  (dired-preview-global-mode 1))
+  :hook dired-mode
+  :custom
+  (dired-preview-trigger-on-start nil))
 
 (use-package ffap
   :bind ("M-m" . ffap-menu)
