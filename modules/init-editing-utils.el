@@ -1,6 +1,10 @@
 (use-package apheleia
   :pin melpa
-  :bind ("C-c f" . apheleia-format-buffer))
+  :hook python-mode
+  :bind ("C-c f" . apheleia-format-buffer)
+  :config
+  (setf (alist-get 'python-mode apheleia-mode-alist)
+        '(ruff-isort ruff)))
 
 (use-package avy
   :bind (:map goto-map ("c" . avy-goto-char-timer)))
