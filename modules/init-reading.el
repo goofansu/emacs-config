@@ -10,6 +10,7 @@
           "https://ferd.ca/feed.rss"
           "https://herman.bearblog.dev/feed/"
           "https://huyenchip.com/feed.xml"
+          "https://irreal.org/blog/?feed=rss2"
           "https://jvns.ca/atom.xml"
           "https://karpathy.bearblog.dev/feed/"
           "https://karthinks.com/tags/emacs/index.xml"
