@@ -52,27 +52,34 @@
   (notmuch-saved-searches
    `(( :name "home"
        :query "tag:inbox and path:Home/**"
+       :count-query "tag:inbox and tag:unread and path:Home/**"
        :sort-order newest-first
        :key ,(kbd "h"))
      ( :name "work"
        :query "tag:inbox and path:Work/**"
+       :count-query "tag:inbox and tag:unread and path:Work/**"
        :sort-order newest-first
        :key ,(kbd "w"))
      ( :name "github"
-       :query "tag:inbox and from:notifications@github.com"
-       :count-query "tag:inbox and tag:unread and from:notifications@github.com"
+       :query "tag:inbox and from:github.com"
+       :count-query "tag:inbox and tag:unread and from:github.com"
        :sort-order 'newest-first
        :key ,(kbd "g"))
      ( :name "jira"
        :query "tag:inbox and from:atlassian.net"
-       :count-query "tag:inbox and tag:unread and from:jira@fariaedu.atlassian.net"
+       :count-query "tag:inbox and tag:unread and from:atlassian.net"
        :sort-order 'newest-first
        :key ,(kbd "j"))
      ( :name "bamboohr"
        :query "tag:inbox and from:bamboohr.com"
-       :count-query "tag:inbox and tag:unread and from:notifications@app.bamboohr.com"
+       :count-query "tag:inbox and tag:unread and from:bamboohr.com"
        :sort-order 'newest-first
        :key ,(kbd "b"))
+     ( :name "expensify"
+       :query "tag:inbox and from:expensify.com"
+       :count-query "tag:inbox and tag:unread and from:expensify.com"
+       :sort-order 'newest-first
+       :key ,(kbd "e"))
      ))
   ;; Compose
   (notmuch-always-prompt-for-sender nil)
