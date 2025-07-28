@@ -58,9 +58,16 @@
   (defun my/elfeed-eww ()
     (interactive)
     (let ((browse-url-browser-function #'eww))
-      (pcase major-mode
-        ('elfeed-search-mode (elfeed-search-browse-url))
-        ('elfeed-show-mode (elfeed-show-visit)))))
+      (cl-case major-mode
+        (elfeed-search-mode
+         (my/elfeed-browse-with-eww #'elfeed-search-browse-url))
+        (elfeed-show-mode
+         (my/elfeed-browse-with-eww #'elfeed-show-visit)))))
+
+  (defun my/elfeed-browse-with-eww (browse-function)
+    "Browse using EWW and enable readable mode."
+    (funcall browse-function)
+    (add-hook 'eww-after-render-hook #'eww-readable nil t))
 
   ;; Org export uses Elfeed entry's original link
   ;; https://takeonrules.com/2024/08/11/exporting-org-mode-elfeed-links/
