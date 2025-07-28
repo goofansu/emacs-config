@@ -1,6 +1,6 @@
 (use-package web-mode
   :pin nongnu
-  :mode ("\\.erb\\'" "\\.vue\\'")
+  :mode ("\\.html\\'" "\\.erb\\'" "\\.vue\\'")
   :custom
   (web-mode-markup-indent-offset 2)
   (web-mode-css-indent-offset 2)
@@ -36,8 +36,7 @@
   :custom
   (coffee-tab-width 2))
 
-(use-package emmet-mode
-  :pin melpa
+(use-package rainbow-mode
   :hook (web-mode heex-ts-mode))
 
 (provide 'init-web)
