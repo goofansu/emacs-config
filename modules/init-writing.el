@@ -50,9 +50,9 @@
                ":PROPERTIES:\n"
                ":CAPTURED: %U\n"
                ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
-               ":END:\n\n"
-               "%a\n%?")
-      :empty-lines-after 1)
+               ":END:")
+      :immediate-finish t
+      :empty-lines-before 1)
      ("t" "Task" entry
       (file "tasks.org")
       ,(concat "* TODO %^{Title} %^g\n"
