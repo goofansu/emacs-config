@@ -4,7 +4,7 @@
 
 (use-package devdocs
   :hook
-  (ruby-ts-mode . (lambda () (setq-local devdocs-current-docs '("ruby~3.3" "rails~7.0"))))
+  (ruby-ts-mode . (lambda () (setq-local devdocs-current-docs '("ruby~3.3" "rails~7.2" "rails~8.0"))))
   (elixir-ts-mode . (lambda () (setq-local devdocs-current-docs '("elixir~1.18" "phoenix"))))
   ((web-mode haml-mode heex-ts-mode) . (lambda () (setq-local devdocs-current-docs '("html" "css" "javascript" "tailwindcss"))))
   :bind
