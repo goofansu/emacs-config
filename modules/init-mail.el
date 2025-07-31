@@ -92,6 +92,7 @@
 
 (use-package notmuch-indicator
   :init
+  ;; TODO Remove when https://github.com/protesilaos/notmuch-indicator/pull/6 is released
   (setq notmuch-indicator-notmuch-config-file
         (expand-file-name "~/.config/notmuch/default/config"))
   :custom
