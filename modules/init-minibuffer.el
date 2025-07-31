@@ -1,13 +1,6 @@
 (use-package vertico
   :init
-  ;; Support opening new minibuffers from inside existing minibuffers.
-  (setq enable-recursive-minibuffers t)
-  ;; Hide commands in M-x which do not work in the current mode.
-  (setq read-extended-command-predicate #'command-completion-default-include-p)
-  ;; Do not allow the cursor in the minibuffer prompt.
-  (setq minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt))
-  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
-  :hook after-init
+  (vertico-mode 1)
   :custom
   (vertico-cycle t))
 
@@ -109,7 +102,7 @@
    ("L" . consult-line-multi)
    ("r" . consult-ripgrep)
    ("e" . consult-isearch-history)
-   :map minibuffer-local-map
+   :map vertico-map
    ("M-s" . consult-history)
    ("M-r" . consult-history))
 
@@ -133,7 +126,7 @@
   (([remap describe-bindings] . embark-bindings)
    ("C-;" . embark-act)
    ("M-." . embark-dwim)
-   :map minibuffer-local-map
+   :map vertico-map
    ("C-;" . embark-act)
    ("C-c C-;" . embark-export)
    ("C-c C-l" . embark-collect)
