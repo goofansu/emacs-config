@@ -31,8 +31,8 @@
   :bind
   (:map vertico-map
         ("M-i" . vertico-quick-insert)
-        ("'" . vertico-quick-exit)
-        ("C-'" . my/vertico-quick-embark))
+        ("," . vertico-quick-exit)
+        ("C-," . my/vertico-quick-embark))
   :config
   (defun my/vertico-quick-embark (&optional arg)
     "Embark on candidate using quick keys."

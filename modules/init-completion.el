@@ -14,7 +14,7 @@
 (use-package corfu-quick
   :ensure nil
   :after corfu
-  :bind (:map corfu-map ("'" . corfu-quick-complete)))
+  :bind (:map corfu-map ("," . corfu-quick-complete)))
 
 (use-package corfu-history
   :ensure nil
