@@ -264,7 +264,6 @@ This function is ideal for managing referenced files in note-taking workflows."
               (insert (format "[[file:attachments/%s]]" renamed-name)))))))))
 
 (use-package denote-journal
-  :after denote
   :bind ("C-c n j" . denote-journal-new-entry))
 
 (use-package denote-sequence
