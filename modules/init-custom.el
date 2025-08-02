@@ -2,7 +2,7 @@
 (setq custom-file (make-temp-file "emacs-custom-"))
 
 ;; Directories
-(defvar my-src-directory "~/src/"
+(defvar my-code-directory "~/code/"
   "Directory for source code repos.")
 
 (defvar my-sync-directory "~/Library/CloudStorage/Dropbox/"

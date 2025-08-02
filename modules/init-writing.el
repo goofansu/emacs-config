@@ -1,4 +1,4 @@
-(defvar my-notes-directory (expand-file-name "notes/" my-src-directory))
+(defvar my-notes-directory (expand-file-name "notes/" my-code-directory))
 (defvar my-notes-reference-file (expand-file-name "reference.bib" my-notes-directory))
 (defvar my-notes-attachments-directory (expand-file-name "attachments/" my-notes-directory))
 
