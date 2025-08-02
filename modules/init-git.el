@@ -40,7 +40,7 @@
    ("C-c g p s" . consult-gh-search-prs))
   :custom
   (consult-gh-topic-major-mode 'org-mode)
-  (consult-gh-default-clone-directory my-src-directory)
+  (consult-gh-default-clone-directory my-code-directory)
   (consult-gh-repo-action #'consult-gh--repo-browse-url-action)
   :config
   (add-to-list 'savehist-additional-variables 'consult-gh--known-orgs-list)

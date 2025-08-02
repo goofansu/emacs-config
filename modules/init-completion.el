@@ -45,7 +45,7 @@
    ("C-c T" . my/tempel-find-template-file))
   :custom
   (tempel-path (list (expand-file-name "templates/*.eld" user-emacs-directory)
-                     (expand-file-name "tempel-templates/*.eld" my-src-directory)))
+                     (expand-file-name "tempel-templates/*.eld" my-code-directory)))
   :config
   (defun my/tempel-find-template-file ()
     "List template files and open the selected one."
