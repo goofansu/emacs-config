@@ -18,14 +18,6 @@
                  :input-cost 3
                  :output-cost 15
                  :cutoff-date "2025-03")
-                (openai/gpt-4.1
-                 :description "Flagship model for complex tasks"
-                 :capabilities (media tool-use json url)
-                 :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
-                 :context-window 1024
-                 :input-cost 2.0
-                 :output-cost 8.0
-                 :cutoff-date "2024-05")
                 (openai/gpt-4.1-mini
                  :description "Balance between intelligence, speed and cost"
                  :capabilities (media tool-use json url)
@@ -119,57 +111,7 @@ explanations, notes, or commentary. Maintain all original formatting
 including paragraphs, bullet points, and emphasis while ensuring the
 translation reads naturally to native speakers."
         :context (list "translate")
-        :callback #'my/gptel--callback-display-bottom)))
-
-  ;; Tools
-  (gptel-make-tool
-   :category "emacs"
-   :name "read_documentation"
-   :description "Read the documentation for a given function or variable"
-   :args (list '( :name "name"
-                  :type string
-                  :description "The name of the function or variable whose documentation is to be retrieved"))
-   :function (lambda (symbol)
-               (let ((sym (intern symbol)))
-                 (cond
-                  ((fboundp sym)
-                   (documentation sym))
-                  ((boundp sym)
-                   (documentation-property sym 'variable-documentation))
-                  (t
-                   (format "No documentation found for %s" symbol))))))
-
-  (gptel-make-tool
-   :category "web"
-   :name "read_url"
-   :description "Fetch and read the contents of a URL"
-   :args (list '( :name "url"
-                  :type string
-                  :description "The URL to read"))
-   :function (lambda (url)
-               (with-current-buffer (url-retrieve-synchronously url)
-                 (goto-char (point-min))
-                 (forward-paragraph)
-                 (let ((dom (libxml-parse-html-region (point) (point-max))))
-                   (run-at-time 0 nil #'kill-buffer (current-buffer))
-                   (with-temp-buffer
-                     (shr-insert-document dom)
-                     (buffer-substring-no-properties (point-min) (point-max)))))))
-
-  ;; Presets
-  (gptel-make-preset 'emacs
-    :description "Emacs documentation"
-    :backend "OpenRouter"
-    :model 'openai/gpt-4.1
-    :system "You are an Emacs expert, read_documentation and respond with examples."
-    :tools '("read_documentation"))
-
-  (gptel-make-preset 'web
-    :description "Web tools"
-    :backend "OpenRouter"
-    :model 'openai/gpt-4.1
-    :tools '("read_url"))
-  )
+        :callback #'my/gptel--callback-display-bottom))))
 
 (use-package gptel-quick
   :vc (gptel-quick :url "https://github.com/karthink/gptel-quick.git")
