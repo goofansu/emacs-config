@@ -8,9 +8,9 @@
   (elixir-ts-mode . (lambda () (setq-local devdocs-current-docs '("elixir~1.18" "phoenix"))))
   ((web-mode haml-mode heex-ts-mode) . (lambda () (setq-local devdocs-current-docs '("html" "css" "javascript" "tailwindcss"))))
   :bind
-  (:map search-map
-        ("k" . devdocs-lookup)
-        ("K" . devdocs-search))
+  ( :map search-map
+    ("k" . devdocs-lookup)
+    ("K" . devdocs-search))
   :config
   (defun my/devdocs-install ()
     "Download and install selected DevDocs documentations."
