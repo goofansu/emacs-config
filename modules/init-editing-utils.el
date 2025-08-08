@@ -11,7 +11,9 @@
 
 (use-package move-text
   :pin melpa
-  :hook (after-init . move-text-default-bindings))
+  :bind
+  (("s-<up>" . move-text-up)
+   ("s-<down>" . move-text-down)))
 
 (use-package multiple-cursors
   :pin nongnu
