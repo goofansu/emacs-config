@@ -39,11 +39,10 @@
 
   :custom
   (gptel-default-mode 'org-mode)
+  (gptel-backend gptel--openrouter)
+  (gptel-model 'anthropic/claude-sonnet-4)
 
   :config
-  (setq gptel-backend gptel--openrouter
-        gptel-model 'anthropic/claude-sonnet-4)
-
   (defun my/gptel-chat ()
     (interactive)
     (let* ((name (generate-new-buffer-name "*gptel-chat*"))
