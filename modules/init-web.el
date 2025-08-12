@@ -4,7 +4,8 @@
   :custom
   (web-mode-markup-indent-offset 2)
   (web-mode-css-indent-offset 2)
-  (web-mode-code-indent-offset 2))
+  (web-mode-code-indent-offset 2)
+  (web-mode-script-padding 2))
 
 (use-package css-mode
   :ensure nil
