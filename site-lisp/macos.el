@@ -33,32 +33,13 @@
                  end tell"))
     (string-equal "true" (do-applescript script))))
 
-(defcustom vscode-program "code"
-  "Name of vscode executable.")
-
-(defun vscode-goto-file-at-point ()
-  "Open the file at point using `vscode-program' at the current line and column."
+(defun zed-goto-file-at-point ()
+  "Open the file at point using zed at the current line and column."
   (interactive)
   (when-let* ((filename (buffer-file-name))
               (line (line-number-at-pos))
               (column (current-column))
-              (command (format "%s --goto %s:%d:%d"
-                               vscode-program
-                               filename
-                               line
-                               (+ column 1))))
-    (start-process-shell-command "vscode" nil command)))
-
-(defun rubymine-goto-file-at-point ()
-  "Open the file at point using rubymine at the current line and column."
-  (interactive)
-  (when-let* ((filename (buffer-file-name))
-              (line (line-number-at-pos))
-              (column (current-column))
-              (command (format "rubymine --line %d --column %d %s"
-                               line
-                               (+ column 1)
-                               filename)))
-    (start-process-shell-command "rubymine" nil command)))
+              (command (format "zed %s:%d:%d" filename line (+ column 1))))
+    (start-process-shell-command "zed" nil command)))
 
 (provide 'macos)

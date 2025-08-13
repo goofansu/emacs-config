@@ -4,7 +4,6 @@
   :if (eq system-type 'darwin)
   :custom
   (ns-use-native-fullscreen nil)
-  (vscode-program "cursor")
   :config
   (keymap-global-set "s-o" #'find-file)
   (keymap-global-set "s-s" #'save-buffer)
