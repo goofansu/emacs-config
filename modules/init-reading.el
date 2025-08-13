@@ -47,6 +47,7 @@
           "https://www.ryansinger.co/rss/"
           "https://xenodium.com/feed"
           "https://yiming.dev/rss.xml"
+          "https://zed.dev/blog.rss"
           ))
 
   :bind
