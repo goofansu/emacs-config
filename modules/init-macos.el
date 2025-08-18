@@ -17,7 +17,9 @@
   ;; zap to char
   (keymap-global-unset "C-z")
   (keymap-global-set "C-z z" #'zap-to-char)
-  (keymap-global-set "C-z C-z" #'zap-up-to-char))
+  (keymap-global-set "C-z C-z" #'zap-up-to-char)
+  ;; Open file in Zed
+  (keymap-global-set "M-g z" #'zed-goto-file-at-point))
 
 (use-package alfred
   :ensure nil
