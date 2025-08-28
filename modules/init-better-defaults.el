@@ -159,16 +159,17 @@ FILE-LINE should be in the format 'file:line' relative to the project root."
 
 (use-package savehist
   :ensure nil
-  :hook after-init
   :custom
   (history-length 500)
   (history-delete-duplicates t)
   :config
-  (add-to-list 'savehist-additional-variables 'log-edit-comment-ring))
+  (add-to-list 'savehist-additional-variables 'log-edit-comment-ring)
+  (savehist-mode 1))
 
 (use-package saveplace
   :ensure nil
-  :hook (after-init . save-place-mode))
+  :config
+  (save-place-mode 1))
 
 (use-package isearch
   :ensure nil
