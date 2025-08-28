@@ -50,11 +50,13 @@
   :hook (prog-mode text-mode conf-mode))
 
 (use-package lin
-  :hook (after-init . lin-global-mode))
+  :config
+  (lin-global-mode 1))
 
 (use-package pulsar
-  :hook (after-init . pulsar-global-mode)
   :custom
-  (pulsar-pulse-region-functions pulsar-pulse-region-common-functions))
+  (pulsar-pulse-region-functions pulsar-pulse-region-common-functions)
+  :config
+  (pulsar-global-mode 1))
 
 (provide 'init-ux)

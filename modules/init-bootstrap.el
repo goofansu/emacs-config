@@ -13,7 +13,7 @@
   :disabled t
   :config
   (benchmark-init/activate)
-  (add-hook 'after-init-hook 'benchmark-init/deactivate))
+  (add-hook 'emacs-startup-hook 'benchmark-init/deactivate))
 
 ;; Set $PATH correctly
 (use-package exec-path-from-shell
@@ -27,13 +27,22 @@
 ;; Enabling `envrc-global-mode'
 (use-package envrc
   :pin melpa
+  :disabled t
   :hook (after-init . envrc-global-mode))
+
+;; Enabling `desktop-save-mode'
+(use-package desktop
+  :ensure nil
+  :disabled t
+  :init
+  (setq desktop-dirname user-emacs-directory)
+  :hook (after-init . desktop-save-mode))
 
 ;; Enabling Emacs server
 (use-package server
   :ensure nil
   :if (display-graphic-p)
-  :defer 20
+  :defer 1
   :custom
   (server-name "gui")
   :config

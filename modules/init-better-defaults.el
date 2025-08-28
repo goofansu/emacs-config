@@ -153,7 +153,6 @@ FILE-LINE should be in the format 'file:line' relative to the project root."
 
 (use-package recentf
   :ensure nil
-  :hook after-init
   :custom
   (recentf-max-saved-items 200))
 
@@ -255,13 +254,7 @@ FILE-LINE should be in the format 'file:line' relative to the project root."
 
 (use-package winner
   :ensure nil
-  :hook after-init)
-
-(use-package desktop
-  :ensure nil
-  :disabled t
-  :init
-  (setq desktop-dirname user-emacs-directory)
-  :hook (after-init . desktop-save-mode))
+  :config
+  (winner-mode 1))
 
 (provide 'init-better-defaults)
