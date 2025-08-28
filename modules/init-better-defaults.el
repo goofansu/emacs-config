@@ -225,10 +225,6 @@ FILE-LINE should be in the format 'file:line' relative to the project root."
   (doc-view-mupdf-use-svg t)
   (doc-view-resolution 300))
 
-(use-package delsel
-  :ensure nil
-  :hook (after-init . delete-selection-mode))
-
 (use-package dired
   :ensure nil
   :defer t
