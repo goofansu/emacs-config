@@ -27,7 +27,6 @@
 ;; Enabling `envrc-global-mode'
 (use-package envrc
   :pin melpa
-  :disabled t
   :hook (after-init . envrc-global-mode))
 
 ;; Enabling `desktop-save-mode'
