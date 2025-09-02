@@ -11,7 +11,13 @@ org-mode
       "#+hugo_base_dir: " (p "~/code/yejun.dev") n
       "#+hugo_section: " (p "posts") n
       "#+hugo_draft: true" n
-      "#+hugo_custom_front_matter: " (p "toc false"))
+      "#+hugo_custom_front_matter: " (p ":toc false"))
+
+(devlog "#+export_file_name: " p n
+        "#+hugo_base_dir: " (p "~/code/yejun.dev") n
+        "#+hugo_section: " (p "devlog") n
+        "#+hugo_custom_front_matter: " (p ":toc true") n
+        "#+hugo_custom_front_matter: " (p ":state seedling"))
 
 (til "#+hugo_base_dir: ~/code/yejun.dev" n
      "#+hugo_section: til")
