@@ -41,6 +41,7 @@
           "https://world.hey.com/jorge/feed.atom"
           "https://world.hey.com/this.week.in.rails/feed.atom"
           "https://www.geoffreylitt.com/feed.xml"
+          "https://www.joshwcomeau.com/rss.xml"
           "https://www.masteringemacs.org/feed"
           "https://www.mikeperham.com/index.xml"
           "https://www.mitchellhanberg.com/feed.xml"
