@@ -17,7 +17,7 @@
   (defun my/homebrew-casks-insert ()
     "Insert currently installed Homebrew Casks at position."
     (interactive)
-    (let* ((casks (shell-command-to-string "brew list --cask | awk '{print \"\\\"\" $0 \"\\\"\"}'"))
+    (let* ((casks (shell-command-to-string "/opt/homebrew/bin/brew list --cask | awk '{print \"\\\"\" $0 \"\\\"\"}'"))
            (result (concat "[" casks "];")))
       (insert result))))
 
