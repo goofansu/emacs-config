@@ -19,6 +19,8 @@
 (use-package exec-path-from-shell
   :pin nongnu
   :if (memq window-system '(mac ns x))
+  :init
+  (setq shell-file-name "/run/current-system/sw/bin/fish")
   :custom
   (exec-path-from-shell-shell-name "/run/current-system/sw/bin/fish")
   :config

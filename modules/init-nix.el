@@ -18,8 +18,7 @@
     "Insert currently installed Homebrew Casks at point."
     (interactive)
     (let* ((casks-output (string-trim
-                          (shell-command-to-string
-                           (format "%s list --cask" brew-executable))))
+                          (shell-command-to-string "brew list --cask")))
            (casks-list (when (not (string-empty-p casks-output))
                          (split-string casks-output "\n")))
            (quoted-casks (mapcar (lambda (cask) (format "\"%s\"" cask))

@@ -1,13 +1,3 @@
-(defcustom brew-executable (executable-find "brew")
-  "Homebrew executable location."
-  :group 'macos
-  :type 'string)
-
-(defcustom zed-executable (executable-find "zed")
-  "Zed executable location."
-  :group 'macos
-  :type 'string)
-
 (defun macos-reveal-in-finder ()
   (interactive)
   (if-let ((path (or (buffer-file-name)
@@ -50,6 +40,6 @@
               (line (line-number-at-pos))
               (column (1+ (current-column))))
     (let ((path-with-position (format "%s:%d:%d" filename line column)))
-      (start-process "zed" nil zed-executable path-with-position))))
+      (start-process "zed" nil "zed" path-with-position))))
 
 (provide 'macos)
