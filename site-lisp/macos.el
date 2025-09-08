@@ -1,3 +1,7 @@
+(defcustom zed-executable (executable-find "zed")
+  "Zed executable location."
+  :type string)
+
 (defun macos-reveal-in-finder ()
   (interactive)
   (if-let ((path (or (buffer-file-name)
@@ -34,12 +38,12 @@
     (string-equal "true" (do-applescript script))))
 
 (defun zed-goto-file-at-point ()
-  "Open the file at point using zed at the current line and column."
+  "Open the file at point in Zed editor."
   (interactive)
   (when-let* ((filename (buffer-file-name))
               (line (line-number-at-pos))
-              (column (current-column))
-              (command (format "zed %s:%d:%d" filename line (+ column 1))))
-    (start-process-shell-command "zed" nil command)))
+              (column (1+ (current-column))))
+    (let ((path-with-position (format "%s:%d:%d" filename line column)))
+      (start-process "zed" nil zed-executable path-with-position))))
 
 (provide 'macos)
