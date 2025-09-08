@@ -1,10 +1,12 @@
 (defcustom brew-executable (executable-find "brew")
   "Homebrew executable location."
-  :type string)
+  :group 'macos
+  :type 'string)
 
 (defcustom zed-executable (executable-find "zed")
   "Zed executable location."
-  :type string)
+  :group 'macos
+  :type 'string)
 
 (defun macos-reveal-in-finder ()
   (interactive)
