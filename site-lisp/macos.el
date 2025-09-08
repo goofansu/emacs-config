@@ -1,3 +1,7 @@
+(defcustom brew-executable (executable-find "brew")
+  "Homebrew executable location."
+  :type string)
+
 (defcustom zed-executable (executable-find "zed")
   "Zed executable location."
   :type string)
