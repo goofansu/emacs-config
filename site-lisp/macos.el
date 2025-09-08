@@ -36,10 +36,11 @@
 (defun zed-goto-file-at-point ()
   "Open the file at point in Zed editor."
   (interactive)
-  (when-let* ((filename (buffer-file-name))
-              (line (line-number-at-pos))
-              (column (1+ (current-column))))
-    (let ((path-with-position (format "%s:%d:%d" filename line column)))
-      (start-process "zed" nil "zed" path-with-position))))
+  (if-let* ((filename (buffer-file-name))
+            (line (line-number-at-pos))
+            (column (1+ (current-column))))
+      (let ((path-with-position (format "%s:%d:%d" filename line column)))
+        (start-process "zed" nil "zed" path-with-position))
+    (user-error "Buffer is not visiting any file")))
 
 (provide 'macos)
