@@ -16,12 +16,6 @@
   :pin melpa
   :defer t)
 
-(use-package rake
-  :pin melpa
-  :defer t
-  :custom
-  (rake-completion-system 'default))
-
 (use-package rspec-mode
   :pin melpa
   :hook ruby-ts-mode)
