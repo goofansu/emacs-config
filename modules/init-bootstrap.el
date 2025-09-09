@@ -21,9 +21,11 @@
   :if (memq window-system '(mac ns x))
   :init
   (setq shell-file-name "/run/current-system/sw/bin/fish")
-  :custom
-  (exec-path-from-shell-shell-name "/run/current-system/sw/bin/fish")
   :config
+  (dolist (var '("__fish_nixos_env_preinit_sourced"
+                 "__NIX_DARWIN_SET_ENVIRONMENT_DONE"
+                 "__HM_SESS_VARS_SOURCED"))
+    (add-to-list 'exec-path-from-shell-variables var))
   (exec-path-from-shell-initialize))
 
 ;; Enabling `envrc-global-mode'
