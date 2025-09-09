@@ -2,10 +2,6 @@
   :ensure nil
   :mode ("\\.elixir\\'" "\\.ex\\'" "\\.exs\\'" "mix\\.lock")
   :config
-  (defun elixir-format-before-save ()
-    (add-hook 'before-save-hook #'eglot-format-buffer nil t))
-  (add-hook 'elixir-ts-mode-hook #'elixir-format-before-save)
-
   (defun my/elixir-package-insert (package)
     "Insert Hex PACKAGE config at point."
     (interactive "sPackage: ")
