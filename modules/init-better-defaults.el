@@ -154,7 +154,9 @@ FILE-LINE should be in the format 'file:line' relative to the project root."
 (use-package recentf
   :ensure nil
   :custom
-  (recentf-max-saved-items 200))
+  (recentf-max-saved-items 200)
+  :config
+  (recentf-mode 1))
 
 (use-package savehist
   :ensure nil
