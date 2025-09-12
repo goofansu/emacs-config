@@ -24,6 +24,7 @@
           "https://karpathy.bearblog.dev/feed/"
           "https://karthinks.com/tags/emacs/index.xml"
           "https://lucumr.pocoo.org/feed.atom"
+          "https://maggieappleton.com/rss.xml"
           "https://martinfowler.com/feed.atom"
           "https://mitchellh.com/feed.xml"
           "https://overreacted.io/atom.xml"
