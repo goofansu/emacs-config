@@ -11,9 +11,6 @@
 
 (use-package move-text
   :pin melpa
-  :bind
-  (("s-<up>" . move-text-up)
-   ("s-<down>" . move-text-down))
   :config
   (move-text-default-bindings))
 
