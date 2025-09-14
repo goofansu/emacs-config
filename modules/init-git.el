@@ -12,6 +12,7 @@
    ("C-c g l" . magit-log-current)
    ("C-c g L" . magit-log-buffer-file))
   :custom
+  (magit-repository-directories `((,my-code-directory . 1)))
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
 (use-package browse-at-remote
