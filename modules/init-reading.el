@@ -3,7 +3,8 @@
   :init
   (setq elfeed-db-directory (expand-file-name ".elfeed/" my-sync-directory))
   (setq elfeed-feeds
-        '("https://addyosmani.com/rss.xml"
+        '("https://addyo.substack.com/feed"
+          "https://addyosmani.com/rss.xml"
           "https://andrealeopardi.com/feed.xml"
           "https://antirez.com/rss"
           "https://blog.appsignal.com/category/elixir-feed.xml"
