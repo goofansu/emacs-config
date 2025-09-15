@@ -40,7 +40,6 @@
    ("C-c g p p" . consult-gh-pr-list)
    ("C-c g p s" . consult-gh-search-prs))
   :custom
-  (consult-gh-topic-major-mode 'org-mode)
   (consult-gh-default-clone-directory my-code-directory)
   (consult-gh-repo-action #'consult-gh--repo-browse-url-action)
   :config
