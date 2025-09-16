@@ -26,7 +26,7 @@
 
 (use-package smartparens
   :pin melpa
-  :hook (prog-mode text-mode)
+  :hook prog-mode
   :bind
   ( :map smartparens-mode-map
     ("C-M-a" . sp-beginning-of-sexp)
