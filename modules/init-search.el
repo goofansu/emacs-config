@@ -1,5 +1,21 @@
 (use-package devdocs
-  :bind (:map search-map ("k" . devdocs-search)))
+  :init
+  (setq-default devdocs-current-docs '("html" "css" "javascript"))
+  :hook
+  (ruby-ts-mode . (lambda () (setq-local devdocs-current-docs '("ruby~3.3" "rails~7.2"))))
+  :bind
+  ( :map search-map
+    ("k" . devdocs-lookup)
+    ("K" . devdocs-search))
+  :config
+  (defun my/devdocs-install ()
+    "Download and install selected DevDocs documentations."
+    (interactive)
+    (let* ((available-docs (mapcar (lambda (doc) (alist-get 'slug doc))
+                                   (devdocs--available-docs)))
+           (selected-docs (completing-read-multiple "Install documentations: " available-docs)))
+      (dolist (doc selected-docs)
+        (devdocs-install doc)))))
 
 (use-package dictionary
   :ensure nil
