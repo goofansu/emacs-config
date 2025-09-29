@@ -20,9 +20,7 @@
 (use-package dictionary
   :ensure nil
   :bind
-  (:map search-map
-        ("d" . dictionary-lookup-definition)
-        ("D" . dictionary-search))
+  (:map search-map ("d" . dictionary-lookup-definition))
   :custom
   (dictionary-server "dict.org")
   (dictionary-default-popup-strategy "lev")
