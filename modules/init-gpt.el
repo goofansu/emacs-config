@@ -4,30 +4,6 @@
   (defvar gptel--openai nil
     "Override the variable to hide OpenAI models")
 
-  (defvar gptel--openrouter
-    (gptel-make-openai "OpenRouter"
-      :host "openrouter.ai"
-      :endpoint "/api/v1/chat/completions"
-      :stream t
-      :key (lambda () (auth-source-pass-get 'secret "api-key/openrouter"))
-      :models '((anthropic/claude-sonnet-4
-                 :description "High-performance model with exceptional reasoning and efficiency"
-                 :capabilities (media tool-use cache)
-                 :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp" "application/pdf")
-                 :context-window 200
-                 :input-cost 3
-                 :output-cost 15
-                 :cutoff-date "2025-03")
-                (openai/gpt-4.1-mini
-                 :description "Balance between intelligence, speed and cost"
-                 :capabilities (media tool-use json url)
-                 :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
-                 :context-window 1024
-                 :input-cost 0.4
-                 :output-cost 1.6
-                 :cutoff-date "2024-05")
-                )))
-
   :bind
   (("C-c <return>" . gptel-send)
    ("C-c C-<return>" . gptel-menu)
@@ -37,12 +13,13 @@
    :map embark-region-map
    ("g t" . my/gptel-translate))
 
-  :custom
-  (gptel-default-mode 'org-mode)
-  (gptel-backend gptel--openrouter)
-  (gptel-model 'anthropic/claude-sonnet-4)
-
   :config
+  (setq
+   gptel-model 'gemini-2.5-flash
+   gptel-backend (gptel-make-gemini "Google"
+                   :key (lambda () (auth-source-pass-get 'secret "api-key/gemini"))
+                   :stream t))
+
   (defun my/gptel-chat ()
     (interactive)
     (let* ((name (generate-new-buffer-name "*gptel-chat*"))
@@ -101,8 +78,7 @@
 If region is active, use it as TEXT; otherwise prompt for input.
 Display the result in a side window with the content selected."
     (interactive "sTranslate text: ")
-    (let ((gptel-backend gptel--openrouter)
-          (gptel-model 'openai/gpt-4.1-mini))
+    (let ((gptel-model 'gemini-2.5-flash-lite))
       (gptel-request text
         :system "Translate the provided text between English and
 Chinese (Mandarin). Return ONLY the completed translation without
@@ -113,10 +89,12 @@ translation reads naturally to native speakers."
         :callback #'my/gptel--callback-display-bottom))))
 
 (use-package gptel-quick
-  :vc (gptel-quick :url "https://github.com/karthink/gptel-quick.git")
+  :vc (gptel-quick :url "https://github.com/karthink/gptel-quick.git"
+                   :branch "master"
+                   :rev "495b5e0b5348dbced1448bd12cbf8847e30b5175")
   :bind (:map embark-general-map ("?" . gptel-quick))
   :config
-  (setq gptel-quick-backend gptel--openrouter
-        gptel-quick-model 'openai/gpt-4.1-mini))
+  (setq gptel-quick-backend gptel-backend
+        gptel-quick-model 'gemini-2.5-flash-lite))
 
 (provide 'init-gpt)
