@@ -1,5 +1,5 @@
 (defvar my-notes-directory (expand-file-name "notes/" my-code-directory))
-(defvar my-notes-reference-file (expand-file-name "reference.bib" my-notes-directory))
+(defvar my-notes-reference-file (expand-file-name "Zotero/reference.bib" my-sync-directory))
 (defvar my-notes-attachments-directory (expand-file-name "attachments/" my-notes-directory))
 
 (use-package org
