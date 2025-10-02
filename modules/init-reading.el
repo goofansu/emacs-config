@@ -107,4 +107,14 @@
           (format "%s (%s)" desc url))
       (format "%s (%s)" desc link))))
 
+(use-package calibredb
+  :pin melpa
+  :init
+  (setq calibredb-root-dir (expand-file-name "Calibre/" my-sync-directory))
+  :bind ("C-c E" . calibredb))
+
+(use-package nov
+  :pin melpa
+  :mode ("\\.epub\\'" . nov-mode))
+
 (provide 'init-reading)
