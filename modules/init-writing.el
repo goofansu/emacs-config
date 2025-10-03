@@ -141,15 +141,16 @@
 
 (use-package citar
   :pin melpa
-  :after org
+  :bind ("C-c n z" . citar-open-entry)
   :init
-  (setq org-cite-global-bibliography `(,my-notes-reference-file))
+  (setq citar-bibliography `(,my-notes-reference-file))
+  (setq org-cite-global-bibliography citar-bibliography)
   (setq org-cite-insert-processor 'citar)
   (setq org-cite-follow-processor 'citar)
   (setq org-cite-activate-processor 'citar)
   :custom
-  (citar-bibliography org-cite-global-bibliography)
-  (citar-at-point-function #'embark-act))
+  (citar-at-point-function #'embark-act)
+  (citar-open-entry-function #'citar-open-entry-in-zotero))
 
 (use-package citar-embark
   :pin melpa
