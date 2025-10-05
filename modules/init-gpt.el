@@ -11,21 +11,14 @@
       :stream t
       :key (lambda () (auth-source-pass-get 'secret "api-key/openrouter"))
       :models '((anthropic/claude-sonnet-4.5
-                 :description "High-performance model with exceptional reasoning and efficiency"
-                 :capabilities (media tool-use cache)
-                 :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp" "application/pdf")
-                 :context-window 200
                  :input-cost 3
-                 :output-cost 15
-                 :cutoff-date "2025-07")
+                 :output-cost 15)
+                (openai/gpt-5-codex
+                 :input-cost 1.25
+                 :output-cost 10)
                 (openai/gpt-4.1-mini
-                 :description "Balance between intelligence, speed and cost"
-                 :capabilities (media tool-use json url)
-                 :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
-                 :context-window 1024
                  :input-cost 0.4
-                 :output-cost 1.6
-                 :cutoff-date "2024-06")
+                 :output-cost 1.6)
                 )))
 
   :bind
