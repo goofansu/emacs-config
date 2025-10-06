@@ -1,3 +1,5 @@
+(defvar my-bibliography-file (expand-file-name "Zotero/reference.bib" my-sync-directory))
+
 (use-package elfeed
   :pin melpa
   :init
@@ -106,5 +108,31 @@
               (_ (format "%s (%s)" desc url)))
           (format "%s (%s)" desc url))
       (format "%s (%s)" desc link))))
+
+(use-package citar
+  :pin melpa
+  :bind ("C-c E" . citar-open-files)
+  :init
+  (setq org-cite-global-bibliography `(,my-bibliography-file))
+  (setq org-cite-insert-processor 'citar)
+  (setq org-cite-follow-processor 'citar)
+  (setq org-cite-activate-processor 'citar)
+  :custom
+  (citar-bibliography org-cite-global-bibliography)
+  (citar-at-point-function #'embark-act)
+  (citar-open-entry-function #'citar-open-entry-in-zotero)
+  :config
+  (add-to-list 'citar-file-open-functions '("pdf" . citar-file-open-external))
+  (add-to-list 'citar-file-open-functions '("epub" . citar-file-open-external)))
+
+(use-package citar-embark
+  :pin melpa
+  :after (citar embark)
+  :config
+  (citar-embark-mode 1))
+
+(use-package nov
+  :pin melpa
+  :mode ("\\.epub\\'" . nov-mode))
 
 (provide 'init-reading)

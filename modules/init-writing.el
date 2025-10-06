@@ -1,5 +1,4 @@
 (defvar my-notes-directory (expand-file-name "notes/" my-code-directory))
-(defvar my-notes-reference-file (expand-file-name "Zotero/reference.bib" my-sync-directory))
 (defvar my-notes-attachments-directory (expand-file-name "attachments/" my-notes-directory))
 
 (use-package org
@@ -139,44 +138,6 @@
   :pin melpa
   :after org)
 
-(use-package citar
-  :pin melpa
-  :bind ("C-c n z" . citar-open-entry)
-  :init
-  (setq citar-bibliography `(,my-notes-reference-file))
-  (setq org-cite-global-bibliography citar-bibliography)
-  (setq org-cite-insert-processor 'citar)
-  (setq org-cite-follow-processor 'citar)
-  (setq org-cite-activate-processor 'citar)
-  :custom
-  (citar-at-point-function #'embark-act)
-  (citar-open-entry-function #'citar-open-entry-in-zotero))
-
-(use-package citar-embark
-  :pin melpa
-  :after (citar embark)
-  :config
-  (citar-embark-mode 1))
-
-(use-package citar-denote
-  :pin melpa
-  :init
-  (with-eval-after-load 'citar
-    (citar-denote-mode 1))
-  :bind
-  (("C-c w n" . citar-create-note)
-   ("C-c w o" . citar-denote-open-note)
-   ("C-c w d" . citar-denote-dwim)
-   ("C-c w e" . citar-denote-open-reference-entry)
-   ("C-c w a" . citar-denote-add-citekey)
-   ("C-c w k" . citar-denote-remove-citekey)
-   ("C-c w r" . citar-denote-find-reference)
-   ("C-c w l" . citar-denote-link-reference)
-   ("C-c w f" . citar-denote-find-citation)
-   ("C-c w x" . citar-denote-nocite)
-   ("C-c w y" . citar-denote-cite-nocite)
-   ("C-c w z" . citar-denote-nobib)))
-
 (use-package denote
   :init
   (setq denote-directory my-notes-directory)
@@ -291,5 +252,24 @@ This function is ideal for managing referenced files in note-taking workflows."
 (use-package denote-explore
   :pin melpa
   :bind ("C-c n x" . denote-explore-sync-metadata))
+
+(use-package citar-denote
+  :pin melpa
+  :init
+  (with-eval-after-load 'citar
+    (citar-denote-mode 1))
+  :bind
+  (("C-c w n" . citar-create-note)
+   ("C-c w o" . citar-denote-open-note)
+   ("C-c w d" . citar-denote-dwim)
+   ("C-c w e" . citar-denote-open-reference-entry)
+   ("C-c w a" . citar-denote-add-citekey)
+   ("C-c w k" . citar-denote-remove-citekey)
+   ("C-c w r" . citar-denote-find-reference)
+   ("C-c w l" . citar-denote-link-reference)
+   ("C-c w f" . citar-denote-find-citation)
+   ("C-c w x" . citar-denote-nocite)
+   ("C-c w y" . citar-denote-cite-nocite)
+   ("C-c w z" . citar-denote-nobib)))
 
 (provide 'init-writing)
