@@ -50,6 +50,7 @@
           "https://www.mikeperham.com/index.xml"
           "https://www.mitchellhanberg.com/feed.xml"
           "https://www.ryansinger.co/rss/"
+          "https://www.swyx.io/rss.xml"
           "https://xenodium.com/feed"
           "https://yiming.dev/rss.xml"
           "https://zed.dev/blog.rss"
