@@ -112,7 +112,7 @@
 
 (use-package citar
   :pin melpa
-  :bind ("C-c E" . citar-open-files)
+  :bind ("C-c E" . citar-open)
   :init
   (setq org-cite-global-bibliography `(,my-bibliography-file))
   (setq org-cite-insert-processor 'citar)
