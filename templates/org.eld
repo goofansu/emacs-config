@@ -17,7 +17,8 @@ org-mode
         "#+hugo_base_dir: " (p "~/code/yejun.dev") n
         "#+hugo_section: " (p "devlog") n
         "#+hugo_custom_front_matter: " (p ":toc true") n
-        "#+hugo_custom_front_matter: " (p ":state seedling"))
+        "#+hugo_custom_front_matter: " (p ":state seedling") n
+        "#+hugo_auto_set_lastmod: t")
 
 (til "#+hugo_base_dir: ~/code/yejun.dev" n
      "#+hugo_section: til")
