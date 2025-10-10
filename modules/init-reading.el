@@ -35,8 +35,9 @@
           "https://protesilaos.com/codelog.xml"
           "https://railsatscale.com/feed.xml"
           "https://sachachua.com/blog/category/emacs-news/feed/"
-          "https://simonwillison.net/atom/everything/"
+          "https://simonwillison.net/atom/entries/"
           "https://sive.rs/en.atom"
+          "https://vickiboykis.com/index.xml"
           "https://webkit.org/feed/atom/"
           "https://words.filippo.io/rss/"
           "https://world.hey.com/bb/feed.atom"
@@ -50,10 +51,9 @@
           "https://www.mikeperham.com/index.xml"
           "https://www.mitchellhanberg.com/feed.xml"
           "https://www.ryansinger.co/rss/"
-          "https://www.swyx.io/rss.xml"
+          "https://www.seangoedecke.com/rss.xml"
           "https://xenodium.com/feed"
           "https://yiming.dev/rss.xml"
-          "https://zed.dev/blog.rss"
           ))
 
   :bind
