@@ -11,10 +11,8 @@
       :stream t
       :key (lambda () (auth-source-pass-get 'secret "api-key/openrouter"))
       :models '((anthropic/claude-sonnet-4.5 :input-cost 3 :output-cost 15)
-                (google/gemini-2.5-pro :input-cost 1.25 :output-cost 10)
-                (openai/gpt-4.1-mini :input-cost 0.4 :output-cost 1.6)
-                (openai/gpt-5 :input-cost 1.25 :output-cost 10)
-                (openai/gpt-5-codex :input-cost 1.25 :output-cost 10))))
+                (openai/gpt-5-codex :input-cost 1.25 :output-cost 10)
+                (openai/gpt-4.1-mini :input-cost 0.4 :output-cost 1.6))))
 
   :bind
   (("C-c <return>" . gptel-send)
