@@ -7,8 +7,10 @@
   (setq elfeed-feeds
         '("https://addyo.substack.com/feed"
           "https://addyosmani.com/rss.xml"
+          "https://ampcode.com/news.rss"
           "https://andrealeopardi.com/feed.xml"
           "https://antirez.com/rss"
+          "https://antithesis.com/feed.xml"
           "https://blog.appsignal.com/category/elixir-feed.xml"
           "https://blog.appsignal.com/category/ruby-feed.xml"
           "https://blog.cloud-mes.com/atom.xml"
