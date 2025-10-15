@@ -2,10 +2,10 @@
 (setq custom-file (make-temp-file "emacs-custom-"))
 
 ;; Directories
-(defvar my-code-directory "~/code/"
+(defvar my-code-directory "~/code"
   "Directory for source code repos.")
 
-(defvar my-sync-directory "~/Library/CloudStorage/Dropbox/"
+(defvar my-sync-directory "~/Library/CloudStorage/Dropbox/Emacs"
   "Directory for syncing files.")
 
 ;; Keymaps

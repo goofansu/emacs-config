@@ -1,8 +1,11 @@
-(defvar my-notes-directory (expand-file-name "notes/" my-code-directory))
-(defvar my-notes-attachments-directory (expand-file-name "attachments/" my-notes-directory))
+(defvar my-notes-directory (expand-file-name "notes" my-code-directory))
+(defvar my-notes-attachments-directory (expand-file-name "attachments" my-notes-directory))
 
 (use-package org
   :ensure nil
+  :init
+  (setq org-directory (expand-file-name "org" my-sync-directory))
+
   :bind
   (("C-c a" . org-agenda)
    ("C-c c" . org-capture)
