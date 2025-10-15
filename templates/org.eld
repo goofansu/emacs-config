@@ -7,6 +7,11 @@ org-mode
 # eval: (org-hugo-auto-export-mode)
 # End:")
 
+(page "#+export_file_name: " p n
+      "#+hugo_base_dir: " (p "~/code/yejun.dev") n
+      "#+hugo_section: /" n
+      "#+hugo_auto_set_lastmod: t")
+
 (post "#+export_file_name: " p n
       "#+hugo_base_dir: " (p "~/code/yejun.dev") n
       "#+hugo_section: " (p "posts") n
