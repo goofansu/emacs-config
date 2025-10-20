@@ -1,5 +1,7 @@
 (use-package csv-mode
-  :defer t)
+  :defer t
+  :hook ((csv-mode . csv-header-line)
+         (csv-mode . csv-align-mode)))
 
 (use-package json-mode
   :defer t)
