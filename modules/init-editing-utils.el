@@ -12,7 +12,9 @@
 (use-package move-text
   :pin melpa
   :config
-  (move-text-default-bindings))
+  (move-text-default-bindings)
+  (keymap-global-set "s-<up>" #'move-text-up)
+  (keymap-global-set "s-<down>" #'move-text-down))
 
 (use-package multiple-cursors
   :pin nongnu
