@@ -15,6 +15,10 @@
   (magit-repository-directories '(("~/code" . 2) ("~/work" . 1)))
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
+(use-package git-timemachine
+  :pin melpa
+  :bind ("C-c g t" . git-timemachine-toggle))
+
 (use-package browse-at-remote
   :pin melpa
   :bind
