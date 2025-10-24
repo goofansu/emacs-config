@@ -47,14 +47,8 @@
                "%a\n%?")
       :empty-lines-before 1)
      ("j" "Journal" entry
-      (file+olp+datetree "journal.org")
-      ,(concat "* %^{Title} %^g\n"
-               ":PROPERTIES:\n"
-               ":CAPTURED: %U\n"
-               ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
-               ":END:")
-      :immediate-finish t
-      :empty-lines-before 1)
+      (file+datetree "journal.org")
+      "* %U %?")
      ("t" "Task" entry
       (file "tasks.org")
       ,(concat "* TODO %^{Title} %^g\n"
