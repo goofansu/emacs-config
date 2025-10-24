@@ -1,4 +1,4 @@
-(defvar my-bibliography-file (expand-file-name "Zotero/reference.bib" my-sync-directory))
+(defvar my-bibliography-file (expand-file-name "reference.bib" my-sync-directory))
 
 (use-package elfeed
   :pin melpa
