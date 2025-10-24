@@ -5,57 +5,50 @@
   :init
   (setq elfeed-db-directory (expand-file-name ".elfeed/" my-sync-directory))
   (setq elfeed-feeds
-        '("https://addyo.substack.com/feed"
-          "https://addyosmani.com/rss.xml"
-          "https://ampcode.com/news.rss"
-          "https://andrealeopardi.com/feed.xml"
+        '(("https://addyo.substack.com/feed" newsletter ai webdev)
+          ("https://addyosmani.com/rss.xml" webdev)
+          ("https://ampcode.com/news.rss" news agent)
+          ("https://andrealeopardi.com/feed.xml" elixir)
           "https://antirez.com/rss"
-          "https://antithesis.com/feed.xml"
-          "https://blog.appsignal.com/category/elixir-feed.xml"
-          "https://blog.appsignal.com/category/ruby-feed.xml"
-          "https://blog.cloud-mes.com/atom.xml"
-          "https://dashbit.co/feed"
-          "https://dev.37signals.com/feed/posts.xml"
-          "https://developer.chrome.com/static/blog/feed.xml"
-          "https://developer.mozilla.org/en-US/blog/rss.xml"
-          "https://ferd.ca/feed.rss"
-          "https://fly.io/phoenix-files/feed.xml"
-          "https://fly.io/ruby-dispatch/feed.xml"
-          "https://herman.bearblog.dev/feed/"
-          "https://huyenchip.com/feed.xml"
-          "https://ismailefe.org/feed.xml"
-          "https://irreal.org/blog/?feed=rss2"
-          "https://jvns.ca/atom.xml"
-          "https://karpathy.bearblog.dev/feed/"
-          "https://karthinks.com/tags/emacs/index.xml"
-          "https://lucumr.pocoo.org/feed.atom"
+          ("https://blog.appsignal.com/category/elixir-feed.xml" elixir)
+          ("https://blog.appsignal.com/category/ruby-feed.xml" ruby)
+          ("https://blog.cloud-mes.com/atom.xml" friend)
+          ("https://dashbit.co/feed" elixir)
+          ("https://dev.37signals.com/feed/posts.xml" rails)
+          ("https://developer.chrome.com/static/blog/feed.xml" webdev)
+          ("https://developer.mozilla.org/en-US/blog/rss.xml" webdev)
+          ("https://ferd.ca/feed.rss" erlang)
+          ("https://fly.io/phoenix-files/feed.xml" elixir)
+          ("https://fly.io/ruby-dispatch/feed.xml" ruby)
+          ("https://huyenchip.com/feed.xml" ai)
+          ("https://irreal.org/blog/?feed=rss2" emacs)
+          ("https://karthinks.com/tags/emacs/index.xml" emacs)
+          ("https://lucumr.pocoo.org/feed.atom" python ai)
           "https://maggieappleton.com/rss.xml"
           "https://martinfowler.com/feed.atom"
-          "https://mitchellh.com/feed.xml"
-          "https://overreacted.io/atom.xml"
-          "https://paolino.me/feed.xml"
-          "https://protesilaos.com/codelog.xml"
-          "https://railsatscale.com/feed.xml"
-          "https://sachachua.com/blog/category/emacs-news/feed/"
-          "https://simonwillison.net/atom/entries/"
+          ("https://mitchellh.com/feed.xml" ghostty)
+          ("https://overreacted.io/atom.xml" webdev)
+          ("https://paolino.me/feed.xml" ruby ai)
+          ("https://protesilaos.com/codelog.xml" emacs)
+          ("https://railsatscale.com/feed.xml" rails)
+          ("https://sachachua.com/blog/category/emacs-news/feed/" newsletter emacs)
+          ("https://simonwillison.net/atom/entries/" python ai)
           "https://sive.rs/en.atom"
           "https://vickiboykis.com/index.xml"
-          "https://webkit.org/feed/atom/"
-          "https://words.filippo.io/rss/"
-          "https://world.hey.com/bb/feed.atom"
+          ("https://webkit.org/feed/atom/" webdev)
+          ("https://words.filippo.io/rss/" security)
           "https://world.hey.com/dhh/feed.atom"
           "https://world.hey.com/jason/feed.atom"
           "https://world.hey.com/jorge/feed.atom"
-          "https://world.hey.com/this.week.in.rails/feed.atom"
-          "https://www.geoffreylitt.com/feed.xml"
-          "https://www.joshwcomeau.com/rss.xml"
-          "https://www.masteringemacs.org/feed"
-          "https://www.mikeperham.com/index.xml"
-          "https://www.mitchellhanberg.com/feed.xml"
+          ("https://world.hey.com/this.week.in.rails/feed.atom" rails)
+          ("https://www.joshwcomeau.com/rss.xml" webdev)
+          ("https://www.masteringemacs.org/feed" emacs)
+          ("https://www.mikeperham.com/index.xml" sidekiq)
+          ("https://www.mitchellhanberg.com/feed.xml" elixir)
           "https://www.ryansinger.co/rss/"
           "https://www.seangoedecke.com/rss.xml"
-          "https://xenodium.com/feed"
-          "https://yiming.dev/rss.xml"
+          ("https://xenodium.com/feed" emacs)
+          ("https://yiming.dev/rss.xml" friend)
           ))
 
   :bind
