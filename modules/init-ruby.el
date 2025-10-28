@@ -18,7 +18,7 @@
 
 (use-package rspec-mode
   :pin melpa
-  :hook ruby-ts-mode)
+  :hook (ruby-ts-mode rspec-compilation-mode))
 
 (use-package rubocop
   :pin nongnu
