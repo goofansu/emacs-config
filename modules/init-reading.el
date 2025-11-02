@@ -4,57 +4,6 @@
   :pin melpa
   :init
   (setq elfeed-db-directory (expand-file-name ".elfeed/" my-sync-directory))
-  (setq elfeed-feeds
-        '(("https://addyo.substack.com/feed" newsletter ai webdev)
-          ("https://addyosmani.com/rss.xml" webdev)
-          ("https://ampcode.com/news.rss" news ai)
-          ("https://andrealeopardi.com/feed.xml" elixir)
-          ("https://antirez.com/rss" redis)
-          ("https://blog.appsignal.com/category/elixir-feed.xml" reference elixir)
-          ("https://blog.appsignal.com/category/ruby-feed.xml" reference ruby)
-          ("https://blog.cloud-mes.com/atom.xml" friend)
-          ("https://dashbit.co/feed" elixir)
-          ("https://dev.37signals.com/feed/posts.xml" rails)
-          ("https://developer.chrome.com/static/blog/feed.xml" webdev)
-          ("https://developer.mozilla.org/en-US/blog/rss.xml" webdev)
-          ("https://elixir-lang.org/atom.xml" news elixir)
-          ("https://ferd.ca/feed.rss" erlang)
-          ("https://fly.io/phoenix-files/feed.xml" reference elixir)
-          ("https://fly.io/ruby-dispatch/feed.xml" reference ruby)
-          ("https://huyenchip.com/feed.xml" ai)
-          ("https://irreal.org/blog/?feed=rss2" emacs)
-          ("https://jvns.ca/atom.xml" programming zine)
-          ("https://karthinks.com/tags/emacs/index.xml" emacs)
-          ("https://lucumr.pocoo.org/feed.atom" python ai)
-          ("https://maggieappleton.com/rss.xml" design)
-          ("https://martinfowler.com/feed.atom" architecture)
-          ("https://mitchellh.com/feed.xml" zig ghostty)
-          ("https://overreacted.io/atom.xml" webdev)
-          ("https://paolino.me/feed.xml" ruby ai)
-          ("https://protesilaos.com/codelog.xml" emacs)
-          ("https://railsatscale.com/feed.xml" rails)
-          ("https://sachachua.com/blog/category/emacs-news/feed/" newsletter emacs)
-          ("https://simonwillison.net/atom/everything" python ai)
-          ("https://sive.rs/en.atom" life)
-          ("https://vickiboykis.com/index.xml" ai)
-          ("https://webkit.org/feed/atom/" webdev)
-          ("https://words.filippo.io/rss/" security)
-          ("https://world.hey.com/dhh/feed.atom" rails)
-          ("https://world.hey.com/jason/feed.atom" product)
-          ("https://world.hey.com/jorge/feed.atom" rails)
-          ("https://world.hey.com/this.week.in.rails/feed.atom" newsletter rails)
-          ("https://www.joshwcomeau.com/rss.xml" webdev)
-          ("https://www.masteringemacs.org/feed" emacs)
-          ("https://www.mikeperham.com/index.xml" sidekiq)
-          ("https://www.mitchellhanberg.com/feed.xml" elixir)
-          ("https://www.ruby-lang.org/en/feeds/news.rss" news ruby)
-          ("https://tailwindcss.com/feeds/atom.xml" news webdev)
-          ("https://www.ryansinger.co/rss/" product)
-          ("https://www.seangoedecke.com/rss.xml" ai)
-          ("https://xenodium.com/feed" emacs)
-          ("https://yiming.dev/rss.xml" friend)
-          ))
-
   :bind
   (("C-c e" . elfeed)
    :map elfeed-search-mode-map
@@ -108,6 +57,11 @@
               (_ (format "%s (%s)" desc url)))
           (format "%s (%s)" desc url))
       (format "%s (%s)" desc link))))
+
+(use-package elfeed-org
+  :pin melpa
+  :after elfeed
+  :config (elfeed-org))
 
 (use-package citar
   :pin melpa
