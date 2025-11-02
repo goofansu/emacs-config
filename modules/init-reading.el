@@ -11,10 +11,6 @@
    :map elfeed-show-mode-map
    ("B" . my/elfeed-eww))
 
-  :custom
-  (elfeed-initial-tags '(unread inbox))
-  (elfeed-search-filter "#50 +unread ")
-
   :config
   (defun my/elfeed-eww ()
     (interactive)
