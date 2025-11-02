@@ -13,6 +13,9 @@
   (truncate-string-ellipsis "…")
   (select-enable-clipboard t)
 
+  ;; bookmarks
+  (bookmark-default-file (expand-file-name "bookmarks" my-sync-directory))
+
   ;; Editing
   (require-final-newline t)
 
