@@ -77,7 +77,7 @@
       (function
        (lambda ()
          (let ((denote-use-title (alfred-browser-title)))
-           (denote-org-capture-with-prompts :title :keywords))))
+           (denote-org-capture-with-prompts :title :keywords :subdirectory))))
       :no-save t
       :immediate-finish nil
       :kill-buffer t
