@@ -41,6 +41,7 @@
 *** [[https://developer.mozilla.org/en-US/blog/rss.xml][MDN]]
 *** [[https://webkit.org/feed/atom/][Webkit]]
 *** [[https://tailwindcss.com/feeds/atom.xml][Tailwind CSS]] :css:
+*** [[https://una.im/rss.xml][‪Una Kravets‬]]
 ** Elixir :elixir:
 *** [[https://elixir-lang.org/atom.xml][Elixir News]] :news:
 *** [[https://dashbit.co/feed][Dashbit News]] :news:
