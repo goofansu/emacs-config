@@ -29,6 +29,11 @@ modus-operandi theme."
   (fontaine-presets
    '((regular
       :default-height 160)
+     (medium
+      :default-family "Aporetic Serif Mono"
+      :default-height 200
+      :fixed-pitch-family "Aporetic Serif Mono"
+      :variable-pitch-family "Aporetic Sans")
      (large
       :default-height 240)
      (t
