@@ -17,7 +17,6 @@
   :bind
   (("C-c <return>" . gptel-send)
    ("C-c C-<return>" . gptel-menu)
-   ("s-N" . my/gptel-chat)
    :map search-map
    ("T" . my/gptel-translate)
    :map embark-region-map
@@ -26,12 +25,6 @@
   :config
   (setq gptel-model 'openai/gpt-4.1-mini
         gptel-backend gptel--openrouter)
-
-  (defun my/gptel-chat ()
-    (interactive)
-    (let* ((name (generate-new-buffer-name "*gptel-chat*"))
-           (buffer (gptel name)))
-      (pop-to-buffer buffer)))
 
   (defun my/gptel-buffer-names ()
     "Return the names of buffers where `gptel-mode' is active."

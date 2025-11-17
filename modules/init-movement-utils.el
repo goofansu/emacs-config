@@ -95,7 +95,8 @@
   :ensure nil
   :bind
   (("C-s-f" . select-frame-by-name)
-   ("s-w" . my/tab-close-or-delete-frame))
+   ("s-w" . my/tab-close-or-delete-frame)
+   ("s-N" . make-frame))
   :config
   (defun my/tab-close-or-delete-frame ()
     "Close the current tab if there are multiple tabs, otherwise delete the frame."
@@ -109,8 +110,6 @@
   :if (display-graphic-p)
   :hook after-init
   :bind-keymap ("C-c b" . beframe-prefix-map)
-  :custom
-  (beframe-functions-in-frames '(project-prompt-project-dir))
   :config
   (defun my/beframe-buffer-names-sorted (&optional frame)
     "Return the list of buffers from `beframe-buffer-names' sorted by visibility.
