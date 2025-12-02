@@ -10,9 +10,9 @@
       :endpoint "/api/v1/chat/completions"
       :stream t
       :key (lambda () (auth-source-pass-get 'secret "api-key/openrouter"))
-      :models '((anthropic/claude-sonnet-4.5 :input-cost 3 :output-cost 15)
-                (openai/gpt-5-codex :input-cost 1.25 :output-cost 10)
-                (openai/gpt-4.1-mini :input-cost 0.4 :output-cost 1.6))))
+      :models '((anthropic/claude-opus-4.5 :input-cost 5 :output-cost 25)
+                (anthropic/claude-sonnet-4.5 :input-cost 3 :output-cost 15)
+                (anthropic/claude-haiku-4.5 :input-cost 1 :output-cost 5))))
 
   :bind
   (("C-c <return>" . gptel-send)
@@ -23,7 +23,7 @@
    ("g t" . my/gptel-translate))
 
   :config
-  (setq gptel-model 'openai/gpt-4.1-mini
+  (setq gptel-model 'anthropic/claude-haiku-4.5
         gptel-backend gptel--openrouter)
 
   (defun my/gptel-buffer-names ()
@@ -88,9 +88,9 @@ translation reads naturally to native speakers."
       :callback #'my/gptel--callback-display-bottom)))
 
 (use-package gptel-quick
-  :vc (gptel-quick :url "https://github.com/karthink/gptel-quick.git"
-                   :branch "master"
-                   :rev "495b5e0b5348dbced1448bd12cbf8847e30b5175")
-  :bind (:map embark-general-map ("?" . gptel-quick)))
+  :vc (gptel-quick :url "https://github.com/karthink/gptel-quick.git" :branch "master")
+  :bind (:map embark-general-map ("?" . gptel-quick))
+  :custom
+  (gptel-quick-display nil))
 
 (provide 'init-gpt)
