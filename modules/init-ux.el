@@ -54,8 +54,6 @@
   (lin-global-mode 1))
 
 (use-package pulsar
-  :custom
-  (pulsar-pulse-region-functions pulsar-pulse-region-common-functions)
   :config
   (pulsar-global-mode 1))
 
