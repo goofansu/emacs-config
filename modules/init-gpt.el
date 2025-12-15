@@ -4,16 +4,6 @@
   (defvar gptel--openai nil
     "Override the variable to hide OpenAI models")
 
-  (defvar gptel--openrouter
-    (gptel-make-openai "OpenRouter"
-      :host "openrouter.ai"
-      :endpoint "/api/v1/chat/completions"
-      :stream t
-      :key (lambda () (auth-source-pass-get 'secret "api-key/openrouter"))
-      :models '((anthropic/claude-opus-4.5 :input-cost 5 :output-cost 25)
-                (anthropic/claude-sonnet-4.5 :input-cost 3 :output-cost 15)
-                (anthropic/claude-haiku-4.5 :input-cost 1 :output-cost 5))))
-
   :bind
   (("C-c <return>" . gptel-send)
    ("C-c C-<return>" . gptel-menu)
@@ -23,8 +13,10 @@
    ("g t" . my/gptel-translate))
 
   :config
-  (setq gptel-model 'anthropic/claude-haiku-4.5
-        gptel-backend gptel--openrouter)
+  (setq gptel-model 'gemini-2.0-flash
+        gptel-backend (gptel-make-gemini "Google"
+                        :key (lambda () (auth-source-pass-get 'secret "api-key/gemini"))
+                        :stream t))
 
   (defun my/gptel-buffer-names ()
     "Return the names of buffers where `gptel-mode' is active."
