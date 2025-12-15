@@ -216,7 +216,7 @@ This function is ideal for managing referenced files in note-taking workflows."
 
         ;; Otherwise, rename and move the file
         (let ((title (denote-sluggify-title (file-name-base file))))
-          (when-let* ((renamed-file (denote-rename-file file title))
+          (when-let* ((renamed-file (denote-rename-file file title nil nil nil nil))
                       (renamed-name (file-name-nondirectory renamed-file))
                       (final-path (expand-file-name renamed-name attachments-dir)))
             (rename-file renamed-file final-path t)
