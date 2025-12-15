@@ -33,5 +33,4 @@ org-mode
       "#+hugo_section: links")
 
 (cap "#+caption: " p)
-(alt "#+attr_html: :alt " p)
-(id "#+attr_html: :id " p)
+(attr "#+attr_html: " p)
