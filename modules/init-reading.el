@@ -2,8 +2,6 @@
 
 (use-package elfeed
   :pin melpa
-  :init
-  (setq elfeed-db-directory (expand-file-name ".elfeed/" my-sync-directory))
   :bind
   (("C-c e" . elfeed)
    :map elfeed-search-mode-map
