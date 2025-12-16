@@ -47,7 +47,7 @@
                "%a\n%?")
       :empty-lines-before 1)
      ("j" "Journal" entry
-      (file+datetree "journal.org")
+      (file+olp+datetree "journal.org")
       ,(concat "* %U %^{Title} %^g\n"
                "%a\n%?")
       :empty-lines-before 1)
