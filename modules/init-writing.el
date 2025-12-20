@@ -1,4 +1,4 @@
-(defvar my-notes-directory (expand-file-name "notes" my-code-directory))
+(defvar my-notes-directory (expand-file-name "notes" my-sync-directory))
 (defvar my-notes-attachments-directory (expand-file-name "attachments" my-notes-directory))
 
 (use-package org
