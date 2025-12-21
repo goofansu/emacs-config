@@ -1,4 +1,12 @@
 * Feeds :elfeed:
-** Emacs :emacs:
-*** [[https://sachachua.com/blog/category/emacs-news/feed/][Emacs News]] :newsletter:
-*** [[https://protesilaos.com/codelog.xml][Prot]]
+** Blog :blog:
+*** [[https://www.ruby-lang.org/en/feeds/news.rss][Ruby]] :ruby:
+*** [[https://elixir-lang.org/atom.xml][Elixir]] :elixir:
+*** [[https://go.dev/blog/feed.atom][Go]] :go:
+** News :news:
+*** [[https://lobste.rs/t/ruby.rss][Ruby on Lobsters]] :ruby:
+*** [[https://lobste.rs/t/elixir.rss][Elixir on Lobsters]] :elixir:
+*** [[https://hnrss.org/frontpage][Hacker News]] :hackernews:
+** Newsletter :newsletter:
+*** [[https://sachachua.com/blog/category/emacs-news/feed/][Emacs News]] :emacs:
+*** [[https://world.hey.com/this.week.in.rails/feed.atom][This Week in Rails]] :rails:
