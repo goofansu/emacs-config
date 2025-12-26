@@ -34,3 +34,7 @@ org-mode
 
 (cap "#+caption: " p)
 (attr "#+attr_html: " p)
+
+(skill "#+description: " p n n
+       "* Instructions" n p n n
+       "* Examples" n p)

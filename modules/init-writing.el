@@ -118,6 +118,11 @@
   :load-path "site-lisp/"
   :bind ("C-c n h" . denote-hugo-find-file))
 
+(use-package denote-agent-skills
+  :ensure nil
+  :load-path "site-lisp/"
+  :bind ("C-c n e" . denote-agent-skills-export))
+
 (use-package ox-gfm
   :pin melpa
   :after org)
