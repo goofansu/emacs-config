@@ -1,9 +1,2 @@
 * Feeds :elfeed:
-** Blog :blog:
-*** [[https://www.ruby-lang.org/en/feeds/news.rss][Ruby]] :ruby:
-*** [[https://elixir-lang.org/atom.xml][Elixir]] :elixir:
-*** [[https://go.dev/blog/feed.atom][Go]] :go:
-** News :news:
-*** [[https://hnrss.org/frontpage][Hacker News]] :hackernews:
-** Newsletter :newsletter:
-*** [[https://sachachua.com/blog/category/emacs-news/feed/][Emacs News]] :emacs:
+** [[https://sachachua.com/blog/category/emacs-news/feed/][Emacs News]] :newsletter:emacs:
