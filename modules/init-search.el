@@ -2,7 +2,7 @@
   :init
   (setq-default devdocs-current-docs '("html" "css" "javascript"))
   :hook
-  (ruby-ts-mode . (lambda () (setq-local devdocs-current-docs '("ruby~3.3" "rails~7.2"))))
+  (ruby-ts-mode . (lambda () (setq-local devdocs-current-docs '("ruby~3.4" "rails~8.0"))))
   :bind
   ( :map search-map
     ("k" . devdocs-lookup)
