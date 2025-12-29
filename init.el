@@ -23,6 +23,3 @@
 (require 'init-programming)
 (require 'init-reading)
 (require 'init-writing)
-
-;; Miscellaneous
-(require 'init-misc)
