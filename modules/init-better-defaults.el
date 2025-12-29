@@ -243,16 +243,6 @@ FILE-LINE should be in the format 'file:line' relative to the project root."
   :custom
   (dired-preview-trigger-on-start nil))
 
-(use-package treemacs
-  :pin melpa
-  :bind
-  (("M-O" . treemacs-select-window)
-   :map my-toggle-map ("t" . treemacs))
-  :custom
-  (treemacs-no-png-images t)
-  :config
-  (treemacs-project-follow-mode 1))
-
 (use-package ffap
   :bind ("M-m" . ffap-menu)
   :config
