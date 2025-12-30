@@ -12,10 +12,9 @@ With prefix argument, prompt for custom skills directory."
          (skill-name (denote-retrieve-title-or-filename file slug))
          (base-dir (if custom-dir
                        (read-directory-name "Skills directory: " "~/")
-                     "~/.claude/skills/"))
-         (skill-dir (expand-file-name
-                     (concat base-dir skill-name "/")))
-         (output-file (concat skill-dir "SKILL.md"))
+                     (expand-file-name "skills" my-sync-directory)))
+         (skill-dir (expand-file-name skill-name base-dir))
+         (output-file (expand-file-name "SKILL.md" skill-dir))
          (description (cadar (org-collect-keywords '("DESCRIPTION")))))
     (unless description
       (user-error "No #+description: found in the org file"))
