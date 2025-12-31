@@ -4,6 +4,7 @@
 (require 'init-docker)
 (require 'init-c)
 (require 'init-elixir)
+(require 'init-go)
 (require 'init-markdown)
 (require 'init-nix)
 (require 'init-ruby)

@@ -6,6 +6,7 @@
   ;; ((elixir-ts-mode heex-ts-mode) . eglot-ensure)
   (nix-mode . eglot-ensure)
   (c-ts-mode . eglot-ensure)
+  (go-mode . eglot-ensure)
   :custom
   (eglot-ignored-server-capabilities '(:completionProvider))
   :config
