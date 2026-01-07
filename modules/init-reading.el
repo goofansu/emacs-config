@@ -1,7 +1,8 @@
-(defvar my-bibliography-file (expand-file-name "reference.bib" my-sync-directory))
-
 (use-package elfeed
   :pin melpa
+  :init
+  (setq elfeed-feeds '("https://sachachua.com/blog/category/emacs-news/feed/"))
+
   :bind
   (("C-c e" . elfeed)
    :map elfeed-search-mode-map
@@ -51,33 +52,6 @@
               (_ (format "%s (%s)" desc url)))
           (format "%s (%s)" desc url))
       (format "%s (%s)" desc link))))
-
-(use-package elfeed-org
-  :pin melpa
-  :after elfeed
-  :config (elfeed-org))
-
-(use-package citar
-  :pin melpa
-  :bind ("C-c E" . citar-open)
-  :init
-  (setq org-cite-global-bibliography `(,my-bibliography-file))
-  (setq org-cite-insert-processor 'citar)
-  (setq org-cite-follow-processor 'citar)
-  (setq org-cite-activate-processor 'citar)
-  :custom
-  (citar-bibliography org-cite-global-bibliography)
-  (citar-at-point-function #'embark-act)
-  (citar-open-entry-function #'citar-open-entry-in-zotero)
-  :config
-  (add-to-list 'citar-file-open-functions '("pdf" . citar-file-open-external))
-  (add-to-list 'citar-file-open-functions '("epub" . citar-file-open-external)))
-
-(use-package citar-embark
-  :pin melpa
-  :after (citar embark)
-  :config
-  (citar-embark-mode 1))
 
 (use-package nov
   :pin melpa

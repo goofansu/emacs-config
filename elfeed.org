@@ -1,2 +1,0 @@
-* Feeds :elfeed:
-** [[https://sachachua.com/blog/category/emacs-news/feed/][Emacs News]] :newsletter:emacs:

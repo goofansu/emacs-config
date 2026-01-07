@@ -1,4 +1,5 @@
-(defvar my-notes-directory (expand-file-name "notes" my-sync-directory))
+(defvar my-notes-directory (expand-file-name "notes" my-code-directory))
+(defvar my-notes-bibliography-file (expand-file-name "reference.bib" my-notes-directory))
 (defvar my-notes-attachments-directory (expand-file-name "attachments" my-notes-directory))
 
 (use-package org
@@ -257,5 +258,27 @@ This function is ideal for managing referenced files in note-taking workflows."
    ("C-c w x" . citar-denote-nocite)
    ("C-c w y" . citar-denote-cite-nocite)
    ("C-c w z" . citar-denote-nobib)))
+
+(use-package citar
+  :pin melpa
+  :bind ("C-c E" . citar-open)
+  :init
+  (setq org-cite-global-bibliography `(,my-notes-bibliography-file))
+  (setq org-cite-insert-processor 'citar)
+  (setq org-cite-follow-processor 'citar)
+  (setq org-cite-activate-processor 'citar)
+  :custom
+  (citar-bibliography org-cite-global-bibliography)
+  (citar-at-point-function #'embark-act)
+  (citar-open-entry-function #'citar-open-entry-in-zotero)
+  :config
+  (add-to-list 'citar-file-open-functions '("pdf" . citar-file-open-external))
+  (add-to-list 'citar-file-open-functions '("epub" . citar-file-open-external)))
+
+(use-package citar-embark
+  :pin melpa
+  :after (citar embark)
+  :config
+  (citar-embark-mode 1))
 
 (provide 'init-writing)
