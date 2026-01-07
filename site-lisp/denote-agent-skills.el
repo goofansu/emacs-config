@@ -12,7 +12,7 @@ With prefix argument, prompt for custom skills directory."
          (skill-name (denote-retrieve-title-or-filename file slug))
          (base-dir (if custom-dir
                        (read-directory-name "Skills directory: " "~/")
-                     (expand-file-name "skills" my-sync-directory)))
+                     (expand-file-name "coding-agents/skills" my-code-directory)))
          (skill-dir (expand-file-name skill-name base-dir))
          (output-file (expand-file-name "SKILL.md" skill-dir))
          (description (cadar (org-collect-keywords '("DESCRIPTION")))))
