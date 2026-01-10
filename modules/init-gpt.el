@@ -78,14 +78,15 @@
 If region is active, use it as TEXT; otherwise prompt for input.
 Display the result in a side window with the content selected."
     (interactive "sTranslate text: ")
-    (gptel-request text
-      :system "Translate the provided text between English and
+    (let ((gptel-include-reasoning nil))
+      (gptel-request text
+                     :system "Translate the provided text between English and
 Chinese (Mandarin). Return ONLY the completed translation without
 explanations, notes, or commentary. Maintain all original formatting
 including paragraphs, bullet points, and emphasis while ensuring the
 translation reads naturally to native speakers."
-      :context (list "translate")
-      :callback #'my/gptel--callback-display-bottom)))
+                     :context (list "translate")
+                     :callback #'my/gptel--callback-display-bottom))))
 
 (use-package gptel-quick
   :vc (gptel-quick :url "https://github.com/karthink/gptel-quick.git" :branch "master")
