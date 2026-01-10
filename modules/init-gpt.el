@@ -4,15 +4,10 @@
   (defvar gptel--openai nil
     "Override the variable to hide OpenAI models")
 
-  (defvar gptel--openrouter
-    (gptel-make-openai "OpenRouter"
-      :host "openrouter.ai"
-      :endpoint "/api/v1/chat/completions"
-      :stream t
-      :key (lambda () (auth-source-pass-get 'secret "api-key/openrouter"))
-      :models '((anthropic/claude-opus-4.5 :input-cost 5 :output-cost 25)
-                (anthropic/claude-sonnet-4.5 :input-cost 3 :output-cost 15)
-                (anthropic/claude-haiku-4.5 :input-cost 1 :output-cost 5))))
+  (defvar gptel--google
+    (gptel-make-gemini "Google"
+      :key (lambda () (auth-source-pass-get 'secret "api-key/gemini"))
+      :stream t))
 
   :bind
   (("C-c <return>" . gptel-send)
@@ -23,8 +18,8 @@
    ("g t" . my/gptel-translate))
 
   :config
-  (setq gptel-model 'anthropic/claude-haiku-4.5
-        gptel-backend gptel--openrouter)
+  (setq gptel-model 'gemini-3-flash-preview
+        gptel-backend gptel--google)
 
   (defun my/gptel-buffer-names ()
     "Return the names of buffers where `gptel-mode' is active."
@@ -78,14 +73,15 @@
 If region is active, use it as TEXT; otherwise prompt for input.
 Display the result in a side window with the content selected."
     (interactive "sTranslate text: ")
-    (gptel-request text
-      :system "Translate the provided text between English and
+    (let ((gptel-include-reasoning nil))
+      (gptel-request text
+        :system "Translate the provided text between English and
 Chinese (Mandarin). Return ONLY the completed translation without
 explanations, notes, or commentary. Maintain all original formatting
 including paragraphs, bullet points, and emphasis while ensuring the
 translation reads naturally to native speakers."
-      :context (list "translate")
-      :callback #'my/gptel--callback-display-bottom)))
+        :context (list "translate")
+        :callback #'my/gptel--callback-display-bottom))))
 
 (use-package gptel-quick
   :vc (gptel-quick :url "https://github.com/karthink/gptel-quick.git" :branch "master")
