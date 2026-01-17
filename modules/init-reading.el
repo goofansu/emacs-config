@@ -4,8 +4,10 @@
   (("C-c e" . elfeed)
    :map elfeed-search-mode-map
    ("B" . my/elfeed-eww)
+   ("R" . my/elfeed-wallabag)
    :map elfeed-show-mode-map
-   ("B" . my/elfeed-eww))
+   ("B" . my/elfeed-eww)
+   ("R" . my/elfeed-wallabag))
 
   :config
   (defun my/elfeed-eww ()
@@ -21,6 +23,31 @@
     "Browse using EWW and enable readable mode."
     (funcall browse-function)
     (add-hook 'eww-after-render-hook #'eww-readable nil t))
+
+  (defun my/elfeed-wallabag ()
+    "Save current elfeed entry to wallabag using mlwcli.
+Works in both elfeed-search-mode and elfeed-show-mode."
+    (interactive)
+    (let* ((entry (pcase major-mode
+                    ('elfeed-show-mode elfeed-show-entry)
+                    ('elfeed-search-mode (elfeed-search-selected :single))
+                    (_ nil)))
+           (url (and entry (elfeed-entry-link entry)))
+           (title (and entry (elfeed-entry-title entry))))
+      (if (not url)
+          (message "No entry or URL found")
+        (let ((output (shell-command-to-string
+                       (format "mlwcli page add %s --tags elfeed" (shell-quote-argument url)))))
+          (if (string-match-p "success" (downcase output))
+              (progn
+                (message "Saved to wallabag: %s" title)
+                (elfeed-tag entry 'saved)
+                (pcase major-mode
+                  ('elfeed-search-mode
+                   (elfeed-search-update-entry entry))
+                  ('elfeed-show-mode
+                   (elfeed-show-refresh))))
+            (message "Error: %s" output))))))
 
   ;; Org export uses Elfeed entry's original link
   ;; https://takeonrules.com/2024/08/11/exporting-org-mode-elfeed-links/
