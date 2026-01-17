@@ -11,16 +11,17 @@
 
   :config
   (defun my/elfeed-eww ()
+    "Browse using EWW readable mode.
+Works in both elfeed-search-mode and elfeed-show-mode."
     (interactive)
     (let ((browse-url-browser-function #'eww))
-      (cl-case major-mode
-        (elfeed-search-mode
-         (my/elfeed-browse-with-eww #'elfeed-search-browse-url))
-        (elfeed-show-mode
-         (my/elfeed-browse-with-eww #'elfeed-show-visit)))))
+      (pcase major-mode
+        ('elfeed-show-mode
+         (my/elfeed-browse-with-eww #'elfeed-show-visit))
+        ('elfeed-search-mode
+         (my/elfeed-browse-with-eww #'elfeed-search-browse-url)))))
 
   (defun my/elfeed-browse-with-eww (browse-function)
-    "Browse using EWW and enable readable mode."
     (funcall browse-function)
     (add-hook 'eww-after-render-hook #'eww-readable nil t))
 
