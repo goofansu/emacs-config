@@ -14,7 +14,8 @@
    :map org-mode-map
    ([remap mark-defun] . org-babel-mark-block)
    ("M-g o" . consult-org-heading)
-   ("C-c C-M-l" . org-toggle-link-display))
+   ("C-c C-M-l" . org-toggle-link-display)
+   ("C-M-<return>" . org-insert-subheading))
 
   :custom
   (org-export-dispatch-use-expert-ui t)
