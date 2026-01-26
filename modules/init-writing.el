@@ -50,15 +50,13 @@
       :immediate-finish t
       :empty-lines-after 1
       :prepend t)
-     ("c" "Fleeting note" entry
-      (file "notes.org")
-      ,(concat "* %^{Title} %^g\n"
-               ":PROPERTIES:\n"
-               ":CAPTURED: %U\n"
-               ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
-               ":END:\n\n"
-               "%a\n%?")
-      :empty-lines-before 1)
+     ("c" "Fleeting note" plain
+      (file denote-last-path)
+      #'denote-org-capture
+      :no-save t
+      :immediate-finish nil
+      :kill-buffer t
+      :jump-to-captured t)
      ("r" "Reference note" plain
       (file denote-last-path)
       (function
