@@ -18,8 +18,6 @@
    ("C-M-<return>" . org-insert-subheading))
 
   :custom
-  (org-export-dispatch-use-expert-ui t)
-  (org-export-with-sub-superscripts '{})
   (org-use-fast-todo-selection 'expert)
   (org-use-sub-superscripts '{})
 
@@ -27,6 +25,11 @@
   (org-catch-invisible-edits 'show-and-error)
   (org-insert-heading-respect-content t)
   (org-special-ctrl-a/e t)
+
+  ;; Export
+  (org-export-dispatch-use-expert-ui t)
+  (org-export-with-sub-superscripts '{})
+  (org-export-with-toc nil)
 
   ;; Styling
   (org-ellipsis "…")
