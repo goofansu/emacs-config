@@ -64,14 +64,12 @@
       :immediate-finish nil
       :kill-buffer t
       :jump-to-captured t)
-     ("w" "Work note" plain
+     ("r" "Reference note" plain
       (file denote-last-path)
       (function
        (lambda ()
-         (let ((denote-use-title (alfred-browser-title))
-               (denote-use-directory
-                (expand-file-name "work" (denote-directory))))
-           (denote-org-capture))))
+         (let ((denote-use-title (alfred-browser-title)))
+           (denote-org-capture-with-prompts :title :keywords :subdirectory))))
       :no-save t
       :immediate-finish nil
       :kill-buffer t
