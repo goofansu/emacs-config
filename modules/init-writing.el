@@ -220,6 +220,10 @@ This function is ideal for managing referenced files in note-taking workflows."
             (with-current-buffer orig-buffer
               (insert (format "[[file:attachments/%s]]" renamed-name)))))))))
 
+(use-package denote-journal
+  :bind (("C-c n j" . denote-journal-new-or-existing-entry)
+         ("C-c n J" . denote-journal-new-entry)))
+
 (use-package denote-sequence
   :bind
   (("C-c n s s" . denote-sequence)
