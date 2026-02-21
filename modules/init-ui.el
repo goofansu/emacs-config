@@ -27,15 +27,8 @@ modus-operandi theme."
   :bind ("C-c F" . fontaine-set-preset)
   :custom
   (fontaine-presets
-   '((small
-      :default-height 120)
-     (regular
+   '((regular
       :default-height 160)
-     (medium
-      :default-family "Aporetic Serif Mono"
-      :default-height 200
-      :fixed-pitch-family "Aporetic Serif Mono"
-      :variable-pitch-family "Aporetic Sans")
      (large
       :default-height 240)
      (t
