@@ -63,6 +63,13 @@
       :immediate-finish t
       :empty-lines-after 1
       :prepend t)
+     ("j" "Journal" entry
+      (file+olp+datetree "journal.org")
+      ,(concat "* %^{Title} %^g\n"
+               ":PROPERTIES:\n"
+               ":CAPTURED: %U\n"
+               ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
+               ":END:"))
      ("c" "Fleeting note" plain
       (file denote-last-path)
       (function
