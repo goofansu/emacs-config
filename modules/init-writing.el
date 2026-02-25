@@ -42,8 +42,18 @@
 
   ;; Capture
   (org-capture-templates
-   `(("e" "Email" entry ; Also see `org-capture-templates-contexts'
-      (file "tasks.org")
+   `(("t" "To-do" entry
+      (file "to-dos.org")
+      ,(concat "* TODO %^{Title} %^g\n"
+               ":PROPERTIES:\n"
+               ":CAPTURED: %U\n"
+               ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
+               ":END:\n\n"
+               "%?")
+      :empty-lines-after 1
+      :prepend t)
+     ("e" "Email" entry ; Also see `org-capture-templates-contexts'
+      (file "to-dos.org")
       ,(concat "* TODO %:subject :mail:\n"
                ":PROPERTIES:\n"
                ":CAPTURED: %U\n"
