@@ -1,5 +1,4 @@
 * Feeds :elfeed:
 ** [[https://sachachua.com/blog/category/emacs-news/feed/][Emacs News]] :emacs:newsletter:
-** [[https://world.hey.com/this.week.in.rails/feed.atom][This Week in Rails]] :rails:newsletter:
 ** [[https://lobste.rs/t/vibecoding.rss][Vibe coding - Lobster]] :lb:vibecoding:
 ** [[https://hnrss.org/frontpage][Frontpage - Hacker News]] :hn:frontpage:
