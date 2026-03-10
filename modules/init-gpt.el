@@ -4,15 +4,6 @@
   (defvar gptel--openai nil
     "Override the variable to hide OpenAI models")
 
-  (defvar gptel--openrouter
-    (gptel-make-openai "OpenRouter"
-      :host "openrouter.ai"
-      :endpoint "/api/v1/chat/completions"
-      :stream t
-      :key (lambda () (auth-source-pass-get 'secret "api-key/openrouter"))
-      :models '((openai/gpt-5.3-codex :input-cost 1.75 :output-cost 14)
-                (openai/gpt-5.1-codex-mini :input-cost 0.25 :output-cost 2))))
-
   :bind
   (("C-c <return>" . gptel-send)
    ("C-c C-<return>" . gptel-menu)
@@ -22,8 +13,15 @@
    ("g t" . my/gptel-translate))
 
   :config
-  (setq gptel-model 'openai/gpt-5.1-codex-mini
-        gptel-backend gptel--openrouter)
+  (setq gptel-model 'anthropic/claude-haiku-4.5
+        gptel-backend (gptel-make-openai "OpenRouter"
+                        :host "openrouter.ai"
+                        :endpoint "/api/v1/chat/completions"
+                        :stream t
+                        :key (lambda () (auth-source-pass-get 'secret "api-key/openrouter"))
+                        :models '((anthropic/claude-haiku-4.5 :input-cost 1 :output-cost 5 )
+                                  (anthropic/claude-opus-4.6 :input-cost 5 :output-cost 25)
+                                  (anthropic/claude-sonnet-4.6 :input-cost 3 :output-cost 15))))
 
   (defun my/gptel-buffer-names ()
     "Return the names of buffers where `gptel-mode' is active."
@@ -79,13 +77,13 @@ Display the result in a side window with the content selected."
     (interactive "sTranslate text: ")
     (let ((gptel-include-reasoning nil))
       (gptel-request text
-                     :system "Translate the provided text between English and
+        :system "Translate the provided text between English and
 Chinese (Mandarin). Return ONLY the completed translation without
 explanations, notes, or commentary. Maintain all original formatting
 including paragraphs, bullet points, and emphasis while ensuring the
 translation reads naturally to native speakers."
-                     :context (list "translate")
-                     :callback #'my/gptel--callback-display-bottom))))
+        :context (list "translate")
+        :callback #'my/gptel--callback-display-bottom))))
 
 (use-package gptel-quick
   :vc (gptel-quick :url "https://github.com/karthink/gptel-quick.git" :branch "master")
