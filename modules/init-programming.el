@@ -1,7 +1,6 @@
 (require 'init-tree-sitter)
 (require 'init-data)
 (require 'init-docker)
-(require 'init-c)
 (require 'init-elixir)
 (require 'init-go)
 (require 'init-markdown)
