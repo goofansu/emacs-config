@@ -19,8 +19,6 @@
                   "  "
                   prot-modeline-vc-branch
                   "  "
-                  prot-modeline-eglot
-                  "  "
                   prot-modeline-flymake
                   "  "
                   mode-line-format-right-align
