@@ -1,5 +1,9 @@
 (use-package elfeed
   :pin melpa
+  :init
+  (setq elfeed-feeds
+        '(("https://sachachua.com/blog/category/emacs-news/feed/")))
+
   :bind
   (("C-c e" . elfeed)
    :map elfeed-search-mode-map
@@ -77,11 +81,6 @@ Works in both elfeed-search-mode and elfeed-show-mode."
               (_ (format "%s (%s)" desc url)))
           (format "%s (%s)" desc url))
       (format "%s (%s)" desc link))))
-
-(use-package elfeed-org
-  :pin melpa
-  :after elfeed
-  :config (elfeed-org))
 
 (use-package nov
   :pin melpa
