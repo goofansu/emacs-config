@@ -70,27 +70,6 @@
                ":CAPTURED: %U\n"
                ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
                ":END:"))
-     ("c" "Fleeting note" plain
-      (file denote-last-path)
-      (function
-       (lambda ()
-         (let ((denote-use-directory
-                (expand-file-name "fleeting" (denote-directory))))
-           (denote-org-capture-with-prompts :title))))
-      :no-save t
-      :immediate-finish nil
-      :kill-buffer t
-      :jump-to-captured t)
-     ("r" "Reference note" plain
-      (file denote-last-path)
-      (function
-       (lambda ()
-         (let ((denote-use-title (alfred-browser-title)))
-           (denote-org-capture-with-prompts :title :keywords :subdirectory))))
-      :no-save t
-      :immediate-finish nil
-      :kill-buffer t
-      :jump-to-captured t)
      ))
 
   (org-capture-templates-contexts
