@@ -10,10 +10,37 @@
    ("C-c g f" . magit-fetch)
    ("C-c g F" . magit-pull)
    ("C-c g l" . magit-log-current)
-   ("C-c g L" . magit-log-buffer-file))
+   ("C-c g L" . magit-log-buffer-file)
+   (:map magit-log-mode-map ("." . magit-browse-pr-at-commit))
+   (:map magit-refs-mode-map ("." . magit-browse-pr-at-branch)))
   :custom
   (magit-repository-directories '(("~/code" . 2) ("~/work" . 1)))
-  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+  :config
+  (defun magit-browse-pr-at-branch ()
+    "Browse the GitHub PR for the branch at point."
+    (interactive)
+    (if-let ((branch (magit-branch-at-point)))
+        (progn
+          (message "Opening PR for branch: %s" branch)
+          (shell-command (format "gh pr view -w %s" (shell-quote-argument branch))))
+      (message "No branch at point")))
+
+  (defun magit-browse-pr-at-commit ()
+    "Browse the GitHub PR associated with the commit at point."
+    (interactive)
+    (if-let ((commit (magit-commit-at-point)))
+        (progn
+          (message "Searching for PR associated with %s..." commit)
+          (let ((pr-number
+                 (string-trim
+                  (shell-command-to-string
+                   (format "gh search prs %s --sort created --order asc --limit 1 --json number --jq '.[] | .number'" commit)))))
+            (if (string-empty-p pr-number)
+                (message "No PR found for commit %s" commit)
+              (message "Opening PR #%s..." pr-number)
+              (shell-command (format "gh pr view -w %s" pr-number)))))
+      (message "No commit at point"))))
 
 (use-package git-timemachine
   :pin melpa
