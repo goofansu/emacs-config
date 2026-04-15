@@ -48,4 +48,38 @@ modus-operandi theme."
   :custom
   (spacious-padding-subtle-frame-lines t))
 
+(use-package modus-themes-exporter
+  :ensure nil ; do not try to install because we get it from source in the `:init'
+  :commands (modus-themes-exporter-export)
+  :init
+  ;; Then upgrade it with the command `package-vc-upgrade' or `package-vc-upgrade-all'.
+  (unless (package-installed-p 'modus-themes-exporter)
+    (package-vc-install "https://github.com/protesilaos/modus-themes-exporter.git"))
+  :config
+  ;; TODO remove when upgraded to modus-themes 5.3
+  (defun modus-themes-retrieve-palette-value (color palette)
+  "Return COLOR from PALETTE.
+Use recursion until COLOR is retrieved as a string.  Refrain from
+doing so if the value of COLOR is not a key in the PALETTE.
+
+Return `unspecified' if the value of COLOR cannot be determined.
+This symbol is accepted by faces and is thus harmless.
+
+This function is used in the macro `modus-themes-theme'"
+  (let ((value (car (alist-get color palette))))
+    (cond
+     ((or (stringp value)
+          (eq value 'unspecified))
+      value)
+     ((and (symbolp value)
+           value)
+      (modus-themes-retrieve-palette-value value palette))
+     (t
+      'unspecified))))
+  (defun modus-themes-color-dark-p (hex-color)
+  "Return non-nil if hexadecimal RGB HEX-COLOR is dark.
+Test that HEX-COLOR has more contrast against white than black."
+  (> (modus-themes-contrast hex-color "#ffffff")
+     (modus-themes-contrast hex-color "#000000"))))
+
 (provide 'init-ui)
