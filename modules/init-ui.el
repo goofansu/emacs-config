@@ -46,6 +46,6 @@ modus-operandi theme."
 (use-package spacious-padding
   :hook after-init
   :custom
-  (spacious-padding-subtle-mode-line t))
+  (spacious-padding-subtle-frame-lines t))
 
 (provide 'init-ui)
