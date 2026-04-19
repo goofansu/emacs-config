@@ -143,7 +143,7 @@
      embark-isearch-highlight-indicator)))
 
 (use-package embark-consult
-  :hook (embark-collect-mode . consult-preview-at-point-mode))
+  :after (embark consult))
 
 (use-package embark-jira
   :ensure nil
