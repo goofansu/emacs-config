@@ -13,15 +13,16 @@
    ("g t" . my/gptel-translate))
 
   :config
-  (setq gptel-model 'anthropic/claude-haiku-4.5
+  (setq gptel-model 'openai/gpt-5.5
         gptel-backend (gptel-make-openai "OpenRouter"
                         :host "openrouter.ai"
                         :endpoint "/api/v1/chat/completions"
                         :stream t
                         :key (lambda () (auth-source-pass-get 'secret "api-key/openrouter"))
                         :models '((anthropic/claude-haiku-4.5 :input-cost 1 :output-cost 5 )
+                                  (anthropic/claude-sonnet-4.6 :input-cost 3 :output-cost 15)
                                   (anthropic/claude-opus-4.6 :input-cost 5 :output-cost 25)
-                                  (anthropic/claude-sonnet-4.6 :input-cost 3 :output-cost 15))))
+                                  (openai/gpt-5.5 :input 5 :output-cost 30))))
 
   (defun my/gptel-buffer-names ()
     "Return the names of buffers where `gptel-mode' is active."
