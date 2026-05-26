@@ -1,5 +1,4 @@
 (use-package ruby-ts-mode
-  :ensure nil
-  :defer t)
+  :ensure nil)
 
 (provide 'init-ruby)

@@ -1,4 +1,4 @@
-(use-package go-mode
-  :pin nongnu)
+(use-package go-ts-mode
+  :ensure nil)
 
 (provide 'init-go)

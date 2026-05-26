@@ -20,12 +20,7 @@
   (js-indent-level 2))
 
 (use-package typescript-ts-mode
-  :ensure nil
-  :mode "\\.ts\\'")
-
-(use-package tsx-ts-mode
-  :ensure nil
-  :mode "\\.tsx\\'")
+  :ensure nil)
 
 (use-package haml-mode
   :pin nongnu

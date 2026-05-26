@@ -1,9 +1,7 @@
 (use-package elixir-ts-mode
-  :ensure nil
-  :mode ("\\.elixir\\'" "\\.ex\\'" "\\.exs\\'" "mix\\.lock"))
+  :ensure nil)
 
 (use-package heex-ts-mode
-  :ensure nil
-  :defer t)
+  :ensure nil)
 
 (provide 'init-elixir)
