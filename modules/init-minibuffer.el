@@ -45,8 +45,7 @@
   :after vertico
   :custom
   (vertico-multiform-categories
-   '((embark-keybinding grid)
-     (jinx grid (vertico-grid-annotate . 20))))
+   '((embark-keybinding grid)))
   :config
   (vertico-multiform-mode 1))
 
