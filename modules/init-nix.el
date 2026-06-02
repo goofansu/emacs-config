@@ -1,6 +1,6 @@
 (use-package nix-mode
   :pin nongnu
-  :hook (before-save . nix-format-before-save)
+  :hook (before-save . apheleia-mode)
   :bind (:map my-insert-map ("n n" . my/homebrew-casks-insert))
   :config
   (defun my/homebrew-casks-insert ()
