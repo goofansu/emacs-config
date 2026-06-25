@@ -2,6 +2,7 @@
 (require 'init-data)
 (require 'init-docker)
 (require 'init-elixir)
+(require 'init-fish)
 (require 'init-go)
 (require 'init-markdown)
 (require 'init-nix)
