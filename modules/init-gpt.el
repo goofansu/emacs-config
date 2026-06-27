@@ -19,7 +19,8 @@
                         :endpoint "/api/v1/chat/completions"
                         :stream t
                         :key (lambda () (auth-source-pass-get 'secret "api-key/openrouter"))
-                        :models '((openai/gpt-5.5 :input 5 :output-cost 30))))
+                        :models '((openai/gpt-5.5 :input-cost 5 :output-cost 30)
+                                  (openai/gpt-5.4-mini :input-cost 0.75 :output-cost 4.5))))
 
   (defun my/gptel-buffer-names ()
     "Return the names of buffers where `gptel-mode' is active."
