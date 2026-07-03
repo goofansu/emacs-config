@@ -12,15 +12,17 @@
    :map embark-region-map
    ("g t" . my/gptel-translate))
 
+  :custom
+  (gptel-include-reasoning nil)
+
   :config
-  (setq gptel-model 'openai/gpt-5.5
-        gptel-backend (gptel-make-openai "OpenRouter"
-                        :host "openrouter.ai"
-                        :endpoint "/api/v1/chat/completions"
+  (setq gptel-model 'openai/gpt-oss-20b
+        gptel-backend (gptel-make-openai "LM Studio"
+                        :protocol "http"
+                        :host "127.0.0.1:1234"
+                        :endpoint "/v1/chat/completions"
                         :stream t
-                        :key (lambda () (auth-source-pass-get 'secret "api-key/openrouter"))
-                        :models '((openai/gpt-5.5 :input-cost 5 :output-cost 30)
-                                  (openai/gpt-5.4-mini :input-cost 0.75 :output-cost 4.5))))
+                        :models '(openai/gpt-oss-20b)))
 
   (defun my/gptel-buffer-names ()
     "Return the names of buffers where `gptel-mode' is active."
@@ -55,34 +57,35 @@
             (gptel-send))))))
 
   (defun my/gptel--callback-display-bottom (response info)
-    (if (not (stringp response))
-        (message "Response failed with error: %S" response)
-      (pcase-let ((`(,pattern) (plist-get info :context)))
-        (with-current-buffer (generate-new-buffer (format "*gptel-%s*" pattern))
-          (let ((inhibit-read-only t))
-            (erase-buffer)
-            (insert response)
-            (display-buffer
-             (current-buffer)
-             `((display-buffer-in-side-window)
-               (side . bottom)
-               (window-height . ,#'fit-window-to-buffer))))
-          (special-mode)))))
+    (pcase response
+      (`(reasoning . ,_) nil)
+      ((pred stringp)
+       (pcase-let ((`(,pattern) (plist-get info :context)))
+         (with-current-buffer (generate-new-buffer (format "*gptel-%s*" pattern))
+           (let ((inhibit-read-only t))
+             (erase-buffer)
+             (insert response)
+             (display-buffer
+              (current-buffer)
+              `((display-buffer-in-side-window)
+                (side . bottom)
+                (window-height . ,#'fit-window-to-buffer))))
+           (special-mode))))
+      (_ (message "Response failed with error: %S" response))))
 
   (defun my/gptel-translate (text)
     "Translate TEXT into English using LLM.
 If region is active, use it as TEXT; otherwise prompt for input.
 Display the result in a side window with the content selected."
     (interactive "sTranslate text: ")
-    (let ((gptel-include-reasoning nil))
-      (gptel-request text
-        :system "Translate the provided text between English and
+    (gptel-request text
+      :system "Translate the provided text between English and
 Chinese (Mandarin). Return ONLY the completed translation without
 explanations, notes, or commentary. Maintain all original formatting
 including paragraphs, bullet points, and emphasis while ensuring the
 translation reads naturally to native speakers."
-        :context (list "translate")
-        :callback #'my/gptel--callback-display-bottom))))
+      :context (list "translate")
+      :callback #'my/gptel--callback-display-bottom)))
 
 (use-package gptel-quick
   :vc (gptel-quick :url "https://github.com/karthink/gptel-quick.git" :branch "master")
