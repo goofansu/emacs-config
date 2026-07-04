@@ -8,22 +8,22 @@
   (("C-c <return>" . gptel-send)
    ("C-c C-<return>" . gptel-menu)
    :map search-map
-   ("T" . my/gptel-translate)
-   :map embark-region-map
-   ("g t" . my/gptel-translate))
+   ("=" . my/gptel-summarize))
 
   :custom
   (gptel-include-reasoning nil)
 
   :config
-  (setq gptel-model 'openai/gpt-oss-20b
+  (setf (alist-get 'markdown-mode gptel-prompt-prefix-alist) "user> ")
+  (setf (alist-get 'markdown-mode gptel-response-prefix-alist) "assistant> ")
+
+  (setq gptel-model 'qwen/qwen3.5-9b
         gptel-backend (gptel-make-openai "LM Studio"
                         :protocol "http"
                         :host "127.0.0.1:1234"
                         :endpoint "/v1/chat/completions"
                         :stream t
-                        :models '(openai/gpt-oss-20b
-                                  google/gemma-4-e4b)))
+                        :models '(qwen/qwen3.5-9b)))
 
   (defun my/gptel-buffer-names ()
     "Return the names of buffers where `gptel-mode' is active."
@@ -46,48 +46,6 @@
 
   (add-to-list 'consult-buffer-sources 'consult--source-gptel)
 
-  (defun my/gptel-send-all-buffers (prompt)
-    "Send PROMPT in all buffers where gptel-mode is active."
-    (interactive "sPrompt: ")
-    (dolist (buffer (buffer-list))
-      (with-current-buffer buffer
-        (when (bound-and-true-p gptel-mode)
-          (save-excursion
-            (goto-char (point-max))
-            (insert prompt)
-            (gptel-send))))))
-
-  (defun my/gptel--callback-display-bottom (response info)
-    (pcase response
-      (`(reasoning . ,_) nil)
-      ((pred stringp)
-       (pcase-let ((`(,pattern) (plist-get info :context)))
-         (with-current-buffer (generate-new-buffer (format "*gptel-%s*" pattern))
-           (let ((inhibit-read-only t))
-             (erase-buffer)
-             (insert response)
-             (display-buffer
-              (current-buffer)
-              `((display-buffer-in-side-window)
-                (side . bottom)
-                (window-height . ,#'fit-window-to-buffer))))
-           (special-mode))))
-      (_ (message "Response failed with error: %S" response))))
-
-  (defun my/gptel-translate (text)
-    "Translate TEXT into English using LLM.
-If region is active, use it as TEXT; otherwise prompt for input.
-Display the result in a side window with the content selected."
-    (interactive "sTranslate text: ")
-    (gptel-request text
-      :system "Translate the provided text between English and
-Chinese (Mandarin). Return ONLY the completed translation without
-explanations, notes, or commentary. Maintain all original formatting
-including paragraphs, bullet points, and emphasis while ensuring the
-translation reads naturally to native speakers."
-      :context (list "translate")
-      :callback #'my/gptel--callback-display-bottom))
-
   (defun my/gptel-remap-header-line-button-underline ()
     "Make gptel header-line buttons align with spacious-padding underline."
     (face-remap-add-relative
@@ -96,6 +54,34 @@ translation reads naturally to native speakers."
                                (face-foreground 'default nil t))
                           :position t))))
 
-  (add-hook 'gptel-mode-hook #'my/gptel-remap-header-line-button-underline))
+  (add-hook 'gptel-mode-hook #'my/gptel-remap-header-line-button-underline)
+
+  (defconst my/gptel-summary-prompt
+    "Summarize the main message and key points in plain, concise language. No extra interpretation or detail."
+    "Prompt for summary requests.")
+
+  (defun my/gptel-send-current-buffer (buffer-name default-prompt)
+    "Send current buffer context to BUFFER-NAME with a minibuffer prompt.
+PROMPT-NAME labels the minibuffer prompt. DEFAULT-PROMPT is used as the
+minibuffer default."
+    (let* ((source-buffer (current-buffer))
+           (minibuffer-setup-hook
+            (cons (lambda ()
+                    (goto-char (minibuffer-prompt-end))
+                    (push-mark (point-max) nil t))
+                  minibuffer-setup-hook))
+           (prompt (read-string "Prompt: " default-prompt nil default-prompt)))
+      (with-current-buffer (gptel buffer-name nil nil t)
+        (setq-local gptel-context (list source-buffer))
+        (setq-local gptel-use-context 'system)
+        (let ((inhibit-read-only t))
+          (erase-buffer)
+          (insert (or (gptel-prompt-prefix-string) "") prompt))
+        (gptel-send))))
+
+  (defun my/gptel-summarize ()
+    "Summarize the current buffer in a gptel buffer."
+    (interactive)
+    (my/gptel-send-current-buffer "*gptel-summary*" my/gptel-summary-prompt)))
 
 (provide 'init-gpt)
