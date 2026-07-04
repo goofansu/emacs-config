@@ -87,10 +87,4 @@ translation reads naturally to native speakers."
       :context (list "translate")
       :callback #'my/gptel--callback-display-bottom)))
 
-(use-package gptel-quick
-  :vc (gptel-quick :url "https://github.com/karthink/gptel-quick.git" :branch "master")
-  :bind (:map embark-general-map ("?" . gptel-quick))
-  :custom
-  (gptel-quick-display nil))
-
 (provide 'init-gpt)
