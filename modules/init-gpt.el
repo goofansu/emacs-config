@@ -86,6 +86,16 @@ explanations, notes, or commentary. Maintain all original formatting
 including paragraphs, bullet points, and emphasis while ensuring the
 translation reads naturally to native speakers."
       :context (list "translate")
-      :callback #'my/gptel--callback-display-bottom)))
+      :callback #'my/gptel--callback-display-bottom))
+
+  (defun my/gptel-remap-header-line-button-underline ()
+    "Make gptel header-line buttons align with spacious-padding underline."
+    (face-remap-add-relative
+     'button
+     `(:underline (:color ,(or (face-foreground 'header-line nil t)
+                               (face-foreground 'default nil t))
+                          :position t))))
+
+  (add-hook 'gptel-mode-hook #'my/gptel-remap-header-line-button-underline))
 
 (provide 'init-gpt)
