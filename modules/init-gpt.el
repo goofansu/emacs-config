@@ -22,7 +22,8 @@
                         :host "127.0.0.1:1234"
                         :endpoint "/v1/chat/completions"
                         :stream t
-                        :models '(openai/gpt-oss-20b)))
+                        :models '(openai/gpt-oss-20b
+                                  google/gemma-4-e4b)))
 
   (defun my/gptel-buffer-names ()
     "Return the names of buffers where `gptel-mode' is active."
