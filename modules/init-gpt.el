@@ -82,32 +82,25 @@
                          (expand-file-name pattern my/fabric-patterns-directory)))
       (string-trim (buffer-string))))
 
-  (defun my/gptel-send-current-buffer (buffer-name system-prompt)
-    "Send current buffer context to BUFFER-NAME with SYSTEM-PROMPT."
+  (defvar my/gptel-default-user-prompt
+    "Please process the provided context according to the system instructions."
+    "Default user prompt for `my/gptel-send-current-buffer'.")
+
+  (defun my/gptel-send-current-buffer (buffer-name system-prompt user-prompt &optional temperature)
+    "Send current buffer context to BUFFER-NAME with SYSTEM-PROMPT.
+Use USER-PROMPT as the prompt text, or `my/gptel-default-user-prompt' when nil.
+Set `gptel-temperature' buffer-locally to TEMPERATURE, or 0.7 when omitted."
     (let ((source-buffer (current-buffer)))
       (with-current-buffer (gptel buffer-name nil nil t)
         (setq-local gptel-context (list source-buffer))
         (setq-local gptel-use-context 'system)
         (setq-local gptel-system-prompt system-prompt)
+        (setq-local gptel-temperature (or temperature 0.7))
         (let ((inhibit-read-only t))
           (erase-buffer)
           (insert (gptel-prompt-prefix-string)
-                  "Please process the provided context according to the system instructions."))
+                  (or user-prompt my/gptel-default-user-prompt)))
         (gptel-send))))
-
-  (defun my/gptel-summarize ()
-    "Summarize the current buffer using the Fabric summarize pattern."
-    (interactive)
-    (my/gptel-send-current-buffer
-     "*gptel-summarize*"
-     (my/fabric-read-pattern-prompt "summarize")))
-
-  (defun my/gptel-translate ()
-    "Translate the current buffer using the Fabric translate pattern."
-    (interactive)
-    (my/gptel-send-current-buffer
-     "*gptel-translate*"
-     (my/fabric-read-pattern-prompt "translate")))
 
   (defun my/gptel-fabric-pattern (pattern)
     "Send the current buffer using a selected Fabric PATTERN."
@@ -115,6 +108,25 @@
                                         (my/fabric-pattern-names) nil t)))
     (my/gptel-send-current-buffer
      (format "*gptel-%s*" pattern)
-     (my/fabric-read-pattern-prompt pattern))))
+     (my/fabric-read-pattern-prompt pattern)
+     nil))
+
+  (defun my/gptel-summarize ()
+    "Summarize the current buffer using the Fabric summarize pattern."
+    (interactive)
+    (my/gptel-send-current-buffer
+     "*gptel-summarize*"
+     (my/fabric-read-pattern-prompt "summarize")
+     nil
+     0.2))
+
+  (defun my/gptel-translate ()
+    "Translate the current buffer using the Fabric translate pattern."
+    (interactive)
+    (my/gptel-send-current-buffer
+     "*gptel-translate*"
+     (my/fabric-read-pattern-prompt "translate")
+     "Translate into Chinese."
+     0.3)))
 
 (provide 'init-gpt)
