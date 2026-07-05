@@ -14,8 +14,19 @@
   (gptel-include-reasoning nil)
 
   :config
-  (setf (alist-get 'markdown-mode gptel-prompt-prefix-alist) "user> ")
-  (setf (alist-get 'markdown-mode gptel-response-prefix-alist) "assistant> ")
+  (defface my/gptel-user-prefix
+    '((t :inherit font-lock-keyword-face :weight bold))
+    "Face for the gptel user prefix.")
+
+  (defface my/gptel-assistant-prefix
+    '((t :inherit font-lock-function-name-face :weight bold))
+    "Face for the gptel assistant prefix.")
+
+  (setf (alist-get 'markdown-mode gptel-prompt-prefix-alist)
+        (propertize (format "%s\n" user-full-name)
+                    'font-lock-face 'my/gptel-user-prefix))
+  (setf (alist-get 'markdown-mode gptel-response-prefix-alist)
+        (propertize "Assistant\n" 'font-lock-face 'my/gptel-assistant-prefix))
 
   (setq gptel-model 'qwen/qwen3.5-9b
         gptel-backend (gptel-make-openai "LM Studio"
