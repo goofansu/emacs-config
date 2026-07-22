@@ -22,13 +22,12 @@
   (setf (alist-get 'markdown-mode gptel-prompt-prefix-alist) "**User**\n")
   (setf (alist-get 'markdown-mode gptel-response-prefix-alist) "**Assistant**\n")
 
-  (setq gptel-model 'qwen/qwen3.5-9b
-        gptel-backend (gptel-make-openai "LM Studio"
-                        :protocol "http"
-                        :host "127.0.0.1:1234"
-                        :endpoint "/v1/chat/completions"
+  (setq gptel-model 'unsloth/Qwen3.5-9B-GGUF:Q4_K_M
+        gptel-backend (gptel-make-openai "llama-cpp"
                         :stream t
-                        :models '(qwen/qwen3.5-9b)))
+                        :protocol "http"
+                        :host "localhost:8080"
+                        :models '(unsloth/Qwen3.5-9B-GGUF:Q4_K_M)))
 
   (defun my/gptel-buffer-names ()
     "Return the names of buffers where `gptel-mode' is active."
