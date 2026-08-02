@@ -280,7 +280,6 @@ This function is ideal for managing referenced files in note-taking workflows."
   :custom
   (citar-bibliography org-cite-global-bibliography)
   (citar-at-point-function #'embark-act)
-  (citar-open-entry-function #'citar-open-entry-in-zotero)
   :config
   (add-to-list 'citar-file-open-functions (cons "pdf" #'citar-file-open-external)))
 
