@@ -1,6 +1,10 @@
+;; notes
 (defvar my-notes-directory (expand-file-name "notes" my-code-directory))
 (defvar my-notes-bibliography-file (expand-file-name "reference.bib" my-notes-directory))
 (defvar my-notes-attachments-directory (expand-file-name "attachments" my-notes-directory))
+;; harbor
+(defvar my-harbor-directory (expand-file-name "harbor" my-code-directory))
+(defvar my-harbor-bibliography-file (expand-file-name "reference.bib" my-harbor-directory))
 
 (use-package org
   :ensure nil
@@ -267,9 +271,9 @@ This function is ideal for managing referenced files in note-taking workflows."
 
 (use-package citar
   :pin melpa
-  :bind ("C-c E" . citar-open)
+  :bind ("C-c r" . citar-open)          ; mnemonic: references
   :init
-  (setq org-cite-global-bibliography `(,my-notes-bibliography-file))
+  (setq org-cite-global-bibliography `(,my-notes-bibliography-file ,my-harbor-bibliography-file))
   (setq org-cite-insert-processor 'citar)
   (setq org-cite-follow-processor 'citar)
   (setq org-cite-activate-processor 'citar)
