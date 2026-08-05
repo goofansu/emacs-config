@@ -258,4 +258,12 @@ FILE-LINE should be in the format 'file:line' relative to the project root."
   :config
   (winner-mode 1))
 
+(use-package speedbar
+  :ensure nil
+  :if (> emacs-major-version 30)
+  :commands (speedbar)
+  :custom
+  (speedbar-prefer-window t)
+  (speedbar-use-images nil))
+
 (provide 'init-better-defaults)
