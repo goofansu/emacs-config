@@ -13,7 +13,21 @@
    ("C-c g L" . magit-log-buffer-file))
   :custom
   (magit-repository-directories '(("~/code" . 2) ("~/work" . 1)))
-  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+
+  :config
+  (with-eval-after-load 'transient
+    ;; git push with skip-ci option
+    (transient-append-suffix 'magit-push "-n"
+      '("-s" "Skip CI" "--push-option=skip-ci"))
+
+    ;; git push to all remotes
+    (defun my/magit-push-all (&optional args)
+      (interactive (list (magit-push-arguments)))
+      (dolist (remote (magit-list-remotes))
+        (magit-push-to-remote remote args)))
+    (transient-append-suffix 'magit-push "e"
+      '("E" "everywhere" my/magit-push-all))))
 
 (use-package git-timemachine
   :pin melpa
