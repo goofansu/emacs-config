@@ -1,7 +1,7 @@
 (use-package dictionary
   :ensure nil
   :bind
-  (:map search-map ("d" . dictionary-lookup-definition))
+  (:map search-map ("d" . dictionary-search))
   :custom
   (dictionary-server "dict.org")
   (dictionary-default-popup-strategy "lev")
