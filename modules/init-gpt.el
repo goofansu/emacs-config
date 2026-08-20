@@ -93,13 +93,31 @@
     "Please process the provided context according to the system instructions."
     "Default user prompt for `my/gptel-send-current-buffer'.")
 
+  (defun my/gptel--context-bounds ()
+    "Return the context bounds to send from the current buffer.
+With an active region, return its bounds as a list of (START . END) pairs.
+Without one, ask for confirmation and return nil, meaning the whole buffer.
+Signal a `user-error' when the confirmation is declined."
+    (cond
+     ((use-region-p) (region-bounds))
+     ((y-or-n-p (format "No region active; send the whole buffer %s (%d lines)? "
+                        (buffer-name)
+                        (line-number-at-pos (point-max))))
+      nil)
+     (t (user-error "Aborted"))))
+
   (defun my/gptel-send-current-buffer (buffer-name system-prompt user-prompt &optional temperature)
     "Send current buffer context to BUFFER-NAME with SYSTEM-PROMPT.
+Send only the active region when there is one, otherwise send the whole
+buffer after confirmation.
 Use USER-PROMPT as the prompt text, or `my/gptel-default-user-prompt' when nil.
 Set `gptel-temperature' buffer-locally to TEMPERATURE, or 0.7 when omitted."
-    (let ((source-buffer (current-buffer)))
+    (let* ((source-buffer (current-buffer))
+           (bounds (my/gptel--context-bounds)))
       (with-current-buffer (gptel buffer-name nil nil t)
-        (setq-local gptel-context (list source-buffer))
+        (setq-local gptel-context (if bounds
+                                      (list (list source-buffer :bounds bounds))
+                                    (list source-buffer)))
         (setq-local gptel-use-context 'system)
         (setq-local gptel-system-prompt system-prompt)
         (setq-local gptel-temperature (or temperature 0.7))
@@ -110,7 +128,7 @@ Set `gptel-temperature' buffer-locally to TEMPERATURE, or 0.7 when omitted."
         (gptel-send))))
 
   (defun my/gptel-fabric-pattern (pattern)
-    "Send the current buffer using a selected Fabric PATTERN."
+    "Send the active region, or the whole buffer, using a selected Fabric PATTERN."
     (interactive (list (completing-read "Fabric pattern: "
                                         (my/fabric-pattern-names) nil t)))
     (my/gptel-send-current-buffer
@@ -119,7 +137,7 @@ Set `gptel-temperature' buffer-locally to TEMPERATURE, or 0.7 when omitted."
      nil))
 
   (defun my/gptel-summarize ()
-    "Summarize the current buffer using the Fabric summarize pattern."
+    "Summarize the active region, or the whole buffer, with the Fabric summarize pattern."
     (interactive)
     (my/gptel-send-current-buffer
      "*gptel-summarize*"
@@ -128,7 +146,7 @@ Set `gptel-temperature' buffer-locally to TEMPERATURE, or 0.7 when omitted."
      0.2))
 
   (defun my/gptel-translate ()
-    "Translate the current buffer using the Fabric translate pattern."
+    "Translate the active region, or the whole buffer, with the Fabric translate pattern."
     (interactive)
     (my/gptel-send-current-buffer
      "*gptel-translate*"
