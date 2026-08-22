@@ -7,6 +7,7 @@
 (require 'init-markdown)
 (require 'init-nix)
 (require 'init-ruby)
+(require 'init-rust)
 (require 'init-web)
 (require 'init-yaml)
 

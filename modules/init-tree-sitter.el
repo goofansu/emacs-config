@@ -13,6 +13,7 @@
           (json "https://github.com/tree-sitter/tree-sitter-json")
           (python "https://github.com/tree-sitter/tree-sitter-python")
           (ruby "https://github.com/tree-sitter/tree-sitter-ruby")
+          (rust "https://github.com/tree-sitter/tree-sitter-rust")
           (toml "https://github.com/tree-sitter/tree-sitter-toml")
           (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
           (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
@@ -28,6 +29,7 @@
      (json-mode . json-ts-mode)
      (yaml-mode . yaml-ts-mode)
      (ruby-mode . ruby-ts-mode)
+     (rust-mode . rust-ts-mode)
      ))
 
   :config
