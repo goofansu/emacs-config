@@ -1,9 +1,6 @@
 (use-package gptel
   :pin melpa
   :init
-  (defvar gptel--openai nil
-    "Override the variable to hide OpenAI models")
-
   (gptel-make-openai "OpenRouter"
     :host "openrouter.ai"
     :endpoint "/api/v1/chat/completions"
