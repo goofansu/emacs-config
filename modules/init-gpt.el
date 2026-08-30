@@ -1,13 +1,5 @@
 (use-package gptel
   :pin melpa
-  :init
-  (gptel-make-openai "OpenRouter"
-    :host "openrouter.ai"
-    :endpoint "/api/v1/chat/completions"
-    :stream t
-    :key (lambda () (auth-source-pass-get 'secret "api-key/openrouter"))
-    :models '((openai/gpt-5.6-luna)))
-
   :bind
   (("C-c <return>" . gptel-send)
    ("C-c C-<return>" . gptel-menu)
