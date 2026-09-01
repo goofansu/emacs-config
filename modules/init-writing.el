@@ -92,6 +92,7 @@
   :hook (dired-mode . denote-dired-mode)
   :bind
   (("C-c n n" . denote-open-or-create)
+   ("C-c n N" . denote-open-or-create-with-command)
    ("C-c n o" . denote-sort-dired)
    ("C-c n r" . denote-rename-file)
    :map text-mode-map
