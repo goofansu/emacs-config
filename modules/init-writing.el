@@ -5,6 +5,9 @@
 
 (use-package org
   :ensure nil
+  :init
+  (setq org-directory (expand-file-name "org" my-sync-directory))
+
   :bind
   (("C-c a" . org-agenda)
    ("C-c c" . org-capture)
@@ -18,10 +21,6 @@
   :custom
   (org-use-fast-todo-selection 'expert)
   (org-use-sub-superscripts '{})
-
-  ;; Agenda
-  (org-agenda-files '("~/.notes"))
-  (org-agenda-tags-column 0)
 
   ;; Editing
   (org-catch-invisible-edits 'show-and-error)
@@ -37,6 +36,47 @@
   (org-ellipsis "…")
   (org-hide-emphasis-markers t)
   (org-pretty-entities t)
+
+  ;; Agenda
+  (org-agenda-files (list org-directory))
+  (org-agenda-tags-column 0)
+
+  ;; Capture
+  (org-capture-templates
+   `(("t" "To-do" entry
+      (file "to-dos.org")
+      ,(concat "* TODO %^{Title} %^g\n"
+               ":PROPERTIES:\n"
+               ":CAPTURED: %U\n"
+               ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
+               ":END:\n\n"
+               "%?")
+      :empty-lines-after 1
+      :prepend t)
+     ("e" "Email" entry ; Also see `org-capture-templates-contexts'
+      (file "to-dos.org")
+      ,(concat "* TODO %:subject :mail:\n"
+               ":PROPERTIES:\n"
+               ":CAPTURED: %U\n"
+               ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
+               ":END:\n\n"
+               "%a")
+      :immediate-finish t
+      :empty-lines-after 1
+      :prepend t)
+     ("j" "Journal" entry
+      (file+olp+datetree "journal.org")
+      ,(concat "* %^{Title} %^g\n"
+               ":PROPERTIES:\n"
+               ":CAPTURED: %U\n"
+               ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
+               ":END:"))
+     ))
+
+  (org-capture-templates-contexts
+   '(("e" ((in-mode . "notmuch-search-mode")
+           (in-mode . "notmuch-show-mode")
+           (in-mode . "notmuch-tree-mode")))))
 
   ;; Code block
   (org-edit-src-content-indentation 0)
