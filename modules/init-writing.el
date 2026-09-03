@@ -70,7 +70,8 @@
                ":PROPERTIES:\n"
                ":CAPTURED: %U\n"
                ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
-               ":END:"))
+               ":END:\n\n"
+               "%?"))
      ))
 
   (org-capture-templates-contexts
