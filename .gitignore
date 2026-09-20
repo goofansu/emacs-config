@@ -12,3 +12,5 @@
 /undo-fu-session/
 /nov-places
 /.mc-lists.el
+/.cache/
+/url/

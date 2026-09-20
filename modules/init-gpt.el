@@ -18,10 +18,8 @@
   (setf (alist-get 'markdown-mode gptel-prompt-prefix-alist) "**User**\n")
   (setf (alist-get 'markdown-mode gptel-response-prefix-alist) "**Assistant**\n")
 
-  (setq gptel-model 'deepseek-v4-flash
-        gptel-backend (gptel-make-deepseek "DeepSeek"
-                        :stream t
-                        :key (lambda () (auth-source-pass-get 'secret "api-key/deepseek"))))
+  (setq gptel-model 'gpt-5.6-luna
+        gptel-backend (gptel-make-openai-oauth "OpenAI-sub"))
 
   (defun my/gptel-buffer-names ()
     "Return the names of buffers where `gptel-mode' is active."
