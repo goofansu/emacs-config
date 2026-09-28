@@ -124,7 +124,7 @@
   (org-tags-column 0)
 
   :config
-  (setq org-agenda-include-inactive-timestamps t)
+  (setq org-agenda-include-inactive-timestamps nil)
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
