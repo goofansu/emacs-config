@@ -2,19 +2,12 @@
   :pin melpa
   :bind
   (("C-c <return>" . gptel-send)
-   ("C-c C-<return>" . gptel-menu)
-   :map search-map
-   ("P" . my/gptel-fabric-pattern)
-   ("S" . my/gptel-summarize)
-   ("T" . my/gptel-translate))
+   ("C-c C-<return>" . gptel-menu))
 
   :custom
   (gptel-include-reasoning nil)
 
   :config
-  (require 'seq)
-  (require 'subr-x)
-
   (setf (alist-get 'markdown-mode gptel-prompt-prefix-alist) "**User**\n")
   (setf (alist-get 'markdown-mode gptel-response-prefix-alist) "**Assistant**\n")
 
@@ -50,92 +43,6 @@
                                (face-foreground 'default nil t))
                           :position t))))
 
-  (add-hook 'gptel-mode-hook #'my/gptel-remap-header-line-button-underline)
-
-  (defconst my/fabric-patterns-directory
-    (expand-file-name "~/.config/fabric/patterns/")
-    "Directory containing Fabric patterns.")
-
-  (defun my/fabric-pattern-names ()
-    "Return Fabric pattern names that contain a system prompt."
-    (seq-filter
-     (lambda (name)
-       (let ((pattern-dir (expand-file-name name my/fabric-patterns-directory)))
-         (and (file-directory-p pattern-dir)
-              (file-exists-p (expand-file-name "system.md" pattern-dir)))))
-     (directory-files my/fabric-patterns-directory nil "^[^.]")))
-
-  (defun my/fabric-read-pattern-prompt (pattern)
-    "Return the system prompt for Fabric PATTERN."
-    (with-temp-buffer
-      (insert-file-contents
-       (expand-file-name "system.md"
-                         (expand-file-name pattern my/fabric-patterns-directory)))
-      (string-trim (buffer-string))))
-
-  (defvar my/gptel-default-user-prompt
-    "Please process the provided context according to the system instructions."
-    "Default user prompt for `my/gptel-send-current-buffer'.")
-
-  (defun my/gptel--context-bounds ()
-    "Return the context bounds to send from the current buffer.
-With an active region, return its bounds as a list of (START . END) pairs.
-Without one, ask for confirmation and return nil, meaning the whole buffer.
-Signal a `user-error' when the confirmation is declined."
-    (cond
-     ((use-region-p) (region-bounds))
-     ((y-or-n-p (format "No region active; send the whole buffer %s (%d lines)? "
-                        (buffer-name)
-                        (line-number-at-pos (point-max))))
-      nil)
-     (t (user-error "Aborted"))))
-
-  (defun my/gptel-send-current-buffer (buffer-name system-prompt user-prompt &optional temperature)
-    "Send current buffer context to BUFFER-NAME with SYSTEM-PROMPT.
-Send only the active region when there is one, otherwise send the whole
-buffer after confirmation.
-Use USER-PROMPT as the prompt text, or `my/gptel-default-user-prompt' when nil.
-Set `gptel-temperature' buffer-locally to TEMPERATURE, or 0.7 when omitted."
-    (let* ((source-buffer (current-buffer))
-           (bounds (my/gptel--context-bounds)))
-      (with-current-buffer (gptel buffer-name nil nil t)
-        (setq-local gptel-context (if bounds
-                                      (list (list source-buffer :bounds bounds))
-                                    (list source-buffer)))
-        (setq-local gptel-use-context 'system)
-        (setq-local gptel-system-prompt system-prompt)
-        (setq-local gptel-temperature (or temperature 0.7))
-        (let ((inhibit-read-only t))
-          (erase-buffer)
-          (insert (gptel-prompt-prefix-string)
-                  (or user-prompt my/gptel-default-user-prompt)))
-        (gptel-send))))
-
-  (defun my/gptel-fabric-pattern (pattern)
-    "Send the active region, or the whole buffer, using a selected Fabric PATTERN."
-    (interactive (list (completing-read "Fabric pattern: "
-                                        (my/fabric-pattern-names) nil t)))
-    (my/gptel-send-current-buffer
-     (format "*gptel-%s*" pattern)
-     (my/fabric-read-pattern-prompt pattern)
-     nil))
-
-  (defun my/gptel-summarize ()
-    "Summarize the active region, or the whole buffer, with the Fabric summarize pattern."
-    (interactive)
-    (my/gptel-send-current-buffer
-     "*gptel-summarize*"
-     (my/fabric-read-pattern-prompt "summarize")
-     nil
-     0.2))
-
-  (defun my/gptel-translate ()
-    "Translate the active region, or the whole buffer, with the Fabric translate pattern."
-    (interactive)
-    (my/gptel-send-current-buffer
-     "*gptel-translate*"
-     (my/fabric-read-pattern-prompt "translate")
-     "Translate into Chinese."
-     0.3)))
+  (add-hook 'gptel-mode-hook #'my/gptel-remap-header-line-button-underline))
 
 (provide 'init-gpt)
