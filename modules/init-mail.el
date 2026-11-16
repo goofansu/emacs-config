@@ -70,9 +70,9 @@
        :count-query "tag:inbox and tag:unread and from:atlassian.net"
        :sort-order 'newest-first
        :key ,(kbd "j"))
-     ( :name "bamboohr"
-       :query "tag:inbox and from:bamboohr.com"
-       :count-query "tag:inbox and tag:unread and from:bamboohr.com"
+     ( :name "hibob"
+       :query "tag:inbox and from:hibob.com"
+       :count-query "tag:inbox and tag:unread and from:hibob.com"
        :sort-order 'newest-first
        :key ,(kbd "b"))
      ( :name "expensify"
