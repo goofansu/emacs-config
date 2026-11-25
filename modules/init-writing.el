@@ -148,6 +148,8 @@
   (org-hugo-front-matter-format "yaml"))
 
 (use-package denote-hugo
+  :after ox-hugo
+  :demand t
   :ensure nil
   :load-path "site-lisp/"
   :bind ("C-c n h" . denote-hugo-find-file))
@@ -179,29 +181,7 @@
   (denote-save-buffers t)
   (denote-known-keywords nil)
   :config
-  (denote-rename-buffer-mode 1)
-  (advice-add 'denote-link-ol-export :around
-              (lambda (orig-fun link description format)
-                "Advice for `denote-link-ol-export' that customizes Org link export to Hugo Markdown.
-If exporting to markdown ('md') with Hugo backend (`org-export-current-backend' is 'hugo'),
-replace export with a relref shortcode referencing either the EXPORT_FILE_NAME or the file basename.
-Otherwise, call the original function."
-                (if (and (eq format 'md)
-                         (eq org-export-current-backend 'hugo))
-                    (let* ((path (denote-get-path-by-id link))
-                           (export-file-name
-                            (or
-                             (when (file-exists-p path)
-                               (with-temp-buffer
-                                 (insert-file-contents path)
-                                 (goto-char (point-min))
-                                 (when (re-search-forward "^#\\+export_file_name: \\(.+\\)" nil t)
-                                   (match-string 1))))
-                             (file-name-nondirectory path))))
-                      (format "[%s]({{< relref \"%s\" >}})"
-                              description
-                              export-file-name))
-                  (funcall orig-fun link description format)))))
+  (denote-rename-buffer-mode 1))
 
 (use-package denote-org
   :after denote
