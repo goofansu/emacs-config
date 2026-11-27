@@ -64,42 +64,6 @@
       :immediate-finish t
       :empty-lines-after 1
       :prepend t)
-     ("j" "Journal" entry
-      (file+olp+datetree "journal.org")
-      ,(concat "* %^{Title} %^g\n"
-               ":PROPERTIES:\n"
-               ":CAPTURED: %U\n"
-               ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
-               ":END:\n\n"
-               "%?"))
-     ("p" "Prompt" entry
-      (file+headline
-       ,(expand-file-name
-         "20260915T100928--writing-for-agents__ai_coding.org"
-         my-notes-directory)
-       "Prompts")
-      ,(concat "* %^{Title} %^g\n"
-               ":PROPERTIES:\n"
-               ":CAPTURED: %U\n"
-               ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
-               ":END:\n\n"
-               "#+begin_src\n"
-               "%?\n"
-               "#+end_src")
-      :empty-lines 1)
-     ("v" "Prompt vocabulary" entry
-      (file+headline
-       ,(expand-file-name
-         "20260915T100928--writing-for-agents__ai_coding.org"
-         my-notes-directory)
-       "Vocabulary")
-      ,(concat "* %^{Word} %^g\n"
-               ":PROPERTIES:\n"
-               ":CAPTURED: %U\n"
-               ":CUSTOM_ID: h:%(format-time-string \"%Y%m%dT%H%M%S\")\n"
-               ":END:\n\n"
-               "%?")
-      :empty-lines 1)
      ))
 
   (org-capture-templates-contexts
