@@ -184,6 +184,9 @@
   :config
   (denote-rename-buffer-mode 1))
 
+(use-package denote-markdown
+  :after denote)
+
 (use-package denote-org
   :after denote
   :custom
