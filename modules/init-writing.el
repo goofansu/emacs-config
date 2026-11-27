@@ -147,12 +147,13 @@
   (org-hugo-default-static-subdirectory-for-externals "attachments")
   (org-hugo-front-matter-format "yaml"))
 
-(use-package denote-hugo
+(use-package denote-astro
   :after ox-hugo
   :demand t
   :ensure nil
   :load-path "site-lisp/"
-  :bind ("C-c n h" . denote-hugo-find-file))
+  :bind (("C-c n h" . denote-astro-find-file)
+         ("C-c n e" . denote-astro-export)))
 
 (use-package ox-gfm
   :pin melpa

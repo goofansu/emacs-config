@@ -1,6 +1,6 @@
 org-mode
 
-;; Hugo
+;; yejun.dev (Org -> ox-hugo -> Astro Markdown)
 (fn "* Footnotes
 * COMMENT Local Variables :ARCHIVE:
 # Local Variables:
@@ -9,32 +9,17 @@ org-mode
 
 (page "#+export_file_name: " p n
       "#+hugo_base_dir: " (p "~/code/yejun.dev") n
-      "#+hugo_section: /" n
-      "#+hugo_auto_set_lastmod: t")
+      "#+hugo_section: /")
 
 (post "#+export_file_name: " p n
       "#+hugo_base_dir: " (p "~/code/yejun.dev") n
-      "#+hugo_section: " (p "posts") n
-      "#+hugo_draft: true" n
-      "#+hugo_custom_front_matter: " (p ":toc false") n
-      "#+hugo_auto_set_lastmod: t")
+      "#+hugo_section: posts" n
+      "#+hugo_publishdate: " (p (format-time-string "%Y-%m-%d")) n
+      "#+hugo_draft: true")
 
-(devlog "#+export_file_name: " p n
-        "#+hugo_base_dir: " (p "~/code/yejun.dev") n
-        "#+hugo_section: " (p "devlog") n
-        "#+hugo_custom_front_matter: " (p ":toc true") n
-        "#+hugo_custom_front_matter: " (p ":state seedling") n
-        "#+hugo_auto_set_lastmod: t")
-
-(til "#+hugo_base_dir: ~/code/yejun.dev" n
-     "#+hugo_section: til")
-
-(link "#+hugo_base_dir: ~/code/yejun.dev" n
-      "#+hugo_section: links")
+(lastmod "#+hugo_auto_set_lastmod: t")
+(toc "#+hugo_custom_front_matter: :toc true")
+(zh "#+language: zh")
 
 (cap "#+caption: " p)
 (attr "#+attr_html: " p)
-
-(skill "#+description: " p n n
-       "* Instructions" n p n n
-       "* Examples" n p)
